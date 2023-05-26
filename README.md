@@ -60,5 +60,9 @@ enjoyable/engaging
   - Implement other timer types
 
 ## Rough Sketches
+
+# Diagram of home page user interface of application
 ![Dashboard Sketch.jpg](docs%2FDashboard%20Sketch.jpg)
+
+# Diagram showing user interface of flash card section
 ![Flashcard Sketch.png](docs%2FFlashcard%20Sketch.png)
