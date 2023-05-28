@@ -1,70 +1,76 @@
-# Getting Started with Create React App
+# StudyDash
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Project Description
 
-## Available Scripts
+The study application is for learners seeking to build
+mastery through deliberate practice by allowing users
+to set abstract goals which are associated with habits
+or tasks on a TODO list. The application will store user
+goals, habits, TODO lists, user statistics, and flashcards.
+Users will be able to use stored goals, habits, and TODO
+lists as previously discussed and user statistics to
+evaluate their progress and go through flashcards to
+review concepts. Some additional functionality to add
+or remove based on time constraints include allowing
+users to chat with each other, allowing users to form
+groups and share in-app resources, and adding gamification
+to make the learning experience more engaging.
 
-In the project directory, you can run:
+## Project Task Requirements
 
-### `npm start`
+### 3-5 Minimal Requirements (Will Definitely Complete)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Flashcards
+- TODO list
+- Habits Tracker
+- Customizable Timer
+  - Pomodoro setting with adjustable timers for breaks and
+    study sessions
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 3-7 "Standard" Requirements (Will Most Likely Complete)
 
-### `npm test`
+- Use d3.js to create visualizations for habit data
+- Apply spaced repetition algorithm (flashcard appearance in
+  deck frequency) to flashcards
+- Login Authentication for users
+- Calendar view of TODO list
+- Gantt Chart
+  - One bar for each habit/goal
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2-3 Stretch Requirements
 
-### `npm run build`
+- Allow users to be able to chat to each other
+- Allow users to be able to form groups and gain same access
+  to data
+- Add gamification to make the learning experience more
+  enjoyable/engaging
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Two Minimal Requirements Broken Down into ~2-5 Smaller Tasks
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Flashcards
+  - Create the functionality of flipping over flashcard on click
+  - Allow users to go through a flashcard deck, moving from
+    one card to another when needed
+  - Allow users to create flashcard decks
+  - Allow users to create flashcards, one side for prompt and
+    other for answer
+  - Allow users to view all their created flashcards
+  - Allow users to edit their flashcards
+  - Allow users to delete selected flashcards
+- Customizable Timer
+  - Create timer frontend appearance(s)
+  - Implement base Pomodoro timer functionality
+  - Add customizable break length, study session length, and
+    break frequency to Pomodoro timer
+  - Implement timer type switching
+  - Implement other timer types
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Rough Sketches
 
-### `npm run eject`
+# Diagram of home page user interface of application
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+![Dashboard Sketch.jpg](docs%2FDashboard%20Sketch.jpg)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Diagram showing user interface of flash card section
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![Flashcard Sketch.png](docs%2FFlashcard%20Sketch.png)
