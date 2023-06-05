@@ -13,6 +13,7 @@ const stages = {
   longBreakTime: 15 * 60,
   isPaused: true,
   period: 1,
+  cycle: 0,
 };
 
 const totalTimes = [1500, 300, 900];
@@ -46,6 +47,8 @@ const useTimer = () => {
           if (prevPomodoro[controllers[selectedControl].value] === 0) {
             setSelectedControl((prevState) => {
               if (periodId.current === 15) {
+                prevPomodoro.cycle += 1;
+                periodId.current = -1;
                 return 2;
               } else if (prevState === 0) {
                 return 1;

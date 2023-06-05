@@ -1,4 +1,9 @@
-import { Card, IconButton } from "@material-tailwind/react";
+import {
+  Card,
+  IconButton,
+  CardBody,
+  Typography,
+} from "@material-tailwind/react";
 import { PlayIcon, PauseIcon } from "@heroicons/react/24/solid";
 import {
   CircularProgressbarWithChildren,
@@ -55,6 +60,15 @@ const Pomodoro = () => {
           </div>
         </div>
       </div>
+      <CardBody className="text-center">
+        <Typography variant="h4">
+          {selectedControl === 1
+            ? "Short Break"
+            : selectedControl === 2
+            ? "Long Break"
+            : "Focus"}
+        </Typography>
+      </CardBody>
     </Card>
   );
 };

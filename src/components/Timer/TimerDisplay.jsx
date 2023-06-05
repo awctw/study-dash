@@ -6,8 +6,8 @@ const TimerDisplay = ({ pomodoro, selectedControl }) => {
 
   return (
     <>
-      {minutes < 9 ? "0" : ""}
-      {minutes}:{seconds < 9 ? "0" : ""}
+      {minutes <= 9 ? "0" : ""}
+      {minutes}:{seconds <= 9 ? "0" : ""}
       {seconds}
     </>
   );
