@@ -14,11 +14,9 @@ const TODOListMainView = () => {
         return todoList.filter((todo) => todo.category === selectedCategory);
     };
 
-    let visibleTODOList = getVisibleTODOs();
-
     return (
         <div className="todoListMainView">
-            <TODOListViewer todos={visibleTODOList} />
+            <TODOListViewer todos={getVisibleTODOs()} />
             <ControlPanel
                 setSelectedCategory={setSelectedCategory}
             />
