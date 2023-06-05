@@ -1,0 +1,110 @@
+.todoListMainView {
+    background-color: #fdf5f0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 2rem;
+    border-radius: 50px;
+}
+
+.TODOListViewer {
+    background-color: #d7f1fc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    border-radius: 50px;
+}
+
+#TODOListViewerHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 1rem;
+}
+
+#TODOListViewerHeaderTitle {
+    margin-right: 2rem;
+}
+
+.list-view {
+    background-color: white;
+    display: block;
+    max-height: 300px;
+    overflow-y: scroll;
+    padding: 2rem;
+    border-radius: 30px;
+}
+
+.todoItem {
+    background-color: #faf2b2;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    border-radius: 20px;
+}
+
+#todoItemButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.editTODOForm,
+.addTODOForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 1rem;
+}
+
+.TODOForm {
+    margin: 1rem;
+}
+
+.inputField {
+    margin-bottom: 1rem;
+}
+
+#edit-dueDate, #add-dueDate {
+    background-color: #e5fde2;
+}
+
+.error-msg {
+    color: red;
+    margin-bottom: 1rem;
+}
+
+.EditTODOButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.control-panel {
+    background-color: rgba(158, 168, 173, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 2rem;
+    border-radius: 20px;
+}
+
+#clearAllButton,
+#AddNewTODOButton {
+    margin-bottom: 1rem;
+}
+
+#categoryFilter {
+    background-color: white;
+}
+
+.AddTODOButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
