@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+.overallAppView {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.sideBarView {
+  // Add any styles needed here.
+}
+
+.dashBoardView {
+  display: flex;
+}
