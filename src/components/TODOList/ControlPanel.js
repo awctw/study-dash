@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import AddTODOItem from "./AddNewTODO";
 import {Button, Option, Select} from "@material-tailwind/react";
-import {deleteAllTODOs} from "../../store/TODOListReducer";
+import {deleteAllTODOs} from "../../store/TODOList_Slice";
 
 const ControlPanel = (props) => {
     const categories = useSelector(state => state.todoReducer.categories);

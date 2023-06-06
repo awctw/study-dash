@@ -1,4 +1,4 @@
-import TODOListReducer from "./TODOListReducer";
+import TODOListReducer from "./TODOList_Slice";
 import {configureStore} from "@reduxjs/toolkit";
 
 export const store = configureStore({

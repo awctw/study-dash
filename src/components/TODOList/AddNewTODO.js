@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import DatePicker from "react-datepicker";
 import {Button, Card, Dialog, Input, Textarea} from "@material-tailwind/react";
-import {addTODO} from "../../store/TODOListReducer";
+import {addTODO} from "../../store/TODOList_Slice";
 
 const AddTODOItem = () => {
     const dispatch = useDispatch();

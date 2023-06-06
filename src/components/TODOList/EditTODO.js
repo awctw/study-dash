@@ -7,7 +7,7 @@ import {
     Dialog, Input, Textarea,
 } from "@material-tailwind/react";
 import {useDispatch, useSelector} from "react-redux";
-import {editTODO} from "../../store/TODOListReducer";
+import {editTODO} from "../../store/TODOList_Slice";
 
 const EditTODO = (props) => {
     const dispatch = useDispatch();

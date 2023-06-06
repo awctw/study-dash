@@ -4,7 +4,7 @@ import {
     Button,
 } from "@material-tailwind/react";
 import EditTODO from "./EditTODO";
-import {deleteTODO} from "../../store/TODOListReducer";
+import {deleteTODO} from "../../store/TODOList_Slice";
 
 const TODOItem = (props) => {
     const dispatch = useDispatch();
