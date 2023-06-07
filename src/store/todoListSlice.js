@@ -1,16 +1,16 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, nanoid} from "@reduxjs/toolkit";
 
 const INITIAL_STATE = {
     categories: [
-        'math',
-        'computer-science',
         'biology',
         'chemistry',
+        'computer science',
+        'language arts',
+        'math',
+        'musical art',
         'physics',
-        'language-arts',
-        'visual-arts',
         'sports',
-        'musical-art',
+        'visual arts',
         'work',
     ],
     TODOList: [
@@ -33,7 +33,7 @@ const INITIAL_STATE = {
             title: 'Complete English literature hwk',
             dueDate: new Date('June 24, 2023'),
             description: 'This is a sample todo.',
-            category: 'languageArts',
+            category: 'language arts',
         },
         {
             id: "4",
@@ -68,23 +68,61 @@ const INITIAL_STATE = {
 };
 
 const TODOListSlice = createSlice({
-    name: 'todoList',
+    name: "todoList",
     initialState: INITIAL_STATE,
     reducers: {
-        addTODO: (state, action) => {
-            state.TODOList.push(action.payload);
+        addTODO: {
+            reducer: (state, action) => {
+                state.TODOList.push(action.payload);
+            },
+            // The addTODO uses the prepare function to generate and initialize the payload with
+            // the necessary fields PRIOR to applying the reducer to it.
+            prepare: (todo) => {
+                return {
+                    payload: {
+                        id: nanoid(),
+                        ...todo
+                    }
+                };
+            },
         },
         editTODO: (state, action) => {
-            state.TODOList = state.TODOList.map((todo) =>
-                todo.id === action.payload.id ? action.payload : todo
-            );
+            const { id, title, dueDate, description, category } = action.payload;
+            const todoIndex = state.TODOList.findIndex((todo) => todo.id === id);
+            if (todoIndex !== -1) {
+                state.TODOList[todoIndex] = {
+                    id,
+                    title,
+                    dueDate,
+                    description,
+                    category,
+                };
+            }
         },
+
+        // deleteTODO finds the index of the item based on its ID
+        // and deletes it using the splice method.
         deleteTODO: (state, action) => {
-            state.TODOList = state.TODOList.filter((todo) => todo.id !== action.payload);
+            const todoIndex = state.TODOList.findIndex(
+                (todo) => todo.id === action.payload
+            );
+            if (todoIndex !== -1) {
+                state.TODOList.splice(todoIndex, 1);
+            }
         },
-        deleteAllTODOs: (state, action) => {
+        deleteAllTODOs: (state) => {
             state.TODOList = [];
         },
+        addCategory: (state, action) => {
+            const categoryIndex = state.categories.findIndex((item) => item === action.payload);
+
+            // Only add payload to state.categories only if category does not already
+            // exist in the array
+            if (categoryIndex === -1) {
+                state.categories.push(action.payload);
+                state.categories.sort();
+            }
+        }
     },
 });
 
@@ -92,7 +130,9 @@ export const {
     addTODO,
     editTODO,
     deleteTODO,
-    deleteAllTODOs, } = TODOListSlice.actions;
+    deleteAllTODOs,
+    addCategory,
+} = TODOListSlice.actions;
 
 export default TODOListSlice.reducer;
 

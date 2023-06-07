@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import {
-    Button,
-    Card,
-    Dialog, Input, Textarea,
-} from "@material-tailwind/react";
-import {useDispatch, useSelector} from "react-redux";
-import {editTODO} from "../../store/TODOList_Slice";
+import { Button, Card, Dialog, Input, Textarea } from '@material-tailwind/react';
+import { useDispatch, useSelector } from 'react-redux';
+import {addCategory, editTODO} from '../../store/todoListSlice';
 
 const EditTODO = (props) => {
     const dispatch = useDispatch();
-    const categories = useSelector(state => state.todoReducer.categories);
+    const categories = useSelector((state) => state.todoReducer.categories);
 
     // controls the edit dialog popup
     const [openEdit, setOpen] = useState(false);
@@ -22,18 +18,14 @@ const EditTODO = (props) => {
     const [category, setCategory] = useState(props.todo.category);
     const [error, setError] = useState('');
 
-    // Overwrites the current boolean value of openEdit with the opposite
-    // value. This allows us to open and close the EditTODO dialog.
-    // Finally, also repopulates the input boxes of edit form with existing attributes
-    // of current TODOItem
-    const handleOpen = () => {
-        setOpen(!openEdit)
+    const handleOpen = React.useCallback(() => {
+        setOpen((prevOpen) => !prevOpen);
         setTitle(props.todo.title);
         setDueDate(new Date(props.todo.dueDate));
         setDescription(props.todo.description);
         setCategory(props.todo.category);
         setError('');
-    };
+    }, [props.todo.title, props.todo.dueDate, props.todo.description, props.todo.category]);
 
     const handleTitleChange = (e) => {
         setTitle(e.target.value);
@@ -54,8 +46,7 @@ const EditTODO = (props) => {
     const handleFormSubmit = (e) => {
         e.preventDefault();
 
-        // Perform validation
-        if (!title || !dueDate || !category || !category) {
+        if (!title || !dueDate || !category) {
             setError('Please provide all required fields.');
             return;
         }
@@ -69,59 +60,52 @@ const EditTODO = (props) => {
         };
 
         dispatch(editTODO(updatedTodo));
+
+        // update the category list redux store if category does not already
+        // exist in the array
+        dispatch(addCategory(category));
         handleOpen();
     };
 
-    // Clear the input values and error message after clicking the
-    // "Clear" button
     const resetFormHandler = () => {
         setTitle('');
         setDueDate(null);
         setDescription('');
         setCategory('');
         setError('');
-    }
+    };
 
     return (
         <>
             <Button onClick={handleOpen}>Details</Button>
-            <Dialog
-                size="lg"
-                open={openEdit}
-                handler={handleOpen}
-                className="shadow-none"
-            >
+            <Dialog size="lg" open={openEdit} handler={handleOpen} className="shadow-none">
                 <Card className="editTODOForm">
                     <h2>Edit TODO</h2>
                     <form className="TODOForm" onSubmit={handleFormSubmit}>
                         <div className="inputField">
                             <label htmlFor="edit-title">Title:</label>
-                            <Input id="edit-title"
-                                   value={title}
-                                   label="title"
-                                   onChange={(edit) => handleTitleChange(edit)}
-                            />
+                            <Input id="edit-title" value={title} label="title" onChange={handleTitleChange} />
                         </div>
                         <div className="inputField">
                             <label htmlFor="edit-dueDate">Due Date:</label>
-                            <DatePicker id="edit-dueDate"
-                                        selected={dueDate}
-                                        onChange={(edit) => handleDueDateChange(edit)} />
+                            <DatePicker id="edit-dueDate" selected={dueDate} onChange={handleDueDateChange} />
                         </div>
                         <div className="inputField">
                             <label htmlFor="edit-description">Description:</label>
                             <Textarea id="edit-description"
                                       label="description"
                                       value={description}
-                                      onChange={(edit) => handleDescriptionChange(edit)} />
+                                      onChange={handleDescriptionChange} />
                         </div>
                         <div className="inputField">
                             <label htmlFor="edit-category">Category:</label>
-                            <Input id="edit-category"
-                                   label="category"
-                                   value={category}
-                                   list="categoryOptions"
-                                   onChange={(selection) => handleCategoryChange(selection)}/>
+                            <Input
+                                id="edit-category"
+                                label="category"
+                                value={category}
+                                list="categoryOptions"
+                                onChange={handleCategoryChange}
+                            />
                             <datalist id="categoryOptions">
                                 {categories.map((category) => (
                                     <option key={category} value={category}></option>
@@ -130,11 +114,13 @@ const EditTODO = (props) => {
                         </div>
                         {error && <p className="error-msg">{error}</p>}
                         <div className="EditTODOButtons">
-                            <Button color="light-blue" size="sm" type="submit">Confirm</Button>
-                            <Button color="gray" size="sm" type="reset" onClick={resetFormHandler}>
+                            <Button color="light-blue" size="sm" type="submit">
+                                Confirm
+                            </Button>
+                            <Button color="gray" size="sm" onClick={resetFormHandler}>
                                 Clear
                             </Button>
-                            <Button color="red" size="sm" type="button" onClick={handleOpen}>
+                            <Button color="red" size="sm" onClick={handleOpen}>
                                 Close
                             </Button>
                         </div>

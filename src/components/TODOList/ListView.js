@@ -1,13 +1,8 @@
 import React from 'react';
 import TodoItem from './TODOItem';
 
-const ListView = (props) => {
-
-    let sortedTodos = [...props.visibleTODOs];
-
-    // Sort todos by dueDate attribute so that TODOs with the earliest
-    // due date will be closer to the top of the list
-    sortedTodos.sort((a, b) => a.dueDate - b.dueDate);
+const ListView = ({ visibleTODOs }) => {
+    let sortedTodos = [...visibleTODOs].sort((a, b) => a.dueDate - b.dueDate);
 
     return (
         <div className="list-view">
