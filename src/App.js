@@ -1,7 +1,15 @@
+import React, { useState } from "react";
 import "./App.css";
+import { Button } from "@material-tailwind/react";
+import FlashCardModal from "./components/flashcard/dialogContainer";
 
 function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+
+  return (
+    <>
+      <FlashCardModal />
+    </>
+  );
 }
 
 export default App;

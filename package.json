@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@heroicons/react": "^2.0.18",
+    "@material-tailwind/react": "^2.0.1",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -38,6 +40,7 @@
     ]
   },
   "devDependencies": {
+    "tailwind-scrollbar": "^3.0.4",
     "tailwindcss": "^3.3.2"
   }
 }
