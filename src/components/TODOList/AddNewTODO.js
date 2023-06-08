@@ -67,7 +67,7 @@ const AddTODOItem = () => {
 
     const newTodo = {
       title,
-      dueDate,
+      dueDate: dueDate.toDateString(),
       description,
       category,
     };
