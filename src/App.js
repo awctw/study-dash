@@ -1,20 +1,36 @@
-import Pomodoro from "./components/Timer/Pomodoro";
+import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import ProfilePage from "./pages/ProfilePage";
+import HabitsPage from "./pages/HabitsPage";
+import TODOPage from "./pages/TODOPage";
+import FlashcardPage from "./pages/FlashcardsPage";
+import DashboardPage from "./pages/DashboardPage";
+import StatisticsPage from "./pages/StatisticsPage";
+import StudyGroupPage from "./pages/StudyGroupsPage";
+import TimerPage from "./pages/TimerPage";
+import SettingsPage from "./pages/SettingsPage";
+
 import SideBar from "./components/SideBar";
-import TODOListMainView from "./components/TODOList/TODOListMainView";
 
 function App() {
   return (
-    <div className="flex justify-between">
-      <div className="w-1/4">
-        <SideBar />
+    <Router>
+      <div className="flex justify-between">
+        <div className="w-1/4">
+          <SideBar />
+        </div>
+        <Routes>
+          <Route path={"/dashboard"} element={<DashboardPage />} />
+          <Route path={"/profile"} element={<ProfilePage />} />
+          <Route path={"/flashcards"} element={<FlashcardPage />} />
+          <Route path={"/todos"} element={<TODOPage />} />
+          <Route path={"/habits"} element={<HabitsPage />} />
+          <Route path={"/timer"} element={<TimerPage />} />
+          <Route path={"/statistics"} element={<StatisticsPage />} />
+          <Route path={"/studyGroups"} element={<StudyGroupPage />} />
+          <Route path={"/settings"} element={<SettingsPage />} />
+        </Routes>
       </div>
-      <div className="flex">
-        <TODOListMainView />
-      </div>
-      <div className="flex-1 flex justify-end mx-4">
-        <Pomodoro />
-      </div>
-    </div>
+    </Router>
   );
 }
 

@@ -1,39 +1,8 @@
-.todoListMainView {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-  padding: 2rem;
-  border-radius: 50px;
-}
-
-.TODOListViewer {
-  border-color: black;
-  border-style: solid;
-  border-width: 2px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-  border-radius: 50px;
-}
-
-#TODOListViewerHeader {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  margin: 1rem;
-}
-
-#TODOListViewerHeaderTitle {
-  margin-right: 2rem;
-}
-
 .list-view {
   display: block;
-  max-height: 300px;
+  max-height: 170px;
   overflow-y: scroll;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 30px;
 }
 
