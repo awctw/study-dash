@@ -1,22 +1,18 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, Option, Select } from '@material-tailwind/react';
+import { useDispatch } from 'react-redux';
+import { Button } from '@material-tailwind/react';
 import { deleteAllTODOs } from '../../store/todoListSlice';
 import AddTODOItem from './AddNewTODO';
+import CategoryToggle from "./CategoryToggle";
 
+// ControlPanel component provides functionalities for clearing all TODOItems,
+// adding new TODOItems, and filtering TODOs by category.
 const ControlPanel = ({setSelectedCategory}) => {
-    const categories = useSelector((state) => state.todoReducer.categories);
     const dispatch = useDispatch();
 
-    // wrap the handleClearTodos function inside a useCallback hook to ensure
-    // that the function reference remains the same unless its dependencies change:
     const handleClearTodos = React.useCallback(() => {
         dispatch(deleteAllTODOs());
     }, [dispatch]);
-
-    const handleCategoryChange = (selection) => {
-        setSelectedCategory(selection);
-    };
 
     return (
         <div className="control-panel">
@@ -24,14 +20,7 @@ const ControlPanel = ({setSelectedCategory}) => {
                 Clear all TODOs
             </Button>
             <AddTODOItem />
-            <Select id="categoryFilter" label="Search by Category" onChange={handleCategoryChange}>
-                <Option value="">All Categories</Option>
-                {categories.map((category) => (
-                    <Option key={category} value={category}>
-                        {category}
-                    </Option>
-                ))}
-            </Select>
+            <CategoryToggle handleCategoryChange={setSelectedCategory}/>
         </div>
     );
 };

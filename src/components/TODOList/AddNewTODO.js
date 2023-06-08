@@ -4,15 +4,15 @@ import DatePicker from 'react-datepicker';
 import {Button, Card, Dialog, Input, Textarea} from '@material-tailwind/react';
 import {addCategory, addTODO} from '../../store/todoListSlice';
 
+// AddTODOItem component provides a form to add new TODOItems
 const AddTODOItem = () => {
     const dispatch = useDispatch();
     const categories = useSelector((state) => state.todoReducer.categories);
 
-    // controls the addTODO dialog popup
+    // openAddTODO is used to control the visibility of the addTODO dialog popup.
     const [openAddTODO, setOpen] = useState(false);
 
-    // create a state object in AddTODOItem that keeps track of the values currently entered for the
-    // title, dueDate, description, and category fields.
+    // formData state variable is used to store the values entered in the form.
     const [formData, setFormData] = useState({
         title: '',
         dueDate: null,
@@ -28,7 +28,7 @@ const AddTODOItem = () => {
     };
 
     // Create a single reusable function to handle the input changes for all attributes
-    // apart from dueDate. This reduces code duplication and makes the code more maintainable.
+    // apart from dueDate.
     const handleInputChange = (e) => {
         setFormData((prevFormData) => ({
             ...prevFormData,
@@ -36,6 +36,8 @@ const AddTODOItem = () => {
         }));
     };
 
+    // handleDueDateInput function is responsible for updating the dueDate field
+    // in the formData state when the value of the DatePicker component changes.
     const handleDueDateInput = (date) => {
         setFormData((prevFormData) => ({
             ...prevFormData,
@@ -43,6 +45,10 @@ const AddTODOItem = () => {
         }));
     };
 
+    // The handleSubmit function is called when the form is submitted.
+    // It performs validation on the input fields to ensure that the required
+    // fields are not empty. If any of the required fields are empty, an error
+    // message is set in the error state variable.
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -61,9 +67,9 @@ const AddTODOItem = () => {
         };
 
         dispatch(addTODO(newTodo));
-        
-        // update the category list redux store if category does not already
-        // exist in the array
+
+        // The addCategory action is dispatched to update the category list
+        // in the Redux store if the category value does not already exist in the categories array.
         dispatch(addCategory(category));
         handleOpen();
     };
