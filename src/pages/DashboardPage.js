@@ -4,7 +4,7 @@ import Pomodoro from "../components/Timer/Pomodoro";
 
 const DashboardPage = () => {
   return (
-    <div className="flex w-3/4">
+    <div className="flex w-3/4 flex-wrap">
       <div>
         <TODOListMainView />
       </div>
