@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, ArrowPathRoundedSquareIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { ArrowLeftIcon, ArrowPathRoundedSquareIcon, CheckIcon, ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { Card, Carousel, IconButton, Typography } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -6,7 +6,9 @@ import StatusBar from "./statusBar";
 
 const Cards = (props) => {
     const module = useSelector(state => state.flashcards.modules.find(module => module.id === props.moduleId));
+    const numCards = module.questions.length;
     const [flip, setFlip] = useState(false);
+    const [idx, setIdx] = useState(0);
 
     return (
         <>
@@ -20,7 +22,10 @@ const Cards = (props) => {
                             className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
                                 activeIndex === i ? "bg-blue-gray-700 w-8" : "bg-blue-gray-400/50 w-4"
                             }`}
-                            onClick={() => setActiveIndex(i)}
+                            onClick={() => {
+                                setIdx(i);
+                                setActiveIndex(i)
+                            }}
                             />
                         ))}
                     </div>
@@ -30,7 +35,9 @@ const Cards = (props) => {
                         variant="text"
                         color="blue-gray"
                         size="lg"
+                        disabled={idx === 0}
                         onClick={() => {
+                            setIdx(idx => idx - 1);
                             setFlip(false);
                             handlePrev();
                         }}
@@ -44,7 +51,9 @@ const Cards = (props) => {
                         variant="text"
                         color="blue-gray"
                         size="lg"
+                        disabled={idx === numCards - 1}
                         onClick={() => {
+                            setIdx(idx => idx + 1);
                             setFlip(false);
                             handleNext();
                         }}
@@ -60,12 +69,34 @@ const Cards = (props) => {
                         <>
                             <Card key={i} className="w-full h-full object-cover bg-transparent items-center justify-center rounded-none">
                                 {/* <Typography key={i} variant="h2" className="text-gray-50 mx-28 text-center">{question}</Typography> */}
-                                <div className={`card ${flip ? 'flipped' : ''} bg-purple-theme rounded-3xl`}>
+                                <div className={`card ${flip ? 'flipped' : ''} bg-purple-theme rounded-3xl shadow-lg`}>
                                     <div className="front items-center justify-center">
                                         <Typography variant="h2" className="text-gray-50 mx-28 text-center">{question}</Typography>
                                     </div>
-                                    <div className="back items-center justify-center">
+                                    <div className="back items-center justify-center relative">
                                         <Typography variant="h4" className="text-gray-50 mx-28 text-center">{module.answers[i]}</Typography>
+                                        <div className="absolute justify-between flex bottom-0 left-0 right-0">
+                                            <IconButton 
+                                                size="md" className="rounded-xl bg-transparent mx-3 my-3 border border-green-400 hover:shadow-none shadow-none"
+                                                onClick={() => {
+                                                    setFlip(false);
+                                                }}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-green-400 w-6 h-6">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                                </svg>
+                                            </IconButton>
+                                            <IconButton 
+                                                size="md" className="rounded-xl bg-transparent mx-3 my-3 border border-red-500 hover:shadow-none shadow-none"
+                                                onClick={() => {
+                                                    setFlip(false);
+                                                }}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-red-500 w-6 h-6">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </IconButton>
+                                        </div>
                                     </div>
                                 </div>
                             </Card>
@@ -74,7 +105,7 @@ const Cards = (props) => {
                 }
             </Carousel>
             <div className="w-full h-[15%] flex justify-center items-center">
-                <StatusBar setFlip={setFlip} flip={flip} />
+                <StatusBar setFlip={setFlip} progress={(idx/numCards)*100} />
             </div>
         </>
     );
