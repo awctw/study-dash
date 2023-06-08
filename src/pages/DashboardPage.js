@@ -1,3 +1,4 @@
+import HabitsView from "../components/Habits/HabitsView";
 import TODOListMainView from "../components/TODOList/TODOListMainView";
 import Pomodoro from "../components/Timer/Pomodoro";
 
@@ -9,6 +10,9 @@ const DashboardPage = () => {
       </div>
       <div className="flex-1 flex justify-end mx-4">
         <Pomodoro />
+      </div>
+      <div>
+        <HabitsView />
       </div>
     </div>
   );
