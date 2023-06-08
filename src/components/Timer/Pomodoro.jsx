@@ -28,9 +28,9 @@ const Pomodoro = () => {
   };
 
   return (
-    <Card className="mt-7 h-[25rem] w-[25rem] items-center">
-      <div className="w-[20rem] h-[20rem] flex justify-center items-center rounded-full bg-gradient-to-t to-pmd-blue-600 from-pmd-blue-900  shadow-2xl shadow-pmd-blue-600">
-        <div className="w-[17rem] h-[17rem] flex justify-center items-center rounded-full text-6xl bg-pmd-blue-900">
+    <Card className="m-3 h-[16rem] w-[16rem] items-center">
+      <div className="w-[12rem] h-[12rem] flex justify-center items-center rounded-full bg-gradient-to-t to-pmd-blue-600 from-pmd-blue-900 shadow-2xl shadow-pmd-blue-600">
+        <div className="w-[9rem] h-[9rem] flex justify-center items-center rounded-full text-3xl bg-pmd-blue-900">
           <div className="flex flex-col justify-center items-center font-semibold relative">
             <CircularProgressbarWithChildren
               strokeWidth={2}
@@ -38,7 +38,7 @@ const Pomodoro = () => {
               value={getRemainingTimePercentage()}
               styles={buildStyles({
                 trailColor: "transparent",
-                pathColor: "black",
+                pathColor: "#7986cb",
               })}
             >
               <TimerDisplay
@@ -46,14 +46,14 @@ const Pomodoro = () => {
                 selectedControl={selectedControl}
               />
               <IconButton
-                className="mt-4"
+                className="mt-2 h-7 w-7 bg-indigo-300"
                 color="gray"
                 onClick={playPauseHandler}
               >
                 {pomodoro.isPaused ? (
-                  <PlayIcon className="h-5 w-5" />
+                  <PlayIcon className="h-3 w-3" />
                 ) : (
-                  <PauseIcon className="h-5 w-5" />
+                  <PauseIcon className="h-3 w-3" />
                 )}
               </IconButton>
             </CircularProgressbarWithChildren>
@@ -61,7 +61,7 @@ const Pomodoro = () => {
         </div>
       </div>
       <CardBody className="text-center">
-        <Typography variant="h4">
+        <Typography variant="h6">
           {selectedControl === 1
             ? "Short Break"
             : selectedControl === 2
