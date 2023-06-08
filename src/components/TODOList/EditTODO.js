@@ -75,9 +75,9 @@ const EditTODO = (props) => {
     const updatedTodo = {
       ...props.todo,
       title: title,
-      dueDate: dueDate,
+      dueDate: dueDate.toDateString(),
       description: description,
-      category: category.toLowerCase(),
+      category: category,
     };
 
     dispatch(editTODO(updatedTodo));

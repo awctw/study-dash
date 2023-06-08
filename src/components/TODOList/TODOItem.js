@@ -17,7 +17,7 @@ const TODOItem = (props) => {
   return (
     <div className="todoItem">
       <h3>Title: {props.todo.title}</h3>
-      <p>Due Date: {props.todo.dueDate.toDateString()}</p>
+      <p>Due Date: {props.todo.dueDate}</p>
       <div id="todoItemButtons">
         <Button
           className="border-indigo-300 bg-white text-indigo-300 border-solid border"
