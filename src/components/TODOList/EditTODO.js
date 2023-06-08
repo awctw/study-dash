@@ -123,6 +123,7 @@ const EditTODO = (props) => {
               <label htmlFor="edit-dueDate">Due Date:</label>
               <DatePicker
                 id="edit-dueDate"
+                className="bg-orange-200"
                 selected={dueDate}
                 onChange={handleDueDateChange}
               />
