@@ -19,6 +19,11 @@ const FlashCardModal = (props) => {
     const modules = useSelector(state => state.flashcards.modules);
     const [visible, setVisible] = useState(false);
     const [id, setId] = useState(modules[0].id);
+    const [key, setKey] = useState(modules[0].id);
+
+    const handleReset = () => {
+        setKey(key => key + 1);
+    }
 
     return (
         <>
@@ -41,7 +46,10 @@ const FlashCardModal = (props) => {
                             modules.map((module, i) => (
                                 <ListItem 
                                     key={module.id} 
-                                    onClick={() => setId(module.id)}
+                                    onClick={() => {
+                                        setId(module.id);
+                                        setKey(module.id);
+                                    }}
                                 >
                                     {module.name}
                                 </ListItem>
@@ -56,8 +64,8 @@ const FlashCardModal = (props) => {
                         the component type remains the same. This triggers a re-render of the component, 
                         including its child components. 
                  */}
-                <Card className="w-3/4 rounded-lg ml-2 items-center shadow-none" key={id}>
-                        <Cards moduleId={id} />
+                <Card className="w-3/4 rounded-lg ml-2 items-center shadow-none" key={key}>
+                        <Cards moduleId={id} reset={handleReset} />
                 </Card>
             </Dialog>
         </>

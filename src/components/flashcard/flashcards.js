@@ -8,7 +8,9 @@ const Cards = (props) => {
     const module = useSelector(state => state.flashcards.modules.find(module => module.id === props.moduleId));
     const numCards = module.questions.length;
     const [flip, setFlip] = useState(false);
-    const [idx, setIdx] = useState(0);
+    const [answered, setAnswered] = useState([]);
+    const [numCorrect, setNumCorrect] = useState(0);
+    const [numWrong, setNumWrong] = useState(0);
 
     return (
         <>
@@ -23,7 +25,7 @@ const Cards = (props) => {
                                 activeIndex === i ? "bg-blue-gray-700 w-8" : "bg-blue-gray-400/50 w-4"
                             }`}
                             onClick={() => {
-                                setIdx(i);
+                                setFlip(false)
                                 setActiveIndex(i)
                             }}
                             />
@@ -35,9 +37,7 @@ const Cards = (props) => {
                         variant="text"
                         color="blue-gray"
                         size="lg"
-                        disabled={idx === 0}
                         onClick={() => {
-                            setIdx(idx => idx - 1);
                             setFlip(false);
                             handlePrev();
                         }}
@@ -51,9 +51,7 @@ const Cards = (props) => {
                         variant="text"
                         color="blue-gray"
                         size="lg"
-                        disabled={idx === numCards - 1}
                         onClick={() => {
-                            setIdx(idx => idx + 1);
                             setFlip(false);
                             handleNext();
                         }}
@@ -77,8 +75,15 @@ const Cards = (props) => {
                                         <Typography variant="h4" className="text-gray-50 mx-28 text-center">{module.answers[i]}</Typography>
                                         <div className="absolute justify-between flex bottom-0 left-0 right-0">
                                             <IconButton 
+                                                disabled={answered[i]}
                                                 size="md" className="rounded-xl bg-transparent mx-3 my-3 border border-green-400 hover:shadow-none shadow-none"
                                                 onClick={() => {
+                                                    setAnswered((prevArray) => {
+                                                        const newArr = [...prevArray];
+                                                        newArr[i] = true;
+                                                        return newArr;
+                                                    });
+                                                    setNumCorrect(numCorrect => numCorrect + 1);
                                                     setFlip(false);
                                                 }}
                                             >
@@ -87,8 +92,15 @@ const Cards = (props) => {
                                                 </svg>
                                             </IconButton>
                                             <IconButton 
+                                                disabled={answered[i]}
                                                 size="md" className="rounded-xl bg-transparent mx-3 my-3 border border-red-500 hover:shadow-none shadow-none"
                                                 onClick={() => {
+                                                    setAnswered((prevArray) => {
+                                                        const newArr = [...prevArray];
+                                                        newArr[i] = true;
+                                                        return newArr;
+                                                    });
+                                                    setNumWrong(numWrong => numWrong + 1);
                                                     setFlip(false);
                                                 }}
                                             >
@@ -105,7 +117,15 @@ const Cards = (props) => {
                 }
             </Carousel>
             <div className="w-full h-[15%] flex justify-center items-center">
-                <StatusBar setFlip={setFlip} progress={(idx/numCards)*100} />
+                <StatusBar 
+                    setFlip={setFlip}
+                    flip={flip} 
+                    // note: .filter(Boolean) keeps every truthy value in the array!
+                    progress={((answered.filter(Boolean).length)/numCards)*100 } 
+                    numCorrect={numCorrect}
+                    numWrong={numWrong}
+                    reset={props.reset}
+                />
             </div>
         </>
     );
