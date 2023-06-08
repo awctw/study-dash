@@ -11,19 +11,25 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addCategory, editTODO } from "../../store/todoListSlice";
 
+// The EditTODO component allows users to edit the properties of a TODOItem
+// through a dialog popup.
 const EditTODO = (props) => {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.todoReducer.categories);
 
-  // controls the edit dialog popup
+  // openEdit state controls the visibility of the edit dialog popup.
   const [openEdit, setOpen] = useState(false);
 
+  // state variables that store the current values for the input fields and error messages.
   const [title, setTitle] = useState(props.todo.title);
   const [dueDate, setDueDate] = useState(new Date(props.todo.dueDate));
   const [description, setDescription] = useState(props.todo.description);
   const [category, setCategory] = useState(props.todo.category);
   const [error, setError] = useState("");
 
+  // handleOpen toggles the value of openEdit, which controls the visibility
+  // of the edit dialog popup. It also sets the initial values of the input fields
+  // and clears the error message.
   const handleOpen = React.useCallback(() => {
     setOpen((prevOpen) => !prevOpen);
     setTitle(props.todo.title);
@@ -54,10 +60,14 @@ const EditTODO = (props) => {
     setCategory(e.target.value);
   };
 
+  // The handleFormSubmit function is called when the form is submitted.
+  // It performs validation on the input fields to ensure that the required
+  // fields are not empty. If any of the required fields are empty, an error
+  // message is set in the error state variable.
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    if (!title || !dueDate || !category) {
+    if (!title || !dueDate || !description || !category) {
       setError("Please provide all required fields.");
       return;
     }
@@ -72,8 +82,8 @@ const EditTODO = (props) => {
 
     dispatch(editTODO(updatedTodo));
 
-    // update the category list redux store if category does not already
-    // exist in the array
+    // The addCategory action is dispatched to update the category list
+    // in the Redux store if the category value does not already exist in the categories array.
     dispatch(addCategory(category));
     handleOpen();
   };

@@ -4,11 +4,12 @@ import { Button } from "@material-tailwind/react";
 import EditTODO from "./EditTODO";
 import { deleteTODO } from "../../store/todoListSlice";
 
+// The TODOItem component represents an individual TODOItem in the list.
 const TODOItem = (props) => {
   const dispatch = useDispatch();
 
-  // Wrap the handleDelete function inside a useCallback hook to ensure that
-  // the function reference remains the same unless its dependencies change:
+  // The handleDelete function is defined using the React.useCallback hook.
+  // This ensures that the function reference remains the same unless its dependencies change.
   const handleDelete = React.useCallback(() => {
     dispatch(deleteTODO(props.todo.id));
   }, [dispatch, props.todo.id]);
