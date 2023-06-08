@@ -10,16 +10,14 @@ import TimerPage from "./pages/TimerPage";
 import SettingsPage from "./pages/SettingsPage";
 
 import SideBar from "./components/SideBar";
-import "./App.css";
 
 function App() {
   return (
     <Router>
-      <div className="overallAppView">
-        <div className="sideBarView">
+      <div className="flex justify-between">
+        <div className="w-1/4">
           <SideBar />
         </div>
-
         <Routes>
           <Route path={"/dashboard"} element={<DashboardPage />} />
           <Route path={"/profile"} element={<ProfilePage />} />
