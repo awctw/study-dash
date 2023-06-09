@@ -9,11 +9,13 @@ import {
     ListItem,
     Typography,
     ListItemPrefix,
+    IconButton,
 } from "@material-tailwind/react";
-import { CubeIcon } from '@heroicons/react/24/solid';
+import { CubeIcon, PlusIcon } from '@heroicons/react/24/solid';
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Cards from "./flashcards";
+import AddModuleModal from "./addModule";
 
 const FlashCardModal = (props) => {
     const modules = useSelector(state => state.flashcards.modules);
@@ -34,7 +36,7 @@ const FlashCardModal = (props) => {
                 Open FlashCards
             </Button>
             <Dialog open={visible} handler={setVisible} size="xl" className="flex flex-row bg-transparent shadow-none">
-                <Card className="w-1/4 w-min-1/4 h-[70vh] rounded-lg overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100 shadow-none">
+                <Card className="relative w-1/4 w-min-1/4 h-[70vh] rounded-lg overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100 shadow-none">
                     <div className="flex items-center gap-4 p-4">
                         <img src={require("../../assets/modules-icon.png")} alt="brand" className="h-8 w-8" />
                         <Typography variant="h5" color="blue-gray">
@@ -56,6 +58,7 @@ const FlashCardModal = (props) => {
                             ))
                         }
                     </List>
+                    <AddModuleModal />
                 </Card>
                 {/* 
                         Self-note: Passing key below was critical to re-render each module from the beginning!
