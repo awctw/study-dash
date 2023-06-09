@@ -75,9 +75,9 @@ const EditTODO = (props) => {
     const updatedTodo = {
       ...props.todo,
       title: title,
-      dueDate: dueDate,
+      dueDate: dueDate.toDateString(),
       description: description,
-      category: category.toLowerCase(),
+      category: category,
     };
 
     dispatch(editTODO(updatedTodo));
@@ -123,6 +123,7 @@ const EditTODO = (props) => {
               <label htmlFor="edit-dueDate">Due Date:</label>
               <DatePicker
                 id="edit-dueDate"
+                className="bg-orange-200"
                 selected={dueDate}
                 onChange={handleDueDateChange}
               />

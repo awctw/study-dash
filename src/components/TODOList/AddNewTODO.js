@@ -67,7 +67,7 @@ const AddTODOItem = () => {
 
     const newTodo = {
       title,
-      dueDate,
+      dueDate: dueDate.toDateString(),
       description,
       category,
     };
@@ -123,6 +123,7 @@ const AddTODOItem = () => {
               <label htmlFor="add-dueDate">Due Date:</label>
               <DatePicker
                 id="add-dueDate"
+                className="bg-orange-200"
                 selected={formData.dueDate}
                 onChange={handleDueDateInput}
               />

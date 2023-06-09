@@ -1,5 +1,7 @@
+import HabitsView from "../components/Habits/HabitsView";
 import TODOListMainView from "../components/TODOList/TODOListMainView";
 import Pomodoro from "../components/Timer/Pomodoro";
+import GanttChartContainer from "../components/GanttChart/GanttChartContainer";
 
 const DashboardPage = () => {
   return (
@@ -7,8 +9,14 @@ const DashboardPage = () => {
       <div>
         <TODOListMainView />
       </div>
-      <div className="m-3">
+      <div className="mx-3">
         <Pomodoro />
+      </div>
+      <div className="mx-7">
+        <HabitsView />
+      </div>
+      <div className="mx-2">
+        <GanttChartContainer />
       </div>
     </div>
   );
