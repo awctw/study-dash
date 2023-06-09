@@ -34,7 +34,7 @@ const GanttChart = (props) => {
             daysOfTheWeek: null,
             startTime: new Date(Date.now() - 180 * 60000),
             endTime: new Date(Date.now() + 240 * 60000),
-            description: "One-time todo which took place 3 hours ago.",
+            description: "One-time todo which started 3 hours ago.",
             color: '#A103FC',
             percentCompletion: 75
         },
@@ -68,7 +68,7 @@ const GanttChart = (props) => {
                 date.setHours(date.getHours() + 5);
                 return date;
             })(),
-            description: "Habit that took place 2 days in the past.",
+            description: "Habit that took place 1 day in the past.",
             color: '#03DBFC',
             percentCompletion: 100
         },
@@ -90,7 +90,7 @@ const GanttChart = (props) => {
                 date.setHours(date.getHours() - 3);
                 return date;
             })(),
-            description: "Habit taking place 2 days in the future.",
+            description: "Habit taking place 1 day in the future.",
             color: '#AD8886',
             percentCompletion: 0
         },
@@ -102,7 +102,7 @@ const GanttChart = (props) => {
             daysOfTheWeek: null,
             startTime: new Date(Date.now() - 180 * 60000),
             endTime: new Date(Date.now() + 240 * 60000),
-            description: "One-time todo which took place 3 hours ago.",
+            description: "One-time todo which started 3 hours ago.",
             color: '#A103FC',
             percentCompletion: 75
         },
@@ -114,7 +114,7 @@ const GanttChart = (props) => {
             daysOfTheWeek: null,
             startTime: new Date(Date.now() - 180 * 60000),
             endTime: new Date(Date.now() + 240 * 60000),
-            description: "One-time todo which took place 3 hours ago.",
+            description: "One-time todo which started 3 hours ago.",
             color: '#A103FC',
             percentCompletion: 75
         },
@@ -126,7 +126,7 @@ const GanttChart = (props) => {
             daysOfTheWeek: null,
             startTime: new Date(Date.now() - 180 * 60000),
             endTime: new Date(Date.now() + 240 * 60000),
-            description: "One-time todo which took place 3 hours ago.",
+            description: "One-time todo which started 3 hours ago.",
             color: '#A103FC',
             percentCompletion: 75
         }
@@ -147,10 +147,10 @@ const GanttChart = (props) => {
         }
         if (props.margin === undefined) {
             margin = {
-                top: 50,
+                top: 35,
                 right: 20,
                 bottom: 25,
-                left: 100
+                left: 110
             };
         }
         if (props.tooltipPadding === undefined) {
@@ -220,14 +220,20 @@ const GanttChart = (props) => {
         yScale.domain(formattedData.map(yValue));
 
         // RenderVis()
-        // Add vertical line for current time
+        // Add/update vertical line for current time
         const xCoordNow = xScale(Date.now()) + margin.left;
+        const CIRCLE_ID = "now-circle";
+        const LINE_ID = "now-line";
+        d3.select('#' + CIRCLE_ID).remove();
+        d3.select('#' + LINE_ID).remove();
         svg.append("circle")
+            .attr("id", CIRCLE_ID)
             .attr("class", "circle")
             .attr("cx", xCoordNow)
             .attr("cy", margin.top)
             .attr("r", 5)
         svg.append("line")
+            .attr("id", LINE_ID)
             .attr("class", "line")
             .attr("x1", xCoordNow)
             .attr("y1", margin.top)
