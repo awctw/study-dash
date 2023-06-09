@@ -74,3 +74,7 @@ to make the learning experience more engaging.
 ### Diagram showing user interface of flash card section
 
 ![Flashcard Sketch.png](docs%2FFlashcard%20Sketch.png)
+
+# Crediting
+
+- [Update every minute clock used in GanttChart.jsx](https://stackoverflow.com/a/23450004)
