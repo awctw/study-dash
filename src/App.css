@@ -1,0 +1,32 @@
+.card-container {
+  perspective: 1000px;
+}
+
+.card {
+  width: 70%;
+  height: 80%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.front,
+.back {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  backface-visibility: hidden;
+}
+
+.back {
+  transform: rotateY(180deg);
+}
+
+.flipped {
+  transform: rotateY(180deg);
+}
+
+.tool {
+  z-index: 9999999;
+}
