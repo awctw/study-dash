@@ -149,8 +149,8 @@ const GanttChart = (props) => {
             margin = {
                 top: 50,
                 right: 20,
-                bottom: 50,
-                left: 150
+                bottom: 25,
+                left: 100
             };
         }
         if (props.tooltipPadding === undefined) {
@@ -169,6 +169,7 @@ const GanttChart = (props) => {
 
         // Create axes
         const xAxis = d3.axisTop(xScale)
+            .tickSizeOuter(0);
         const yAxis = d3.axisLeft(yScale)
             .tickFormat(function(d) {
                 return d.substring(0, d.lastIndexOf("-"))
@@ -192,13 +193,11 @@ const GanttChart = (props) => {
                 .attr('id', X_AXIS_G_ID)
                 .attr('class', 'axis x-axis')
                 .style('font-size', 12)
-                .style('font-weight', 'bold');
 
             yAxisG = chart.append('g')
                 .attr('id', Y_AXIS_G_ID)
                 .attr('class', 'axis y-axis')
                 .style('font-size', 12)
-                .style('font-weight', 'bold');
         } else {
             chart = d3.select('#' + CHART_ID);
             xAxisG = d3.select('#' + X_AXIS_G_ID);
@@ -210,8 +209,8 @@ const GanttChart = (props) => {
         const yValue = d => d.name;
 
         // Set domains and filter/format data
-        const xDomainStart = Date.now() - 12 * 60 * 60 * 1000;
-        const xDomainEnd = Date.now() + 12 * 60 * 60 * 1000;
+        const xDomainStart = Date.now() - 1 * 60 * 60 * 1000;
+        const xDomainEnd = Date.now() + 1 * 60 * 60 * 1000;
         const filteredData = data.filter(d => xDomainStart <= d.endTime && d.startTime <= xDomainEnd);
         const formattedData = filteredData.map((d, i) => {
             d.name = d.name +  '-' + i; // This allows for duplicate habit/to do names
@@ -247,19 +246,27 @@ const GanttChart = (props) => {
         bars.style('opacity', 0.5)
             .style('opacity', 1)
             .attr('class', 'bar')
-            .attr('x', d => xScale(xValue(d)))
+            .attr('x', d => {
+                const x = xScale(xValue(d));
+                if (x < 0) {
+                    return 0
+                }
+                return x;
+            })
             .attr('width', d => {
                 const scaledWidth = xScale(d.endTime - d.startTime + xDomainStart);
-                const x = xScale(xValue(d));
-                if (x + scaledWidth > width) {
-                    return width - x
+                let x = xScale(xValue(d));
+                if (x < 0) {
+                    x = 0
+                }
+                if (x + scaledWidth > xScale(xDomainEnd)) {
+                    return xScale(xDomainEnd) - x;
                 }
                 return scaledWidth;
             })
             .attr('height', yScale.bandwidth())
             .attr('y', d => yScale(yValue(d)))
             .attr('fill', d => d.color)
-            .attr('rx', 8)
             .attr('stroke-width', 1)
             .attr('stroke', 'black');
 
