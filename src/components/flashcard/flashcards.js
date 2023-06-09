@@ -116,7 +116,7 @@ const Cards = (props) => {
                         </>
                     ))
                 }
-                <AddFlashcard />
+                <AddFlashcard moduleId={module.id} />
             </Carousel>
             <div className="w-full h-[15%] flex justify-center items-center">
                 <StatusBar 
