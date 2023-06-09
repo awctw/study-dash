@@ -164,10 +164,11 @@ const GanttChart = (props) => {
             .range([0, width]);
         const yScale = d3.scaleBand()
             .range([0, height])
-            .paddingInner(0.8);
+            .paddingInner(0.4)
+            .paddingOuter(0.25);
 
         // Create axes
-        const xAxis = d3.axisTop(xScale);
+        const xAxis = d3.axisTop(xScale)
         const yAxis = d3.axisLeft(yScale)
             .tickFormat(function(d) {
                 return d.substring(0, d.lastIndexOf("-"))
@@ -189,11 +190,15 @@ const GanttChart = (props) => {
 
             xAxisG = chart.append('g')
                 .attr('id', X_AXIS_G_ID)
-                .attr('class', 'axis x-axis');
+                .attr('class', 'axis x-axis')
+                .style('font-size', 12)
+                .style('font-weight', 'bold');
 
             yAxisG = chart.append('g')
                 .attr('id', Y_AXIS_G_ID)
-                .attr('class', 'axis y-axis');
+                .attr('class', 'axis y-axis')
+                .style('font-size', 12)
+                .style('font-weight', 'bold');
         } else {
             chart = d3.select('#' + CHART_ID);
             xAxisG = d3.select('#' + X_AXIS_G_ID);
@@ -207,12 +212,12 @@ const GanttChart = (props) => {
         // Set domains and filter/format data
         const xDomainStart = Date.now() - 12 * 60 * 60 * 1000;
         const xDomainEnd = Date.now() + 12 * 60 * 60 * 1000;
-        const filteredData = data.filter(d => xDomainStart <= d.startTime && d.endTime <= xDomainEnd);
+        const filteredData = data.filter(d => xDomainStart <= d.endTime && d.startTime <= xDomainEnd);
         const formattedData = filteredData.map((d, i) => {
             d.name = d.name +  '-' + i; // This allows for duplicate habit/to do names
             return d;
         });
-        xScale.domain([Date.now() - 12 * 60 * 60 * 1000, Date.now() + 12 * 60 * 60 * 1000])
+        xScale.domain([xDomainStart, xDomainEnd])
         yScale.domain(formattedData.map(yValue));
 
         // RenderVis()
@@ -244,7 +249,7 @@ const GanttChart = (props) => {
             .attr('class', 'bar')
             .attr('x', d => xScale(xValue(d)))
             .attr('width', d => {
-                const scaledWidth = xScale(xValue(d));
+                const scaledWidth = xScale(d.endTime - d.startTime + xDomainStart);
                 const x = xScale(xValue(d));
                 if (x + scaledWidth > width) {
                     return width - x
@@ -253,7 +258,10 @@ const GanttChart = (props) => {
             })
             .attr('height', yScale.bandwidth())
             .attr('y', d => yScale(yValue(d)))
-            .attr('fill', d => d.color);
+            .attr('fill', d => d.color)
+            .attr('rx', 8)
+            .attr('stroke-width', 1)
+            .attr('stroke', 'black');
 
         // Tooltip event listeners
         bars.on('mouseover', (event,d) => {
@@ -264,6 +272,8 @@ const GanttChart = (props) => {
                     .html(`
               <div class="tooltip-title">${d.name}</div>
               <div><i>Completion: ${d.percentCompletion}%</i></div>
+              <div><i>Start Time: ${d.startTime.toLocaleTimeString()}</i></div>
+              <div><i>End Time: ${d.endTime.toLocaleTimeString()}</i></div>
               <div>${d.description}</div>
             `);
             })
