@@ -65,6 +65,10 @@ to make the learning experience more engaging.
   - Implement timer type switching
   - Implement other timer types
 
+## UI Mock Design
+
+![Dashboard Design.jpg](docs%2FDashboard%20Design.jpg)
+
 ## Rough Sketches
 
 ### Diagram of home page user interface of application
