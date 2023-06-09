@@ -3,11 +3,11 @@ import Pomodoro from "../components/Timer/Pomodoro";
 
 const DashboardPage = () => {
   return (
-    <div className="flex w-3/4">
+    <div className="flex flex-wrap">
       <div>
         <TODOListMainView />
       </div>
-      <div className="flex-1 flex justify-end mx-4">
+      <div className="m-3">
         <Pomodoro />
       </div>
     </div>

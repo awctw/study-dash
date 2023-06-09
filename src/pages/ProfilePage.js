@@ -1,8 +1,9 @@
-import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Typography } from "@material-tailwind/react";
 import { useState } from "react";
 
 const ProfilePage = () => {
+  // Referenced https://www.pluralsight.com/guides/uploading-files-with-reactjs for file upload
   const [selectedFile, setSelectedFile] = useState();
   const [isFilePicked, setIsFilePicked] = useState(false);
 

@@ -46,7 +46,7 @@ const SideBar = () => {
   };
 
   return (
-    <Card className="fixed top-4 left-4 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+    <Card className="fixed top-4 left-4 h-[calc(100vh-2rem)] w-full max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5">
       <NavLink to={"/dashboard"}>
         <div className="mb-2 flex items-center gap-4 p-4">
           <AcademicCapIcon className="h-8 w-8" />

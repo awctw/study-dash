@@ -11,24 +11,27 @@ import SettingsPage from "./pages/SettingsPage";
 
 import SideBar from "./components/SideBar";
 
+// Referenced Tailwind Elements Example for styling: https://tailwind-elements.com/docs/standard/navigation/sidenav/
 function App() {
   return (
     <Router>
-      <div className="flex justify-between">
-        <div className="w-1/4">
+      <div className="">
+        <div className="fixed left-0 top-0 z-[1035] h-screen">
           <SideBar />
         </div>
-        <Routes>
-          <Route path={"/dashboard"} element={<DashboardPage />} />
-          <Route path={"/profile"} element={<ProfilePage />} />
-          <Route path={"/flashcards"} element={<FlashcardPage />} />
-          <Route path={"/todos"} element={<TODOPage />} />
-          <Route path={"/habits"} element={<HabitsPage />} />
-          <Route path={"/timer"} element={<TimerPage />} />
-          <Route path={"/statistics"} element={<StatisticsPage />} />
-          <Route path={"/studyGroups"} element={<StudyGroupPage />} />
-          <Route path={"/settings"} element={<SettingsPage />} />
-        </Routes>
+        <div className="p-5 !pl-[300px] text-center">
+          <Routes>
+            <Route path={"/dashboard"} element={<DashboardPage />} />
+            <Route path={"/profile"} element={<ProfilePage />} />
+            <Route path={"/flashcards"} element={<FlashcardPage />} />
+            <Route path={"/todos"} element={<TODOPage />} />
+            <Route path={"/habits"} element={<HabitsPage />} />
+            <Route path={"/timer"} element={<TimerPage />} />
+            <Route path={"/statistics"} element={<StatisticsPage />} />
+            <Route path={"/studyGroups"} element={<StudyGroupPage />} />
+            <Route path={"/settings"} element={<SettingsPage />} />
+          </Routes>
+        </div>
       </div>
     </Router>
   );
