@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import * as d3 from "d3";
+import "../Styles/GanttChart.css"
 
 const Days = {
     Sunday: Symbol("Sunday"),
@@ -137,7 +138,7 @@ const GanttChart = (props) => {
     const Y_AXIS_G_ID = 'gantt-y-axis-g'
     const renderChart = useCallback(() => {
         // Chart dimension calculation
-        let containerWidth, containerHeight, margin;
+        let containerWidth, containerHeight, margin, tooltipPadding;
         if (props.containerWidth === undefined) {
             containerWidth = 720;
         }
@@ -151,6 +152,9 @@ const GanttChart = (props) => {
                 bottom: 50,
                 left: 150
             };
+        }
+        if (props.tooltipPadding === undefined) {
+            tooltipPadding = 15;
         }
         const width = containerWidth - margin.left - margin.right;
         const height = containerHeight - margin.top - margin.bottom;
@@ -251,6 +255,27 @@ const GanttChart = (props) => {
             .attr('y', d => yScale(yValue(d)))
             .attr('fill', d => d.color);
 
+        // Tooltip event listeners
+        bars.on('mouseover', (event,d) => {
+                d3.select('#gantt-chart-tooltip')
+                    .style('display', 'block')
+                    .style('left', (event.pageX + tooltipPadding) + 'px')
+                    .style('top', (event.pageY + tooltipPadding) + 'px')
+                    .html(`
+              <div class="tooltip-title">${d.name}</div>
+              <div><i>Completion: ${d.percentCompletion}%</i></div>
+              <div>${d.description}</div>
+            `);
+            })
+            .on('mousemove', (event) => {
+                d3.select('#gantt-chart-tooltip')
+                    .style('left', (event.pageX + tooltipPadding) + 'px')
+                    .style('top', (event.pageY + tooltipPadding) + 'px')
+            })
+            .on('mouseleave', () => {
+                d3.select('#gantt-chart-tooltip').style('display', 'none');
+            });
+
         // Call axes
         xAxisG.transition().call(xAxis);
         yAxisG.call(yAxis);
@@ -280,6 +305,8 @@ const GanttChart = (props) => {
 
     // Clock start
     runClock();
+
+    return <div id="gantt-chart-tooltip"></div>
 }
 
 export default GanttChart;
