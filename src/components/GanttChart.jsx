@@ -58,14 +58,14 @@ const GanttChart = (props) => {
             daysOfTheWeek: null,
             startTime: (function() {
                 const date = new Date();
-                date.setDate(date.getDate() - 2);
-                date.setHours(date.getHours() - 5);
+                date.setDate(date.getDate() - 1);
+                date.setHours(date.getHours() + 2);
                 return date;
             })(),
             endTime: (function() {
                 const date = new Date();
-                date.setDate(date.getDate() - 2);
-                date.setHours(date.getHours() - 3);
+                date.setDate(date.getDate() - 1);
+                date.setHours(date.getHours() + 5);
                 return date;
             })(),
             description: "Habit that took place 2 days in the past.",
@@ -80,13 +80,13 @@ const GanttChart = (props) => {
             daysOfTheWeek: null,
             startTime: (function() {
                 const date = new Date();
-                date.setDate(date.getDate() + 2);
+                date.setDate(date.getDate() + 1);
                 date.setHours(date.getHours() - 5);
                 return date;
             })(),
             endTime: (function() {
                 const date = new Date();
-                date.setDate(date.getDate() + 2);
+                date.setDate(date.getDate() + 1);
                 date.setHours(date.getHours() - 3);
                 return date;
             })(),
@@ -215,7 +215,7 @@ const GanttChart = (props) => {
         const formattedData = filteredData.map((d, i) => {
             d.name = d.name +  '-' + i; // This allows for duplicate habit/to do names
             return d;
-        });
+        }).sort((a, b) => a.startTime - b.startTime);
         xScale.domain([xDomainStart, xDomainEnd])
         yScale.domain(formattedData.map(yValue));
 
