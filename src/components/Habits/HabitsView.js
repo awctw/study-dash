@@ -25,11 +25,11 @@ const HabitsView = () => {
 
   return (
     <>
-      <Card className="w-96 shadow-xl shadow-pmd-blue-600">
+      <Card className="w-80 shadow-xl shadow-pmd-blue-600">
         <CardBody className="flex-1">
           <div className="mb-2 flex items-center gap-4 p-4">
             <ListBulletIcon className="blue-gray w-8 h-8" />
-            <Typography variant="h4" color="blue-gray">
+            <Typography variant="h5" color="blue-gray">
               Habits
             </Typography>
           </div>

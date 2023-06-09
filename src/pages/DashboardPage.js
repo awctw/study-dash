@@ -5,17 +5,19 @@ import GanttChartContainer from "../components/GanttChart/GanttChartContainer";
 
 const DashboardPage = () => {
   return (
-    <div className="flex w-3/4 flex-wrap">
+    <div className="flex flex-wrap">
       <div>
         <TODOListMainView />
       </div>
-      <div className="flex-1 flex justify-end mx-4">
+      <div className="mx-3">
         <Pomodoro />
       </div>
-      <div>
+      <div className="mx-7">
         <HabitsView />
       </div>
-      <GanttChartContainer />
+      <div className="mx-2">
+        <GanttChartContainer />
+      </div>
     </div>
   );
 };
