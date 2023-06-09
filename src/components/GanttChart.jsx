@@ -237,8 +237,7 @@ const GanttChart = (props) => {
             .attr('fill', d => d.color);
 
         // Call axes
-        xAxisG.transition().duration(1000)
-            .call(xAxis);
+        xAxisG.transition().call(xAxis);
         yAxisG.call(yAxis);
 
         // Reset data formatting
@@ -264,8 +263,7 @@ const GanttChart = (props) => {
         }, timeToNextTick);
     }
 
-    // Initial chart render and clock start
-    renderChart();
+    // Clock start
     runClock();
 }
 
