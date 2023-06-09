@@ -3,6 +3,7 @@ import { Card, Carousel, IconButton, Typography } from "@material-tailwind/react
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import StatusBar from "./statusBar";
+import AddFlashcard from "./addFlashcard";
 
 const Cards = (props) => {
     const module = useSelector(state => state.flashcards.modules.find(module => module.id === props.moduleId));
@@ -115,6 +116,7 @@ const Cards = (props) => {
                         </>
                     ))
                 }
+                <AddFlashcard />
             </Carousel>
             <div className="w-full h-[15%] flex justify-center items-center">
                 <StatusBar 

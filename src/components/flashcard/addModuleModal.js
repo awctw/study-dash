@@ -1,10 +1,19 @@
 import { ArrowLongRightIcon, ArrowRightIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { Button, Card, CardBody, CardFooter, Dialog, Input, Typography } from "@material-tailwind/react";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+import { addModule } from "../../store/flashcards/reducer";
 
 const AddModuleModal = (props) => {
     const [visible, setVisible] = useState(false);
     const [name, setName] = useState('');
+
+    const dispatch = useDispatch();
+
+    const handleAdd = () => {
+        dispatch(addModule({moduleId: uuidv4(), moduleName: name}))
+    }
 
     return (
         <>
@@ -30,7 +39,14 @@ const AddModuleModal = (props) => {
                             color="blue-gray"
                             value={name} onChange={(e) => setName(e.target.value)} 
                         />
-                        <Button size="sm" variant="text" color="blue-gray" className="flex items-center mt-3 border border-gray-400/70">
+                        <Button 
+                            size="sm" variant="text" color="blue-gray" 
+                            className="flex items-center mt-3 border border-gray-400/70"
+                            onClick={() => {
+                                setVisible(false);
+                                handleAdd();
+                            }}
+                        >
                             Confirm 
                         </Button>
                     </CardBody>

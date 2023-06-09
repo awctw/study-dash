@@ -15,7 +15,7 @@ import { CubeIcon, PlusIcon } from '@heroicons/react/24/solid';
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Cards from "./flashcards";
-import AddModuleModal from "./addModule";
+import AddModuleModal from "./addModuleModal";
 
 const FlashCardModal = (props) => {
     const modules = useSelector(state => state.flashcards.modules);

@@ -9,7 +9,7 @@ const StatusBar = (props) => {
         <div className="w-full">
             <div className="flex items-center justify-between gap-10">
                 <Typography variant="small" color="gray">progress</Typography>
-                <Typography variant="small" color="gray">{props.progress}%</Typography>
+                <Typography variant="small" color="gray">{props.progress ? props.progress : 0}%</Typography>
             </div>
             <Progress value={props.progress} size="sm" color="blue-gray"/>
         </div>
