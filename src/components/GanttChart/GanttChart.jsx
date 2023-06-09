@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import * as d3 from "d3";
-import "../Styles/GanttChart.css"
+import "../../Styles/GanttChart.css"
 
 const Days = {
     Sunday: Symbol("Sunday"),
@@ -180,7 +180,7 @@ const GanttChart = (props) => {
         let svg = d3.select('#' + SVG_ID);
         let chart, xAxisG, yAxisG;
         if (svg.empty()) {
-            svg = d3.select(props.parentElement).append('svg')
+            svg = d3.select('.gantt-chart').append('svg')
                 .attr('id', SVG_ID)
                 .attr('width', containerWidth)
                 .attr('height', containerHeight);
@@ -209,8 +209,8 @@ const GanttChart = (props) => {
         const yValue = d => d.name;
 
         // Set domains and filter/format data
-        const xDomainStart = Date.now() - 1 * 60 * 60 * 1000;
-        const xDomainEnd = Date.now() + 1 * 60 * 60 * 1000;
+        const xDomainStart = Date.now() - 8 * 60 * 60 * 1000;
+        const xDomainEnd = Date.now() + 8 * 60 * 60 * 1000;
         const filteredData = data.filter(d => xDomainStart <= d.endTime && d.startTime <= xDomainEnd);
         const formattedData = filteredData.map((d, i) => {
             d.name = d.name +  '-' + i; // This allows for duplicate habit/to do names
@@ -294,7 +294,7 @@ const GanttChart = (props) => {
             });
 
         // Call axes
-        xAxisG.transition().call(xAxis);
+        xAxisG.call(xAxis);
         yAxisG.call(yAxis);
 
         // Reset data formatting
