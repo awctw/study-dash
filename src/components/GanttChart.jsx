@@ -137,8 +137,23 @@ const GanttChart = (props) => {
     const Y_AXIS_G_ID = 'gantt-y-axis-g'
     const renderChart = useCallback(() => {
         // Chart dimension calculation
-        const width = props.containerWidth - props.margin.left - props.margin.right;
-        const height = props.containerHeight - props.margin.top - props.margin.bottom;
+        let containerWidth, containerHeight, margin;
+        if (props.containerWidth === undefined) {
+            containerWidth = 720;
+        }
+        if (props.containerHeight === undefined) {
+            containerHeight = 300;
+        }
+        if (props.margin === undefined) {
+            margin = {
+                top: 50,
+                right: 20,
+                bottom: 50,
+                left: 150
+            };
+        }
+        const width = containerWidth - margin.left - margin.right;
+        const height = containerHeight - margin.top - margin.bottom;
 
         // Create scales
         const xScale = d3.scaleTime()
@@ -161,12 +176,12 @@ const GanttChart = (props) => {
         if (svg.empty()) {
             svg = d3.select(props.parentElement).append('svg')
                 .attr('id', SVG_ID)
-                .attr('width', props.containerWidth)
-                .attr('height', props.containerHeight);
+                .attr('width', containerWidth)
+                .attr('height', containerHeight);
 
             chart = svg.append('g')
                 .attr('id', CHART_ID)
-                .attr('transform', `translate(${props.margin.left}, ${props.margin.top})`);
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
             xAxisG = chart.append('g')
                 .attr('id', X_AXIS_G_ID)
@@ -198,18 +213,18 @@ const GanttChart = (props) => {
 
         // RenderVis()
         // Add vertical line for current time
-        const xCoordNow = xScale(Date.now()) + props.margin.left;
+        const xCoordNow = xScale(Date.now()) + margin.left;
         svg.append("circle")
             .attr("class", "circle")
             .attr("cx", xCoordNow)
-            .attr("cy", props.margin.top)
+            .attr("cy", margin.top)
             .attr("r", 5)
         svg.append("line")
             .attr("class", "line")
             .attr("x1", xCoordNow)
-            .attr("y1", props.margin.top)
+            .attr("y1", margin.top)
             .attr("x2", xCoordNow)
-            .attr("y2", height + props.margin.top)
+            .attr("y2", height + margin.top)
             .style("stroke-width", 2)
             .style("stroke", "black")
             .style("fill", "none");

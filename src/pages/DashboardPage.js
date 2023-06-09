@@ -16,18 +16,7 @@ const DashboardPage = () => {
         <HabitsView />
       </div>
       <div className="gantt-chart">
-        <GanttChart
-          parentElement=".gantt-chart"
-          containerWidth={720}
-          containerHeight={300}
-          margin={{
-            top: 50,
-            right: 20,
-            bottom: 50,
-            left: 150,
-          }}
-          tooltipPadding={15}
-        />
+        <GanttChart parentElement=".gantt-chart" />
       </div>
     </div>
   );
