@@ -1,10 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import { ThemeProvider } from "@material-tailwind/react";
 import { Provider } from "react-redux";
-import { store } from "./store";
+import App from "./App";
+import { store } from "./store/rootReducer";
+import { ThemeProvider } from "@material-tailwind/react";
+import "./index.css";
+import "./Styles/TODOList.css";
+
+// This file sets up the Redux store and renders the root
+// component of the application, making the store accessible to all
+// components wrapped within the Provider component
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

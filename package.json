@@ -10,8 +10,11 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "react": "^18.2.0",
+    "react-circular-progressbar": "^2.1.0",
+    "react-datepicker": "^4.12.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.0.5",
+    "react-redux": "^8.0.7",
+    "react-router-dom": "^6.12.0",
     "react-scripts": "5.0.1",
     "uuid": "^9.0.0",
     "web-vitals": "^2.1.4"
@@ -20,7 +23,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -42,6 +46,12 @@
   },
   "devDependencies": {
     "tailwind-scrollbar": "^3.0.4",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "prettier": "2.8.8",
     "tailwindcss": "^3.3.2"
+  },
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write"
   }
 }
