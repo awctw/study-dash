@@ -24,7 +24,6 @@ import {
   ListBulletIcon,
   ChartBarIcon,
   UserCircleIcon,
-  Cog6ToothIcon,
   UserGroupIcon,
   ClockIcon,
   PowerIcon,
@@ -33,11 +32,13 @@ import {
 } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
+import FlashCardModal from "./flashcard/dialogContainer";
 
 // Credits: Material Tailwind doc example
 const SideBar = () => {
   const [open, setOpen] = useState(false);
   const [login, setLogin] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const handleOpen = () => setOpen(!open);
   const handleLogin = () => {
@@ -73,12 +74,17 @@ const SideBar = () => {
           </ListItem>
         </NavLink>
         <NavLink to={"/flashcards"}>
-          <ListItem>
+          <ListItem
+            onClick={() => {
+              setVisible(true);
+            }}
+          >
             <ListItemPrefix>
               <BookOpenIcon className="h-5 w-5" />
             </ListItemPrefix>
             Flashcards
           </ListItem>
+          <FlashCardModal visible={visible} setVisible={setVisible} />
         </NavLink>
         <NavLink to={"/todos"}>
           <ListItem>
@@ -127,14 +133,6 @@ const SideBar = () => {
               <UserGroupIcon className="h-5 w-5" />
             </ListItemPrefix>
             Study Groups
-          </ListItem>
-        </NavLink>
-        <NavLink to={"/settings"}>
-          <ListItem>
-            <ListItemPrefix>
-              <Cog6ToothIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            Settings
           </ListItem>
         </NavLink>
         {login ? (
