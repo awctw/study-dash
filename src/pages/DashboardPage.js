@@ -16,11 +16,11 @@ const DashboardPage = () => {
       <div className="mx-7">
         <HabitsView />
       </div>
-      <div>
-        <Overview />
-      </div>
       <div className="mx-2">
         <GanttChartContainer />
+      </div>
+      <div className="mx-7 mt-5">
+        <Overview />
       </div>
     </div>
   );
