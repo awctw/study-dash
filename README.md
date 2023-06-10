@@ -67,10 +67,14 @@ to make the learning experience more engaging.
 
 ## Rough Sketches
 
-# Diagram of home page user interface of application
+### Diagram of home page user interface of application
 
 ![Dashboard Sketch.jpg](docs%2FDashboard%20Sketch.jpg)
 
-# Diagram showing user interface of flash card section
+### Diagram showing user interface of flash card section
 
 ![Flashcard Sketch.png](docs%2FFlashcard%20Sketch.png)
+
+# Crediting
+
+- [Update every minute clock used in GanttChart.jsx](https://stackoverflow.com/a/23450004)

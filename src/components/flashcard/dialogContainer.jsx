@@ -12,15 +12,19 @@ import {
     IconButton,
 } from "@material-tailwind/react";
 import { BookOpenIcon, CubeIcon, PlusIcon } from '@heroicons/react/24/solid';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Cards from "./flashcards";
 import AddModuleModal from "./addModuleModal";
 
 const FlashCardModal = (props) => {
     const modules = useSelector(state => state.flashcards.modules);
-    const [id, setId] = useState(modules[0].id);
-    const [key, setKey] = useState(modules[0].id);
+    const [id, setId] = useState(props.moduleId);
+    const [key, setKey] = useState(props.moduleId);
+
+    useEffect(() => {
+        setId(props.moduleId);
+    }, [props.moduleId])
 
     const handleReset = () => {
         setKey(key => key + 1);
@@ -28,7 +32,7 @@ const FlashCardModal = (props) => {
 
     return (
         <>
-            <Dialog open={props.visible} handler={props.setVisible} size="xl" className="flex flex-row bg-transparent shadow-none">
+            <Dialog open={props.visible ? props.visible : false} handler={props.setVisible} size="xl" className="flex flex-row bg-transparent shadow-none">
                 <Card className="relative w-1/4 w-min-1/4 h-[70vh] rounded-lg overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100 shadow-none">
                     <div className="flex items-center gap-4 p-4">
                         <img src={require("../../assets/modules-icon.png")} alt="brand" className="h-8 w-8" />
@@ -40,7 +44,8 @@ const FlashCardModal = (props) => {
                         {
                             modules.map((module, i) => (
                                 <ListItem 
-                                    key={module.id} 
+                                    selected={module.id === id}
+                                    key={module.id}
                                     onClick={() => {
                                         setId(module.id);
                                         setKey(module.id);

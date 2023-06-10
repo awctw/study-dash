@@ -1,18 +1,26 @@
 import HabitsView from "../components/Habits/HabitsView";
 import TODOListMainView from "../components/TODOList/TODOListMainView";
 import Pomodoro from "../components/Timer/Pomodoro";
+import GanttChartContainer from "../components/GanttChart/GanttChartContainer";
+import Overview from "../components/flashcard/flashcardOverview";
 
 const DashboardPage = () => {
   return (
-    <div className="flex w-3/4 flex-wrap">
+    <div className="flex flex-wrap">
       <div>
         <TODOListMainView />
       </div>
-      <div className="flex-1 flex justify-end mx-4">
+      <div className="mx-3">
         <Pomodoro />
       </div>
-      <div>
+      <div className="mx-7">
         <HabitsView />
+      </div>
+      <div>
+        <Overview />
+      </div>
+      <div className="mx-2">
+        <GanttChartContainer />
       </div>
     </div>
   );

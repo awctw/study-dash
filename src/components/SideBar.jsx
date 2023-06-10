@@ -24,7 +24,6 @@ import {
   ListBulletIcon,
   ChartBarIcon,
   UserCircleIcon,
-  Cog6ToothIcon,
   UserGroupIcon,
   ClockIcon,
   PowerIcon,
@@ -48,7 +47,7 @@ const SideBar = () => {
   };
 
   return (
-    <Card className="fixed top-4 left-4 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+    <Card className="fixed top-4 left-4 h-[calc(100vh-2rem)] w-full max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5">
       <NavLink to={"/dashboard"}>
         <div className="mb-2 flex items-center gap-4 p-4">
           <AcademicCapIcon className="h-8 w-8" />
@@ -75,9 +74,11 @@ const SideBar = () => {
           </ListItem>
         </NavLink>
         <NavLink to={"/flashcards"}>
-          <ListItem onClick={() => {
-            setVisible(true);
-          }}>
+          <ListItem
+            onClick={() => {
+              setVisible(true);
+            }}
+          >
             <ListItemPrefix>
               <BookOpenIcon className="h-5 w-5" />
             </ListItemPrefix>
@@ -132,14 +133,6 @@ const SideBar = () => {
               <UserGroupIcon className="h-5 w-5" />
             </ListItemPrefix>
             Study Groups
-          </ListItem>
-        </NavLink>
-        <NavLink to={"/settings"}>
-          <ListItem>
-            <ListItemPrefix>
-              <Cog6ToothIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            Settings
           </ListItem>
         </NavLink>
         {login ? (
