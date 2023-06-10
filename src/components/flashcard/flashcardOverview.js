@@ -18,8 +18,8 @@ const Overview = (props) => {
 
   return (
     <>
-      <Card className="w-80 h-[21.5rem] overflow-y-auto flex shadow-xl shadow-pmd-blue-600  scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100">
-        <CardBody>
+      <Card className="w-110 h-[21.5rem] flex shadow-xl shadow-pmd-blue-600">
+        <CardBody className="overflow-y-auto">
           <Typography variant="h5" color="blue-gray" className="mb-2">
             Flashcards
           </Typography>

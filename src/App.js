@@ -1,10 +1,8 @@
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
-import FlashCardModal from "./components/flashcard/dialogContainer";
 import ProfilePage from "./pages/ProfilePage";
 import HabitsPage from "./pages/HabitsPage";
 import TODOPage from "./pages/TODOPage";
-import FlashcardPage from "./pages/FlashcardsPage";
 import DashboardPage from "./pages/DashboardPage";
 import StatisticsPage from "./pages/StatisticsPage";
 import StudyGroupPage from "./pages/StudyGroupsPage";
@@ -24,7 +22,6 @@ function App() {
           <Routes>
             <Route path={"/dashboard"} element={<DashboardPage />} />
             <Route path={"/profile"} element={<ProfilePage />} />
-            <Route path={"/flashcards"} element={<FlashCardModal />} />
             <Route path={"/todos"} element={<TODOPage />} />
             <Route path={"/habits"} element={<HabitsPage />} />
             <Route path={"/timer"} element={<TimerPage />} />
