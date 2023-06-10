@@ -7,8 +7,6 @@ import {
 import {
   Button,
   Chip,
-  IconButton,
-  MobileNav,
   Navbar,
   Progress,
   Typography,
@@ -16,8 +14,6 @@ import {
 import React, { useState } from "react";
 
 const StatusBar = (props) => {
-  const [openNav, setOpenNav] = useState(false);
-
   const navList = (
     <div className="w-full">
       <div className="flex items-center justify-between gap-10">
@@ -25,7 +21,7 @@ const StatusBar = (props) => {
           progress
         </Typography>
         <Typography variant="small" color="gray">
-          {props.progress ? props.progress : 0}%
+          {props.progress ? props.progress.toFixed(1) : 0}%
         </Typography>
       </div>
       <Progress value={props.progress} size="sm" color="blue-gray" />

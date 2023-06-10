@@ -37,7 +37,7 @@ const AddFlashcard = (props) => {
         <div
           className={`card flex bg-transparent rounded-3xl shadow-lg border border-gray-400/70 items-center justify-center`}
         >
-          <Tooltip content="Add a Flashcard!" className="tool">
+          <Tooltip content="Add a Flashcard!" className="z-[99999]">
             <Button
               color="blue-gray"
               variant="text"
