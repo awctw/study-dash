@@ -32,8 +32,12 @@ const FlashCardModal = (props) => {
 
     return (
         <>
-            <Dialog open={props.visible ? props.visible : false} handler={props.setVisible} size="xl" className="flex flex-row bg-transparent shadow-none">
-                <Card className="relative w-1/4 w-min-1/4 h-[70vh] rounded-lg overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100 shadow-none">
+            <Dialog 
+                open={props.visible ? props.visible : false} 
+                handler={props.setVisible} size="xl" 
+                className="flex flex-row bg-transparent shadow-none"
+            >
+                <Card tabIndex={1} className="relative w-1/4 w-min-1/4 h-[70vh] rounded-lg overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100 shadow-none">
                     <div className="flex items-center gap-4 p-4">
                         <img src={require("../../assets/modules-icon.png")} alt="brand" className="h-8 w-8" />
                         <Typography variant="h5" color="blue-gray">

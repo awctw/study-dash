@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   CardBody,
+  CardFooter,
   List,
   ListItem,
   Typography,
@@ -9,7 +10,7 @@ import {
 import React from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import FlashCardModal from "./dialogContainer";
+import FlashCardModal from "./flashcardModal";
 
 const Overview = (props) => {
   const modules = useSelector((state) => state.flashcards.modules);
@@ -18,8 +19,8 @@ const Overview = (props) => {
 
   return (
     <>
-      <Card className="w-80 h-[21.5rem] overflow-y-auto flex shadow-xl shadow-pmd-blue-600  scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100">
-        <CardBody>
+      <Card className="w-110 h-[21.5rem] flex shadow-xl shadow-pmd-blue-600">
+        <CardBody className="overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-gray-400/50">
           <Typography variant="h5" color="blue-gray" className="mb-2">
             Flashcards
           </Typography>
@@ -51,6 +52,8 @@ const Overview = (props) => {
               </ListItem>
             ))}
           </List>
+        </CardBody>
+        <CardFooter className="py-3 border-t border-gray-400/50">
           <Button
             onClick={() => {
               setModId(modules[0].id);
@@ -65,7 +68,7 @@ const Overview = (props) => {
             setVisible={setVisible}
             moduleId={modId}
           />
-        </CardBody>
+        </CardFooter>
       </Card>
     </>
   );

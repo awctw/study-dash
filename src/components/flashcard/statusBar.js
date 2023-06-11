@@ -58,7 +58,7 @@ const StatusBar = (props) => {
           }}
         >
           <ArrowPathRoundedSquareIcon className="h-5 w-5" />
-          Check Anwser
+          Check Answer
         </Button>
         <Button
           size="sm"
