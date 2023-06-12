@@ -94,7 +94,7 @@ const AddTODOItem = () => {
     <>
       <Button
         id="AddNewTODOButton"
-        className="bg-indigo-300 text-white"
+        className="bg-indigo-300 text-white m-2"
         size="sm"
         onClick={handleOpen}
       >

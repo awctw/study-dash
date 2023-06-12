@@ -7,7 +7,7 @@ import Overview from "../components/flashcard/flashcardOverview";
 const DashboardPage = () => {
   return (
     <div className="flex flex-wrap">
-      <div>
+      <div className="mx-3">
         <TODOListMainView />
       </div>
       <div className="mx-3">

@@ -9,18 +9,20 @@ function CategoryToggle({ handleCategoryChange }) {
   const categories = useSelector((state) => state.todoReducer.categories);
 
   return (
-    <Select
-      id="categoryFilter"
-      label="Search by Category"
-      onChange={handleCategoryChange}
-    >
-      <Option value="">All Categories</Option>
-      {categories.map((category) => (
-        <Option key={category} value={category}>
-          {category}
-        </Option>
-      ))}
-    </Select>
+    <div className="m-2">
+      <Select
+        id="categoryFilter"
+        label="Search by Category"
+        onChange={handleCategoryChange}
+      >
+        <Option value="">All Categories</Option>
+        {categories.map((category) => (
+          <Option key={category} value={category}>
+            {category}
+          </Option>
+        ))}
+      </Select>
+    </div>
   );
 }
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TODOListViewer from "./TODOListViewer";
 import ControlPanel from "./ControlPanel";
 import { useSelector } from "react-redux";
+import { Card } from "@material-tailwind/react";
 
 // This TODOListMainView component represents the main view of the TODOlist,
 // displaying the list of TODOItems based on the selected category.
@@ -23,10 +24,10 @@ const TODOListMainView = () => {
   };
 
   return (
-    <div className="bg-fdf5f0 flex flex-row justify-evenly items-center p-8 rounded-2xl">
+    <Card className="m-4 p-3">
       <TODOListViewer todos={getVisibleTODOs()} />
       <ControlPanel setSelectedCategory={setSelectedCategory} />
-    </div>
+    </Card>
   );
 };
 

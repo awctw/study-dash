@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Button } from "@material-tailwind/react";
+import { Button, Card } from "@material-tailwind/react";
 import EditTODO from "./EditTODO";
 import { deleteTODO } from "../../store/todoListSlice";
 
@@ -15,7 +15,7 @@ const TODOItem = (props) => {
   }, [dispatch, props.todo.id]);
 
   return (
-    <div className="todoItem">
+    <Card className="p-3 m-3">
       <h3>Title: {props.todo.title}</h3>
       <p>Due Date: {props.todo.dueDate}</p>
       <div id="todoItemButtons">
@@ -24,11 +24,11 @@ const TODOItem = (props) => {
           size="sm"
           onClick={handleDelete}
         >
-          Delete
+          Finished
         </Button>
         <EditTODO todo={props.todo} />
       </div>
-    </div>
+    </Card>
   );
 };
 
