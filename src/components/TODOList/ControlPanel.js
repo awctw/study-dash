@@ -15,9 +15,10 @@ const ControlPanel = ({ setSelectedCategory }) => {
   }, [dispatch]);
 
   return (
-    <div className="m-7 border-black border-solid border-2 flex flex-col justify-evenly items-center p-8 rounded-xl">
+    // className="m-7 border-black border-solid border-2 flex flex-col justify-evenly items-center p-8 rounded-xl"
+    <div className="flex p-3">
       <Button
-        className="border-indigo-300 bg-white text-indigo-300 border-solid border"
+        className="border-indigo-300 bg-white text-indigo-300 border-solid border m-2"
         id="clearAllButton"
         size="sm"
         onClick={handleClearTodos}

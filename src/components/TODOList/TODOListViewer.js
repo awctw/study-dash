@@ -11,7 +11,8 @@ const TODOListViewer = ({ todos }) => {
   // Only render the ListView if the isVisibleTODOListEmpty function returns false,
   // indicating that there are visible TODOItems to display.
   return (
-    <div className="border-black border-solid border-2 p-3 rounded-2xl">
+    // className="border-black border-solid border-2 p-3 rounded-2xl"
+    <div>
       <header className="flex justify-between">
         <Typography variant="h5">TODO List</Typography>
         <Typography variant="small">Total Todos: {todos.length}</Typography>

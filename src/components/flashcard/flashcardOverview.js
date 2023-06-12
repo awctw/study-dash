@@ -20,7 +20,7 @@ const Overview = (props) => {
   return (
     <>
       <Card className="w-110 h-[21.5rem] flex shadow-xl shadow-pmd-blue-600">
-        <CardBody className="overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-gray-400/50">
+        <div className="p-3">
           <Typography variant="h5" color="blue-gray" className="mb-2">
             Flashcards
           </Typography>
@@ -28,6 +28,8 @@ const Overview = (props) => {
             Here is an overview of all your flashcard modules. Click to start
             reviewing!
           </Typography>
+        </div>
+        <CardBody className="pt-0 overflow-y-auto scrollbar-hide">
           <List className="pl-0">
             {modules.map((module, i) => (
               <ListItem
