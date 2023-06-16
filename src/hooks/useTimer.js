@@ -11,12 +11,11 @@ const stages = {
   pomodoroTime: 25 * 60,
   shortBreakTime: 5 * 60,
   longBreakTime: 15 * 60,
+  totalTimes: [25 * 60, 5 * 60, 15 * 60],
   isPaused: true,
   period: 1,
   cycle: 0,
 };
-
-const totalTimes = [1500, 300, 900];
 
 const useTimer = () => {
   const [selectedControl, setSelectedControl] = useState(0);
@@ -26,15 +25,16 @@ const useTimer = () => {
   const resetTimerValues = () => {
     setPomodoro((prevPomodoro) => {
       const controlValue = controllers[selectedControl].value;
+      console.log(stages[controlValue]);
       return {
         ...prevPomodoro,
-        [controlValue]: stages[controlValue],
+        [controlValue]: pomodoro.totalTimes[selectedControl],
       };
     });
   };
 
   const getRemainingTimePercentage = () => {
-    const totalTime = totalTimes[selectedControl];
+    const totalTime = pomodoro.totalTimes[selectedControl];
     const remainingTime = pomodoro[controllers[selectedControl].value];
     return (remainingTime / totalTime) * 100;
   };
