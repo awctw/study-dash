@@ -3,8 +3,18 @@ import {
   IconButton,
   CardBody,
   Typography,
+  Dialog,
+  Button,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+  Input,
 } from "@material-tailwind/react";
-import { PlayIcon, PauseIcon } from "@heroicons/react/24/solid";
+import {
+  PlayIcon,
+  PauseIcon,
+  AdjustmentsHorizontalIcon,
+} from "@heroicons/react/24/solid";
 import {
   CircularProgressbarWithChildren,
   buildStyles,
@@ -12,11 +22,34 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 import TimerDisplay from "./TimerDisplay";
 import useTimer from "../../hooks/useTimer";
+import { useState } from "react";
 
 // Credits for code snippets: https://github.com/birkaany/pomodoro-app/tree/master
 const Pomodoro = () => {
   const { pomodoro, selectedControl, setPomodoro, getRemainingTimePercentage } =
     useTimer();
+  const [open, setOpen] = useState(false);
+  const [customPomodoro, setCustomPomodoro] = useState(
+    pomodoro.pomodoroTime / 60
+  );
+  const [customShortBreak, setCustomShortBreak] = useState(
+    pomodoro.shortBreakTime / 60
+  );
+  const [customLongBreak, setCustomLongBreak] = useState(
+    pomodoro.longBreakTime / 60
+  );
+
+  const handleCustomPomodoro = (event) => {
+    setCustomPomodoro(event.target.value);
+  };
+
+  const handleCustomShortBreak = (event) => {
+    setCustomShortBreak(event.target.value);
+  };
+
+  const handleCustomLongBreak = (event) => {
+    setCustomLongBreak(event.target.value);
+  };
 
   const playPauseHandler = () => {
     setPomodoro((prevPomodoro) => {
@@ -27,8 +60,33 @@ const Pomodoro = () => {
     });
   };
 
+  const handleOpen = () => setOpen(!open);
+
+  const onApply = () => {
+    setOpen(!open);
+    setPomodoro({
+      pomodoroTime: customPomodoro * 60,
+      shortBreakTime: customShortBreak * 60,
+      longBreakTime: customLongBreak * 60,
+      totalTimes: [
+        customPomodoro * 60,
+        customShortBreak * 60,
+        customLongBreak * 60,
+      ],
+      isPaused: true,
+      period: 1,
+      cycle: 0,
+    });
+    // getRemainingTimePercentage();
+  };
+
   return (
-    <Card className="m-3 h-[16rem] w-[16rem] items-center">
+    <Card className="m-3 h-[16rem] w-[16rem] items-center ">
+      <div className="absolute top-0 right-0">
+        <IconButton onClick={handleOpen} className="h-6 w-6 m-2 bg-white">
+          <AdjustmentsHorizontalIcon className="h-5 w-5 text-indigo-300" />
+        </IconButton>
+      </div>
       <div className="w-[12rem] h-[12rem] flex justify-center items-center rounded-full bg-gradient-to-t to-pmd-blue-600 from-pmd-blue-900 shadow-2xl shadow-pmd-blue-600">
         <div className="w-[9rem] h-[9rem] flex justify-center items-center rounded-full text-3xl bg-pmd-blue-900">
           <div className="flex flex-col justify-center items-center font-semibold relative">
@@ -69,6 +127,46 @@ const Pomodoro = () => {
             : "Focus"}
         </Typography>
       </CardBody>
+      <Dialog open={open} handler={handleOpen}>
+        <DialogHeader>Settings</DialogHeader>
+        <DialogBody divider>
+          <Typography variant="h6">Time (Minutes)</Typography>
+          <div className="flex flex-row gap-6">
+            <Input
+              containerProps={{ className: "min-w-[72px]" }}
+              type="number"
+              label="Pomodoro"
+              value={customPomodoro}
+              onChange={handleCustomPomodoro}
+            />
+            <Input
+              containerProps={{ className: "min-w-[72px]" }}
+              type="number"
+              label="Short Break"
+              value={customShortBreak}
+              onChange={handleCustomShortBreak}
+            />
+            <Input
+              containerProps={{ className: "min-w-[72px]" }}
+              type="number"
+              label="Long Break"
+              value={customLongBreak}
+              onChange={handleCustomLongBreak}
+            />
+          </div>
+        </DialogBody>
+        <DialogFooter tabIndex={1}>
+          <Button
+            onClick={handleOpen}
+            className="border-indigo-300 bg-white text-indigo-300 border-solid border m-2"
+          >
+            <span>Cancel</span>
+          </Button>
+          <Button className="bg-indigo-300 text-white m-2" onClick={onApply}>
+            <span>Apply</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </Card>
   );
 };
