@@ -20,6 +20,7 @@ function App() {
         </div>
         <div className="p-5 !pl-[300px]">
           <Routes>
+            <Route path={"/"} element={<DashboardPage />} />
             <Route path={"/dashboard"} element={<DashboardPage />} />
             <Route path={"/profile"} element={<ProfilePage />} />
             <Route path={"/todos"} element={<TODOPage />} />
