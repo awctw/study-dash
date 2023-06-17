@@ -18,10 +18,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/", indexRouter);
-app.use("/user", userRouter);
-app.use("/auth", authRouter);
-
 app.use(
   cookieSession({
     name: "test-session",
@@ -29,6 +25,10 @@ app.use(
     httpOnly: true,
   })
 );
+
+app.use("/", indexRouter);
+app.use("/user", userRouter);
+app.use("/auth", authRouter);
 
 const db = require("./models");
 
