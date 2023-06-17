@@ -82,3 +82,4 @@ to make the learning experience more engaging.
 # Crediting
 
 - [Update every minute clock used in GanttChart.jsx](https://stackoverflow.com/a/23450004)
+- [Login Authentication Code Snippets](https://www.bezkoder.com/node-js-express-login-mongodb/#Create_Nodejs_Login_with_MongoDB_App)
