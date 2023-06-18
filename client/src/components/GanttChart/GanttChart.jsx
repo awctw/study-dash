@@ -137,6 +137,7 @@ const GanttChart = (props) => {
     const CHART_ID = 'gantt-chart-g';
     const X_AXIS_G_ID = 'gantt-x-axis-g'
     const Y_AXIS_G_ID = 'gantt-y-axis-g'
+    const CIRCLE_RADIUS = 5;
     const renderChart = useCallback(() => {
         // Chart dimension calculation
         let containerWidth, containerHeight, margin, tooltipPadding;
@@ -183,12 +184,16 @@ const GanttChart = (props) => {
         if (svg.empty()) {
             const container = d3.select('.gantt-chart');
 
-            // Create a separate SVG for the x-axis
+            // Create a separate SVG for the x-axis and add background rect
             xAxisSVG = container.append('svg')
                 .attr('id', X_AXIS_SVG_ID)
                 .attr('width', containerWidth)
-                .attr('height', 40)
+                .attr('height', margin.top + CIRCLE_RADIUS)
                 .style('position', 'absolute');
+            xAxisSVG.append('rect')
+                .attr('width', containerWidth)
+                .attr('height', margin.top)
+                .style('fill', 'white');
             xAxisG = xAxisSVG.append('g')
                 .attr('id', X_AXIS_G_ID)
                 .attr('class', 'axis x-axis')
@@ -209,7 +214,7 @@ const GanttChart = (props) => {
             yAxisG = chart.append('g')
                 .attr('id', Y_AXIS_G_ID)
                 .attr('class', 'axis y-axis')
-                .style('font-size', 12)
+                .style('font-size', 12);
         } else {
             chart = d3.select('#' + CHART_ID);
             xAxisSVG = d3.select('#' + X_AXIS_SVG_ID);
@@ -244,7 +249,7 @@ const GanttChart = (props) => {
             .attr("class", "circle")
             .attr("cx", xCoordNow)
             .attr("cy", margin.top)
-            .attr("r", 5)
+            .attr("r", CIRCLE_RADIUS)
             .style("position", "absolute");
         svg.append("line")
             .attr("id", LINE_ID)
