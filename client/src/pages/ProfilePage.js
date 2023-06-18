@@ -1,15 +1,13 @@
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Typography } from "@material-tailwind/react";
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getUserAsync, userLoginAsync } from "../store/authentication/thunks";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const ProfilePage = () => {
   // Referenced https://www.pluralsight.com/guides/uploading-files-with-reactjs for file upload
+  const user = useSelector((state) => state.loginReducer);
   const [selectedFile, setSelectedFile] = useState();
   const [isFilePicked, setIsFilePicked] = useState(false);
-  const user = useSelector((state) => state.loginReducer);
-  const dispatch = useDispatch();
 
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);

@@ -15,7 +15,6 @@ import {
   CardFooter,
   CardHeader,
   Input,
-  Checkbox,
 } from "@material-tailwind/react";
 import {
   RectangleGroupIcon,
@@ -31,7 +30,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   userLoginAsync,
   userLogoutAsync,
@@ -40,15 +39,14 @@ import {
 // Credits: Material Tailwind doc example
 const SideBar = () => {
   const [open, setOpen] = useState(false);
-  const [login, setLogin] = useState(false);
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
+  const user = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
 
   const handleOpen = () => setOpen(!open);
   const handleLogin = () => {
-    setLogin(!login);
     setOpen(!open);
 
     const user = {
@@ -60,7 +58,6 @@ const SideBar = () => {
   };
 
   const handleLogout = () => {
-    setLogin(!login);
     setOpen(!open);
 
     const user = {
@@ -156,7 +153,7 @@ const SideBar = () => {
           </ListItem>
         </NavLink>
 
-        {login ? (
+        {user.isLoggedIn ? (
           <>
             <ListItem onClick={handleOpen}>
               <ListItemPrefix>
@@ -178,9 +175,11 @@ const SideBar = () => {
                 >
                   <span>Cancel</span>
                 </Button>
-                <Button className="bg-indigo-300" onClick={handleLogout}>
-                  <span>Confirm</span>
-                </Button>
+                <NavLink to={"/dashboard"}>
+                  <Button className="bg-indigo-300" onClick={handleLogout}>
+                    <span>Confirm</span>
+                  </Button>
+                </NavLink>
               </DialogFooter>
             </Dialog>
           </>
@@ -215,21 +214,21 @@ const SideBar = () => {
                   />
                   <Input
                     label="Password"
+                    type="Password"
                     size="lg"
                     onChange={passwordHandler}
                   />
-                  <div className="-ml-2.5">
-                    <Checkbox label="Remember Me" />
-                  </div>
                 </CardBody>
                 <CardFooter className="pt-0">
-                  <Button
-                    className="bg-indigo-300"
-                    onClick={handleLogin}
-                    fullWidth
-                  >
-                    Sign In
-                  </Button>
+                  <NavLink to={"/dashboard"}>
+                    <Button
+                      className="bg-indigo-300"
+                      onClick={handleLogin}
+                      fullWidth
+                    >
+                      Sign In
+                    </Button>
+                  </NavLink>
                   <div className="mt-6 flex justify-center items-center">
                     <Typography variant="small">
                       Don&apos;t have an account?

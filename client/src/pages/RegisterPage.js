@@ -6,7 +6,6 @@ import {
   CardFooter,
   CardHeader,
   Input,
-  Checkbox,
 } from "@material-tailwind/react";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
@@ -69,10 +68,12 @@ const RegisterPage = () => {
           <Input label="Email" size="lg" onChange={emailHandler} />
           <Input label="First Name" size="lg" onChange={firstNameHandler} />
           <Input label="Last Name" size="lg" onChange={lastNameHandler} />
-          <Input label="Password" size="lg" onChange={passwordHandler} />
-          <div className="-ml-2.5">
-            <Checkbox label="Remember Me" />
-          </div>
+          <Input
+            label="Password"
+            type="password"
+            size="lg"
+            onChange={passwordHandler}
+          />
         </CardBody>
         <CardFooter className="pt-0">
           <NavLink to={"/dashboard"}>
