@@ -39,6 +39,22 @@ const flashcardSlice = createSlice({
       .addCase(addModuleAsync.rejected, (state, action) => {
         state.addModule = REQUEST_STATE.REJECTED;
         state.error = action.error;
+      })
+      .addCase(addFlashcardAsync.pending, (state) => {
+        state.addFlashcard = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(addFlashcardAsync.fulfilled, (state, action) => {
+        state.addFlashcard = REQUEST_STATE.FULFILLED;
+
+        const idx = state.modules.findIndex(
+          (module) => module._id === action.payload._id
+        );
+        state.modules[idx] = action.payload;
+      })
+      .addCase(addFlashcardAsync.rejected, (state, action) => {
+        state.addFlashcard = REQUEST_STATE.REJECTED;
+        state.error = action.error;
       });
   },
 });

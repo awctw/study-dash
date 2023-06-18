@@ -15,8 +15,8 @@ const addModuleAsync = createAsyncThunk(
 
 const addFlashcardAsync = createAsyncThunk(
   actionTypes.ADD_FLASHCARD,
-  async (flashcard) => {
-    // service
+  async (moduleId, cardData) => {
+    return await flashcardService.addFlashcard(moduleId, cardData);
   }
 );
 

@@ -13,6 +13,7 @@ import {
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addFlashcard } from "../../store/flashcards/reducer";
+import { addFlashcardAsync } from "../../store/flashcards/thunks";
 
 const AddFlashcard = (props) => {
   const [visible, setVisible] = useState(false);
@@ -22,8 +23,9 @@ const AddFlashcard = (props) => {
   const dispatch = useDispatch();
 
   const handleAdd = () => {
+    // Can only pass one argument to a thunk! ¯\_(ツ)_/¯
     dispatch(
-      addFlashcard({
+      addFlashcardAsync({
         moduleId: props.moduleId,
         question: question,
         answer: answer,

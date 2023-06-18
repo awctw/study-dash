@@ -28,7 +28,30 @@ const addModule = async (module) => {
   return response;
 };
 
+const addFlashcard = async (cardData) => {
+  const response = await axios
+    .patch(
+      URL + `flashcards/${cardData.moduleId}`,
+      {
+        question: cardData.question,
+        answer: cardData.answer,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  return response;
+};
+
 export default {
   addModule,
   getModules,
+  addFlashcard,
 };

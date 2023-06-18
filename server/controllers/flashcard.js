@@ -37,7 +37,7 @@ const addFlashcard = async (req, res, next) => {
         .then(() => {
             res.status(200).send(module);
         })
-        .catch((err) => {
+        .catch((err) => { 
             res.status(400).send(err);
         });
 }

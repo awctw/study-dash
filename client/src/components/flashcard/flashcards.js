@@ -82,7 +82,7 @@ const Cards = (props) => {
       >
         {module.questions.map((question, i) => (
           <Card
-            key={module.id + "-" + i}
+            key={module._id + "-" + i}
             className="w-full h-full object-cover bg-transparent items-center justify-center rounded-none"
           >
             {/* <Typography key={i} variant="h2" className="text-gray-50 mx-28 text-center">{question}</Typography> */}
@@ -170,7 +170,7 @@ const Cards = (props) => {
             </div>
           </Card>
         ))}
-        <AddFlashcard moduleId={module.id} />
+        <AddFlashcard moduleId={module._id} />
       </Carousel>
       <div className="w-full h-[15%] flex justify-center items-center">
         <StatusBar
