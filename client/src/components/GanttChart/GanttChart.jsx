@@ -133,6 +133,7 @@ const GanttChart = (props) => {
     ]);
 
     const SVG_ID = 'gantt-chart-svg';
+    const X_AXIS_SVG_ID = 'gantt-chart-x-axis-svg';
     const CHART_ID = 'gantt-chart-g';
     const X_AXIS_G_ID = 'gantt-x-axis-g'
     const Y_AXIS_G_ID = 'gantt-y-axis-g'
@@ -178,21 +179,32 @@ const GanttChart = (props) => {
 
         // Chart group appending
         let svg = d3.select('#' + SVG_ID);
-        let chart, xAxisG, yAxisG;
+        let chart, xAxisSVG, xAxisG, yAxisG;
         if (svg.empty()) {
-            svg = d3.select('.gantt-chart').append('svg')
+            const container = d3.select('.gantt-chart');
+
+            // Create a separate SVG for the x-axis
+            xAxisSVG = container.append('svg')
+                .attr('id', X_AXIS_SVG_ID)
+                .attr('width', containerWidth)
+                .attr('height', 40)
+                .style('position', 'absolute');
+            xAxisG = xAxisSVG.append('g')
+                .attr('id', X_AXIS_G_ID)
+                .attr('class', 'axis x-axis')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`)
+                .style('font-size', 12);
+
+            svg = container.append('svg')
                 .attr('id', SVG_ID)
                 .attr('width', containerWidth)
                 .attr('height', containerHeight);
 
+            // Add overflow-y for scrolling
             chart = svg.append('g')
                 .attr('id', CHART_ID)
-                .attr('transform', `translate(${margin.left}, ${margin.top})`);
-
-            xAxisG = chart.append('g')
-                .attr('id', X_AXIS_G_ID)
-                .attr('class', 'axis x-axis')
-                .style('font-size', 12)
+                .attr('transform', `translate(${margin.left}, ${margin.top})`)
+                .style("overflow-y", "scroll");
 
             yAxisG = chart.append('g')
                 .attr('id', Y_AXIS_G_ID)
@@ -200,6 +212,7 @@ const GanttChart = (props) => {
                 .style('font-size', 12)
         } else {
             chart = d3.select('#' + CHART_ID);
+            xAxisSVG = d3.select('#' + X_AXIS_SVG_ID);
             xAxisG = d3.select('#' + X_AXIS_G_ID);
             yAxisG = d3.select('#' + Y_AXIS_G_ID);
         }
@@ -226,12 +239,13 @@ const GanttChart = (props) => {
         const LINE_ID = "now-line";
         d3.select('#' + CIRCLE_ID).remove();
         d3.select('#' + LINE_ID).remove();
-        svg.append("circle")
+        xAxisSVG.append("circle")
             .attr("id", CIRCLE_ID)
             .attr("class", "circle")
             .attr("cx", xCoordNow)
             .attr("cy", margin.top)
             .attr("r", 5)
+            .style("position", "absolute");
         svg.append("line")
             .attr("id", LINE_ID)
             .attr("class", "line")

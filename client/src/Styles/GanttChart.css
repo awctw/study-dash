@@ -16,3 +16,9 @@
   font-size: 14px;
   font-weight: 600;
 }
+
+.gantt-chart {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 200px;
+}
