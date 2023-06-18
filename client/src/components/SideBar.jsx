@@ -31,16 +31,52 @@ import {
 } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+  userLoginAsync,
+  userLogoutAsync,
+} from "../store/authentication/thunks";
 
 // Credits: Material Tailwind doc example
 const SideBar = () => {
   const [open, setOpen] = useState(false);
   const [login, setLogin] = useState(false);
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+
+  const dispatch = useDispatch();
 
   const handleOpen = () => setOpen(!open);
   const handleLogin = () => {
     setLogin(!login);
     setOpen(!open);
+
+    const user = {
+      username: username,
+      password: password,
+    };
+
+    dispatch(userLoginAsync(user));
+  };
+
+  const handleLogout = () => {
+    setLogin(!login);
+    setOpen(!open);
+
+    const user = {
+      username: username,
+      password: password,
+    };
+
+    dispatch(userLogoutAsync(user));
+  };
+
+  const userNameHandler = (event) => {
+    setUserName(event.target.value);
+  };
+
+  const passwordHandler = (event) => {
+    setPassword(event.target.value);
   };
 
   return (
@@ -119,6 +155,7 @@ const SideBar = () => {
             Study Groups
           </ListItem>
         </NavLink>
+
         {login ? (
           <>
             <ListItem onClick={handleOpen}>
@@ -141,7 +178,7 @@ const SideBar = () => {
                 >
                   <span>Cancel</span>
                 </Button>
-                <Button className="bg-indigo-300" onClick={handleLogin}>
+                <Button className="bg-indigo-300" onClick={handleLogout}>
                   <span>Confirm</span>
                 </Button>
               </DialogFooter>
@@ -171,8 +208,16 @@ const SideBar = () => {
                   </Typography>
                 </CardHeader>
                 <CardBody className="flex flex-col gap-4">
-                  <Input label="Email" size="lg" />
-                  <Input label="Password" size="lg" />
+                  <Input
+                    label="Username"
+                    size="lg"
+                    onChange={userNameHandler}
+                  />
+                  <Input
+                    label="Password"
+                    size="lg"
+                    onChange={passwordHandler}
+                  />
                   <div className="-ml-2.5">
                     <Checkbox label="Remember Me" />
                   </div>
@@ -185,21 +230,20 @@ const SideBar = () => {
                   >
                     Sign In
                   </Button>
-                  <Typography
-                    variant="small"
-                    className="mt-6 flex justify-center"
-                  >
-                    Don&apos;t have an account?
-                    <Typography
-                      as="a"
-                      href="#signup"
-                      variant="small"
-                      className="ml-1 font-bold text-indigo-300"
-                      onClick={handleOpen}
-                    >
-                      Sign up
+                  <div className="mt-6 flex justify-center items-center">
+                    <Typography variant="small">
+                      Don&apos;t have an account?
                     </Typography>
-                  </Typography>
+                    <NavLink to={"/register"}>
+                      <Typography
+                        variant="small"
+                        className="ml-1 font-bold text-indigo-300"
+                        onClick={handleOpen}
+                      >
+                        Sign up
+                      </Typography>
+                    </NavLink>
+                  </div>
                 </CardFooter>
               </Card>
             </Dialog>
