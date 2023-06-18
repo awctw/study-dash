@@ -53,13 +53,13 @@ const FlashCardModal = (props) => {
             </Typography>
           </div>
           <List>
-            {modules.map((module, i) => (
+            {modules && modules.map((module, i) => (
               <ListItem
-                selected={module.id === id}
-                key={module.id}
+                selected={module._id === id}
+                key={module._id}
                 onClick={() => {
-                  setId(module.id);
-                  setKey(module.id);
+                  setId(module._id);
+                  setKey(module._id);
                 }}
               >
                 {module.name}
@@ -79,7 +79,7 @@ const FlashCardModal = (props) => {
           className="w-3/4 rounded-lg ml-2 items-center shadow-none"
           key={key}
         >
-          <Cards moduleId={id} reset={handleReset} />
+          {id && <Cards moduleId={id} reset={handleReset} />}
         </Card>
       </Dialog>
     </>

@@ -7,15 +7,16 @@ import {
   ListItem,
   Typography,
 } from "@material-tailwind/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FlashCardModal from "./flashcardModal";
+import { getModulesAsync } from "../../store/flashcards/thunks";
 
 const Overview = (props) => {
   const modules = useSelector((state) => state.flashcards.modules);
   const [visible, setVisible] = useState(false);
-  const [modId, setModId] = useState(modules[0].id);
+  const [modId, setModId] = useState();
 
   return (
     <>
@@ -31,34 +32,35 @@ const Overview = (props) => {
         </div>
         <CardBody className="pt-0 overflow-y-auto scrollbar-hide">
           <List className="pl-0">
-            {modules.map((module, i) => (
-              <ListItem
-                key={i}
-                onClick={() => {
-                  setModId(module.id);
-                  setVisible(true);
-                }}
-              >
-                <div>
-                  <Typography variant="h6" color="blue-gray">
-                    {module.name}
-                  </Typography>
-                  <Typography
-                    variant="small"
-                    color="gray"
-                    className="font-normal"
-                  >
-                    {module.questions.length} flashcards
-                  </Typography>
-                </div>
-              </ListItem>
-            ))}
+            {modules &&
+              modules.map((module, i) => (
+                <ListItem
+                  key={module._id}
+                  onClick={() => {
+                    setModId(module._id);
+                    setVisible(true);
+                  }}
+                >
+                  <div>
+                    <Typography variant="h6" color="blue-gray">
+                      {module.name}
+                    </Typography>
+                    <Typography
+                      variant="small"
+                      color="gray"
+                      className="font-normal"
+                    >
+                      {module.questions.length} flashcards
+                    </Typography>
+                  </div>
+                </ListItem>
+              ))}
           </List>
         </CardBody>
         <CardFooter className="py-3 border-t border-gray-400/50">
           <Button
             onClick={() => {
-              setModId(modules[0].id);
+              setModId(modules[0]._id);
               setVisible(true);
             }}
             className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100"

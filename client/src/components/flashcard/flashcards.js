@@ -19,8 +19,9 @@ import AddFlashcard from "./addFlashcard";
 
 const Cards = (props) => {
   const module = useSelector((state) =>
-    state.flashcards.modules.find((module) => module.id === props.moduleId)
+    state.flashcards.modules.find((module) => module._id === props.moduleId)
   );
+
   const numCards = module.questions.length;
   const [flip, setFlip] = useState(false);
   const [answered, setAnswered] = useState([]);

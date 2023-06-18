@@ -2,9 +2,9 @@ const Module = require('../models/flashcard');
 
 const addModule = async (req, res, next) => {
     const module = new Module({
-        name: req.body.name,
-        questions: req.body.questions,
-        answers: req.body.answers,
+        name: req.body.moduleName,
+        questions: [],
+        answers: [],
     });
 
     try {
