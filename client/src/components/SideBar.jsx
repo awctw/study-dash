@@ -15,6 +15,7 @@ import {
   CardFooter,
   CardHeader,
   Input,
+  Alert,
 } from "@material-tailwind/react";
 import {
   RectangleGroupIcon,
@@ -27,6 +28,7 @@ import {
   ClockIcon,
   PowerIcon,
   ArrowRightOnRectangleIcon,
+  InformationCircleIcon,
 } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
@@ -38,27 +40,38 @@ import {
 
 // Credits: Material Tailwind doc example
 const SideBar = () => {
-  const [open, setOpen] = useState(false);
+  const [openLogin, setOpenLogin] = useState(false);
+  const [openLogout, setOpenLogout] = useState(false);
+
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState(false);
 
   const user = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
 
-  const handleOpen = () => setOpen(!open);
-  const handleLogin = () => {
-    setOpen(!open);
+  const handleOpenLogin = () => setOpenLogin(!openLogin);
+  const handleOpenLogout = () => setOpenLogout(!openLogout);
 
-    const user = {
+  const handleLogin = () => {
+    const newUser = {
       username: username,
       password: password,
     };
-
-    dispatch(userLoginAsync(user));
+    dispatch(userLoginAsync(newUser)).then(() => {
+      if (user.error !== undefined) {
+        setAlert(true);
+      } else {
+        setAlert(false);
+        handleOpenLogin(false);
+      }
+    });
   };
 
   const handleLogout = () => {
-    setOpen(!open);
+    handleOpenLogout(false);
+    handleOpenLogin(false);
+    setAlert(false);
 
     const user = {
       username: username,
@@ -155,13 +168,13 @@ const SideBar = () => {
 
         {user.isLoggedIn ? (
           <>
-            <ListItem onClick={handleOpen}>
+            <ListItem onClick={handleOpenLogout}>
               <ListItemPrefix>
                 <PowerIcon className="h-5 w-5" />
               </ListItemPrefix>
               Log Out
             </ListItem>
-            <Dialog open={open} handler={handleOpen}>
+            <Dialog open={openLogout} handler={handleOpenLogout}>
               <DialogHeader>Logout</DialogHeader>
               <DialogBody divider>
                 Do you really wish to leave and logout? All unsaved changes will
@@ -170,7 +183,7 @@ const SideBar = () => {
               <DialogFooter>
                 <Button
                   variant="text"
-                  onClick={handleOpen}
+                  onClick={handleOpenLogout}
                   className="mr-1 text-indigo-300"
                 >
                   <span>Cancel</span>
@@ -185,7 +198,7 @@ const SideBar = () => {
           </>
         ) : (
           <>
-            <ListItem onClick={handleOpen}>
+            <ListItem onClick={handleOpenLogin}>
               <ListItemPrefix>
                 <ArrowRightOnRectangleIcon className="h-5 w-5" />
               </ListItemPrefix>
@@ -193,8 +206,8 @@ const SideBar = () => {
             </ListItem>
             <Dialog
               size="xs"
-              open={open}
-              handler={handleOpen}
+              open={openLogin}
+              handler={handleOpenLogin}
               className="bg-transparent shadow-none"
             >
               <Card className="mx-auto w-full max-w-[24rem]">
@@ -206,7 +219,23 @@ const SideBar = () => {
                     Sign In
                   </Typography>
                 </CardHeader>
+
                 <CardBody className="flex flex-col gap-4">
+                  {alert && (
+                    <div className="flex w-full flex-col gap-2">
+                      <Alert
+                        icon={
+                          <InformationCircleIcon
+                            strokeWidth={2}
+                            className="h-6 w-6"
+                          />
+                        }
+                      >
+                        Error: {user.error}
+                      </Alert>
+                    </div>
+                  )}
+
                   <Input
                     label="Username"
                     size="lg"
@@ -237,7 +266,7 @@ const SideBar = () => {
                       <Typography
                         variant="small"
                         className="ml-1 font-bold text-indigo-300"
-                        onClick={handleOpen}
+                        onClick={handleOpenLogin}
                       >
                         Sign up
                       </Typography>

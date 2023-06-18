@@ -8,6 +8,8 @@ var bcrypt = require("bcryptjs");
 exports.signup = (req, res) => {
   const user = new User({
     username: req.body.username,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
   });
@@ -18,7 +20,18 @@ exports.signup = (req, res) => {
       return;
     }
 
-    res.send({ message: "User was registered successfully!" });
+    var token = jwt.sign({ id: user.id }, config.secret, {
+      expiresIn: 86400, // 24 hours
+    });
+    req.session.token = token;
+
+    res.status(200).send({
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      accessToken: token,
+    });
   });
 };
 
@@ -32,13 +45,13 @@ exports.signin = (req, res) => {
     }
 
     if (!user) {
-      return res.status(404).send({ message: "User Not found." });
+      return res.status(200).send({ message: "Username Not found." });
     }
 
     var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
 
     if (!passwordIsValid) {
-      return res.status(401).send({ message: "Invalid Password!" });
+      return res.status(400).send({ message: "Invalid Password!" });
     }
 
     var token = jwt.sign({ id: user.id }, config.secret, {
@@ -51,6 +64,7 @@ exports.signin = (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      accessToken: token,
     });
   });
 };

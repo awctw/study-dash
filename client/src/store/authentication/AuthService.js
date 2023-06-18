@@ -9,7 +9,9 @@ const login = (username, password) => {
       if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data));
       }
-
+      if (response.data.message !== undefined) {
+        return response.data;
+      }
       return response.data;
     });
 };
