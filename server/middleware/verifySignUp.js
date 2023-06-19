@@ -1,6 +1,12 @@
 const db = require("../models");
 const User = db.user;
 
+function validateEmail(email) {
+  // Regular expression to check the email format Credit: ChatGPT
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
 const checkDuplicateUsernameOrEmail = async (req, res, next) => {
   try {
     // Check username
@@ -11,6 +17,10 @@ const checkDuplicateUsernameOrEmail = async (req, res, next) => {
     if (userByUsername) {
       res.status(200).send({ message: "Username is already in use!" });
       return;
+    }
+
+    if (!validateEmail(req.body.email)) {
+      return res.status(200).json({ message: "Invalid Email!" });
     }
 
     // Check email

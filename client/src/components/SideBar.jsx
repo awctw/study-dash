@@ -31,7 +31,7 @@ import {
   InformationCircleIcon,
 } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   userLoginAsync,
@@ -51,12 +51,10 @@ const SideBar = () => {
   const dispatch = useDispatch();
 
   const handleOpenLogin = () => {
-    setAlert(false);
     setOpenLogin(!openLogin);
   };
 
   const handleOpenLogout = () => {
-    setAlert(false);
     setOpenLogout(!openLogout);
   };
 
@@ -65,18 +63,12 @@ const SideBar = () => {
       username: username,
       password: password,
     };
-    dispatch(userLoginAsync(newUser)).then(() => {
-      if (user.error !== undefined) {
-        setAlert(true);
-      } else {
-        handleOpenLogin(false);
-      }
-    });
+    dispatch(userLoginAsync(newUser));
   };
 
   const handleLogout = () => {
-    handleOpenLogout(false);
-    handleOpenLogin(false);
+    setOpenLogout(false);
+    setOpenLogin(false);
 
     const user = {
       username: username,
@@ -86,7 +78,16 @@ const SideBar = () => {
     dispatch(userLogoutAsync(user));
   };
 
+  useEffect(() => {
+    if (user.error) {
+      setAlert(true);
+    } else {
+      setAlert(false);
+    }
+  }, [user]);
+
   const userNameHandler = (event) => {
+    setAlert(false);
     setUserName(event.target.value);
   };
 
