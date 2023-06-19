@@ -8,6 +8,7 @@ var cors = require("cors");
 var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
 var authRouter = require("./routes/auth");
+var dbConfig = require("./config/db.config");
 
 var app = express();
 
@@ -33,13 +34,10 @@ app.use("/auth", authRouter);
 const db = require("./models");
 
 db.mongoose
-  .connect(
-    `mongodb+srv://test:9E366LSCYOIfuqSm@cluster0.pabyt.mongodb.net/?retryWrites=true&w=majority`,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(dbConfig.url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Successfully connect to MongoDB.");
   })
