@@ -24,7 +24,7 @@ const TODOListMainView = () => {
   };
 
   return (
-    <Card className="m-4 p-3">
+    <Card className="flex flex-col items-center m-3 p-10 w-9/12">
       <TODOListViewer todos={getVisibleTODOs()} />
       <ControlPanel setSelectedCategory={setSelectedCategory} />
     </Card>
