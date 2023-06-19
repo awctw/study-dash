@@ -6,10 +6,12 @@ import {
   CardFooter,
   CardHeader,
   Input,
+  Alert,
 } from "@material-tailwind/react";
-import { NavLink } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { InformationCircleIcon } from "@heroicons/react/24/solid";
+import { Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { userRegisterAsync } from "../store/authentication/thunks";
 
 const RegisterPage = () => {
@@ -18,6 +20,9 @@ const RegisterPage = () => {
   const [lastName, setLastName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
+  const [alert, setAlert] = useState(false);
+
+  const user = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
 
   const userNameHandler = (event) => {
@@ -41,7 +46,7 @@ const RegisterPage = () => {
   };
 
   const registerHandler = () => {
-    const user = {
+    const newUser = {
       username: username,
       firstName: firstName,
       lastName: lastName,
@@ -49,8 +54,16 @@ const RegisterPage = () => {
       password: password,
     };
 
-    dispatch(userRegisterAsync(user));
+    dispatch(userRegisterAsync(newUser));
   };
+
+  useEffect(() => {
+    if (user.error) {
+      setAlert(true);
+    } else {
+      setAlert(false);
+    }
+  }, [user]);
 
   return (
     <div className="flex justify-center">
@@ -64,6 +77,18 @@ const RegisterPage = () => {
           </Typography>
         </CardHeader>
         <CardBody className="flex flex-col gap-4">
+          {alert && (
+            <div className="flex w-full flex-col gap-2">
+              <Alert
+                className="bg-indigo-300"
+                icon={
+                  <InformationCircleIcon strokeWidth={2} className="h-6 w-6" />
+                }
+              >
+                Error: {user.error}
+              </Alert>
+            </div>
+          )}
           <Input label="Username" size="lg" onChange={userNameHandler} />
           <Input label="Email" size="lg" onChange={emailHandler} />
           <Input label="First Name" size="lg" onChange={firstNameHandler} />
@@ -76,15 +101,10 @@ const RegisterPage = () => {
           />
         </CardBody>
         <CardFooter className="pt-0">
-          <NavLink to={"/dashboard"}>
-            <Button
-              className="bg-indigo-300"
-              fullWidth
-              onClick={registerHandler}
-            >
-              Sign Up
-            </Button>
-          </NavLink>
+          <Button className="bg-indigo-300" fullWidth onClick={registerHandler}>
+            Sign Up
+          </Button>
+          {user.isLoggedIn && <Navigate to="/dashboard" replace={true} />}
         </CardFooter>
       </Card>
     </div>

@@ -7,7 +7,6 @@ import {
   userRegisterAsync,
 } from "./thunks";
 import { REQUEST_STATE } from "../utils";
-import { act } from "@testing-library/react";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -71,9 +70,16 @@ const loginSlice = createSlice({
         state.error = null;
       })
       .addCase(userRegisterAsync.fulfilled, (state, action) => {
-        state.register = REQUEST_STATE.FULFILLED;
-        state.isLoggedIn = true;
-        state.user = action.payload;
+        if (action.payload.message !== undefined) {
+          state.register = REQUEST_STATE.REJECTED;
+          state.isLoggedIn = false;
+          state.user = null;
+          state.error = action.payload.message;
+        } else {
+          state.register = REQUEST_STATE.FULFILLED;
+          state.isLoggedIn = true;
+          state.user = action.payload;
+        }
       })
       .addCase(userRegisterAsync.rejected, (state, action) => {
         state.register = REQUEST_STATE.REJECTED;

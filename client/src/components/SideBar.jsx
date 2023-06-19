@@ -50,8 +50,15 @@ const SideBar = () => {
   const user = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
 
-  const handleOpenLogin = () => setOpenLogin(!openLogin);
-  const handleOpenLogout = () => setOpenLogout(!openLogout);
+  const handleOpenLogin = () => {
+    setAlert(false);
+    setOpenLogin(!openLogin);
+  };
+
+  const handleOpenLogout = () => {
+    setAlert(false);
+    setOpenLogout(!openLogout);
+  };
 
   const handleLogin = () => {
     const newUser = {
@@ -62,7 +69,6 @@ const SideBar = () => {
       if (user.error !== undefined) {
         setAlert(true);
       } else {
-        setAlert(false);
         handleOpenLogin(false);
       }
     });
@@ -71,7 +77,6 @@ const SideBar = () => {
   const handleLogout = () => {
     handleOpenLogout(false);
     handleOpenLogin(false);
-    setAlert(false);
 
     const user = {
       username: username,
@@ -224,6 +229,7 @@ const SideBar = () => {
                   {alert && (
                     <div className="flex w-full flex-col gap-2">
                       <Alert
+                        className="bg-indigo-300"
                         icon={
                           <InformationCircleIcon
                             strokeWidth={2}

@@ -51,7 +51,7 @@ exports.signin = (req, res) => {
     var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
 
     if (!passwordIsValid) {
-      return res.status(400).send({ message: "Invalid Password!" });
+      return res.status(200).send({ message: "Invalid Password!" });
     }
 
     var token = jwt.sign({ id: user.id }, config.secret, {
