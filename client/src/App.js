@@ -7,6 +7,7 @@ import DashboardPage from "./pages/DashboardPage";
 import StatisticsPage from "./pages/StatisticsPage";
 import StudyGroupPage from "./pages/StudyGroupsPage";
 import TimerPage from "./pages/TimerPage";
+import RegisterPage from "./pages/RegisterPage";
 
 import SideBar from "./components/SideBar";
 
@@ -28,6 +29,7 @@ function App() {
             <Route path={"/timer"} element={<TimerPage />} />
             <Route path={"/statistics"} element={<StatisticsPage />} />
             <Route path={"/studyGroups"} element={<StudyGroupPage />} />
+            <Route path={"/register"} element={<RegisterPage />} />
           </Routes>
         </div>
       </div>
