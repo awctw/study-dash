@@ -15,7 +15,7 @@ import {
   CardFooter,
   CardHeader,
   Input,
-  Checkbox,
+  Alert,
 } from "@material-tailwind/react";
 import {
   RectangleGroupIcon,
@@ -28,19 +28,71 @@ import {
   ClockIcon,
   PowerIcon,
   ArrowRightOnRectangleIcon,
+  InformationCircleIcon,
 } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  userLoginAsync,
+  userLogoutAsync,
+} from "../store/authentication/thunks";
 
 // Credits: Material Tailwind doc example
 const SideBar = () => {
-  const [open, setOpen] = useState(false);
-  const [login, setLogin] = useState(false);
+  const [openLogin, setOpenLogin] = useState(false);
+  const [openLogout, setOpenLogout] = useState(false);
 
-  const handleOpen = () => setOpen(!open);
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState(false);
+
+  const user = useSelector((state) => state.loginReducer);
+  const dispatch = useDispatch();
+
+  const handleOpenLogin = () => {
+    setOpenLogin(!openLogin);
+  };
+
+  const handleOpenLogout = () => {
+    setOpenLogout(!openLogout);
+  };
+
   const handleLogin = () => {
-    setLogin(!login);
-    setOpen(!open);
+    const newUser = {
+      username: username,
+      password: password,
+    };
+    dispatch(userLoginAsync(newUser));
+  };
+
+  const handleLogout = () => {
+    setOpenLogout(false);
+    setOpenLogin(false);
+
+    const user = {
+      username: username,
+      password: password,
+    };
+
+    dispatch(userLogoutAsync(user));
+  };
+
+  useEffect(() => {
+    if (user.error) {
+      setAlert(true);
+    } else {
+      setAlert(false);
+    }
+  }, [user]);
+
+  const userNameHandler = (event) => {
+    setAlert(false);
+    setUserName(event.target.value);
+  };
+
+  const passwordHandler = (event) => {
+    setPassword(event.target.value);
   };
 
   return (
@@ -119,15 +171,16 @@ const SideBar = () => {
             Study Groups
           </ListItem>
         </NavLink>
-        {login ? (
+
+        {user.isLoggedIn ? (
           <>
-            <ListItem onClick={handleOpen}>
+            <ListItem onClick={handleOpenLogout}>
               <ListItemPrefix>
                 <PowerIcon className="h-5 w-5" />
               </ListItemPrefix>
               Log Out
             </ListItem>
-            <Dialog open={open} handler={handleOpen}>
+            <Dialog open={openLogout} handler={handleOpenLogout}>
               <DialogHeader>Logout</DialogHeader>
               <DialogBody divider>
                 Do you really wish to leave and logout? All unsaved changes will
@@ -136,20 +189,22 @@ const SideBar = () => {
               <DialogFooter>
                 <Button
                   variant="text"
-                  onClick={handleOpen}
+                  onClick={handleOpenLogout}
                   className="mr-1 text-indigo-300"
                 >
                   <span>Cancel</span>
                 </Button>
-                <Button className="bg-indigo-300" onClick={handleLogin}>
-                  <span>Confirm</span>
-                </Button>
+                <NavLink to={"/dashboard"}>
+                  <Button className="bg-indigo-300" onClick={handleLogout}>
+                    <span>Confirm</span>
+                  </Button>
+                </NavLink>
               </DialogFooter>
             </Dialog>
           </>
         ) : (
           <>
-            <ListItem onClick={handleOpen}>
+            <ListItem onClick={handleOpenLogin}>
               <ListItemPrefix>
                 <ArrowRightOnRectangleIcon className="h-5 w-5" />
               </ListItemPrefix>
@@ -157,8 +212,8 @@ const SideBar = () => {
             </ListItem>
             <Dialog
               size="xs"
-              open={open}
-              handler={handleOpen}
+              open={openLogin}
+              handler={handleOpenLogin}
               className="bg-transparent shadow-none"
             >
               <Card className="mx-auto w-full max-w-[24rem]">
@@ -170,36 +225,60 @@ const SideBar = () => {
                     Sign In
                   </Typography>
                 </CardHeader>
+
                 <CardBody className="flex flex-col gap-4">
-                  <Input label="Email" size="lg" />
-                  <Input label="Password" size="lg" />
-                  <div className="-ml-2.5">
-                    <Checkbox label="Remember Me" />
-                  </div>
+                  {alert && (
+                    <div className="flex w-full flex-col gap-2">
+                      <Alert
+                        className="bg-indigo-300"
+                        icon={
+                          <InformationCircleIcon
+                            strokeWidth={2}
+                            className="h-6 w-6"
+                          />
+                        }
+                      >
+                        Error: {user.error}
+                      </Alert>
+                    </div>
+                  )}
+
+                  <Input
+                    label="Username"
+                    size="lg"
+                    onChange={userNameHandler}
+                  />
+                  <Input
+                    label="Password"
+                    type="Password"
+                    size="lg"
+                    onChange={passwordHandler}
+                  />
                 </CardBody>
                 <CardFooter className="pt-0">
-                  <Button
-                    className="bg-indigo-300"
-                    onClick={handleLogin}
-                    fullWidth
-                  >
-                    Sign In
-                  </Button>
-                  <Typography
-                    variant="small"
-                    className="mt-6 flex justify-center"
-                  >
-                    Don&apos;t have an account?
-                    <Typography
-                      as="a"
-                      href="#signup"
-                      variant="small"
-                      className="ml-1 font-bold text-indigo-300"
-                      onClick={handleOpen}
+                  <NavLink to={"/dashboard"}>
+                    <Button
+                      className="bg-indigo-300"
+                      onClick={handleLogin}
+                      fullWidth
                     >
-                      Sign up
+                      Sign In
+                    </Button>
+                  </NavLink>
+                  <div className="mt-6 flex justify-center items-center">
+                    <Typography variant="small">
+                      Don&apos;t have an account?
                     </Typography>
-                  </Typography>
+                    <NavLink to={"/register"}>
+                      <Typography
+                        variant="small"
+                        className="ml-1 font-bold text-indigo-300"
+                        onClick={handleOpenLogin}
+                      >
+                        Sign up
+                      </Typography>
+                    </NavLink>
+                  </div>
                 </CardFooter>
               </Card>
             </Dialog>
