@@ -48,8 +48,6 @@ const editFlashcard = async (req, res, next) => {
     
     const module = await Module.findById(id);
 
-    console.log("id: " + id + ", idx: " + cardIndex);
-
     module.questions[cardIndex] = req.body.question;
     module.answers[cardIndex] = req.body.answer;
 

@@ -1,9 +1,11 @@
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Typography } from "@material-tailwind/react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const ProfilePage = () => {
   // Referenced https://www.pluralsight.com/guides/uploading-files-with-reactjs for file upload
+  const user = useSelector((state) => state.loginReducer);
   const [selectedFile, setSelectedFile] = useState();
   const [isFilePicked, setIsFilePicked] = useState(false);
 
@@ -74,6 +76,7 @@ const ProfilePage = () => {
                   type="text"
                   name="username"
                   id="username"
+                  defaultValue={user.isLoggedIn ? user.user.username : ""}
                   autoComplete="username"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 />
@@ -94,6 +97,7 @@ const ProfilePage = () => {
                   type="text"
                   name="first-name"
                   id="first-name"
+                  defaultValue={user.isLoggedIn ? user.user.firstName : ""}
                   autoComplete="given-name"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -113,6 +117,7 @@ const ProfilePage = () => {
                   name="last-name"
                   id="last-name"
                   autoComplete="family-name"
+                  defaultValue={user.isLoggedIn ? user.user.lastName : ""}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -131,6 +136,7 @@ const ProfilePage = () => {
                   name="email"
                   type="email"
                   autoComplete="email"
+                  defaultValue={user.isLoggedIn ? user.user.email : ""}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>

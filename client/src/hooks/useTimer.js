@@ -25,7 +25,6 @@ const useTimer = () => {
   const resetTimerValues = () => {
     setPomodoro((prevPomodoro) => {
       const controlValue = controllers[selectedControl].value;
-      console.log(stages[controlValue]);
       return {
         ...prevPomodoro,
         [controlValue]: pomodoro.totalTimes[selectedControl],
