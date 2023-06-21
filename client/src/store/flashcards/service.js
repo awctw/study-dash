@@ -50,8 +50,34 @@ const addFlashcard = async (cardData) => {
   return response;
 };
 
+const editFlashcard = async (cardData) => {
+  const response = await axios
+    .patch(
+      URL + `flashcards/edit/${cardData.moduleId}`,
+      {
+        question: cardData.question,
+        answer: cardData.answer,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        params: {
+          cardIndex: cardData.cardIndex,
+        },
+      }
+    )
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  return response;
+};
+
 export default {
   addModule,
   getModules,
   addFlashcard,
+  editFlashcard,
 };

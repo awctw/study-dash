@@ -15,9 +15,21 @@ const addModuleAsync = createAsyncThunk(
 
 const addFlashcardAsync = createAsyncThunk(
   actionTypes.ADD_FLASHCARD,
-  async (moduleId, cardData) => {
-    return await flashcardService.addFlashcard(moduleId, cardData);
+  async (cardData) => {
+    return await flashcardService.addFlashcard(cardData);
   }
 );
 
-export { getModulesAsync, addModuleAsync, addFlashcardAsync };
+const editFlashcardAsync = createAsyncThunk(
+  actionTypes.EDIT_FLASHCARD,
+  async (cardData) => {
+    return await flashcardService.editFlashcard(cardData);
+  }
+);
+
+export {
+  getModulesAsync,
+  addModuleAsync,
+  addFlashcardAsync,
+  editFlashcardAsync,
+};

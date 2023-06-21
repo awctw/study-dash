@@ -1,12 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { REQUEST_STATE } from "../utils";
-import { addFlashcardAsync, addModuleAsync, getModulesAsync } from "./thunks";
+import {
+  addFlashcardAsync,
+  addModuleAsync,
+  editFlashcardAsync,
+  getModulesAsync,
+} from "./thunks";
 
 const INIT_STATE = {
   modules: [],
   getModules: REQUEST_STATE.IDLE,
   addModule: REQUEST_STATE.IDLE,
   addFlashcard: REQUEST_STATE.IDLE,
+  editFlashcard: REQUEST_STATE.IDLE,
   error: null,
 };
 
@@ -55,10 +61,28 @@ const flashcardSlice = createSlice({
       .addCase(addFlashcardAsync.rejected, (state, action) => {
         state.addFlashcard = REQUEST_STATE.REJECTED;
         state.error = action.error;
+      })
+      .addCase(editFlashcardAsync.pending, (state) => {
+        state.editFlashcard = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(editFlashcardAsync.fulfilled, (state, action) => {
+        state.editFlashcard = REQUEST_STATE.FULFILLED;
+
+        const idx = state.modules.findIndex(
+          (module) => module._id === action.payload.id
+        );
+
+        const cardIndex = Number(action.payload.index);
+
+        state.modules[idx].questions[cardIndex] = action.payload.question;
+        state.modules[idx].answers[cardIndex] = action.payload.answer;
+      })
+      .addCase(editFlashcardAsync.rejected, (state, action) => {
+        state.editFlashcard = REQUEST_STATE.REJECTED;
+        state.error = action.error;
       });
   },
 });
-
-export const { addModule, addFlashcard } = flashcardSlice.actions;
 
 export default flashcardSlice.reducer;

@@ -4,7 +4,6 @@ import {
   Card,
   CardBody,
   Dialog,
-  IconButton,
   Input,
   Textarea,
   Tooltip,
@@ -12,7 +11,6 @@ import {
 } from "@material-tailwind/react";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addFlashcard } from "../../store/flashcards/reducer";
 import { addFlashcardAsync } from "../../store/flashcards/thunks";
 
 const AddFlashcard = (props) => {

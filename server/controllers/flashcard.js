@@ -42,10 +42,36 @@ const addFlashcard = async (req, res, next) => {
         });
 }
 
+const editFlashcard = async (req, res, next) => {
+
+    const id = req.params.moduleId, cardIndex = req.query.cardIndex;
+    
+    const module = await Module.findById(id);
+
+    console.log("id: " + id + ", idx: " + cardIndex);
+
+    module.questions[cardIndex] = req.body.question;
+    module.answers[cardIndex] = req.body.answer;
+
+    await module.save()
+        .then(() => {
+            res.status(200).send({
+                id: module._id,
+                index: cardIndex,
+                question: module.questions[cardIndex],
+                answer: module.answers[cardIndex],
+            });
+        })
+        .catch(err => {
+            res.status(400).send(err);
+        });
+}
+
 module.exports = {
     addModule,
     getAllModules,
     addFlashcard,
+    editFlashcard,
 }
 
 /**
