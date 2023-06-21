@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { addModule, getAllModules, addFlashcard, editFlashcard } = require('../controllers/flashcard');
+const { addModule, getAllModules, addFlashcard, editFlashcard } = require('../controllers/flashcard.controller');
 
 router.post('/', addModule);
 

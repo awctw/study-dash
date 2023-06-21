@@ -1,4 +1,4 @@
-const Module = require('../models/flashcard');
+const Module = require('../models/flashcard.model');
 
 const addModule = async (req, res, next) => {
     const module = new Module({
