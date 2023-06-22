@@ -71,11 +71,6 @@ const Overview = (props) => {
             >
               Start Review!
             </Button>
-            <FlashCardModal
-              visible={visible}
-              setVisible={setVisible}
-              moduleId={modId}
-            />
           </CardFooter>
         </Card>
       ) : (
@@ -99,7 +94,11 @@ const Overview = (props) => {
             />
           </div>
           <CardFooter className="py-3 border-t border-gray-400/50">
-            <AddModuleModal visible={initVisible} setVisible={setInitVisible}>
+            <AddModuleModal
+              visible={initVisible}
+              setVisible={setInitVisible}
+              setMainVisible={setVisible}
+            >
               <Button
                 onClick={() => {
                   setInitVisible(true);
@@ -112,6 +111,11 @@ const Overview = (props) => {
           </CardFooter>
         </Card>
       )}
+      <FlashCardModal
+        visible={visible}
+        setVisible={setVisible}
+        moduleId={modId}
+      />
     </>
   );
 };

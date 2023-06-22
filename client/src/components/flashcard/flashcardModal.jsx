@@ -1,17 +1,12 @@
 import {
   Dialog,
-  DialogBody,
-  DialogHeader,
-  DialogFooter,
   Button,
   Card,
   List,
   ListItem,
   Typography,
-  ListItemPrefix,
-  IconButton,
 } from "@material-tailwind/react";
-import { BookOpenIcon, CubeIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { PlusIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Cards from "./flashcards";

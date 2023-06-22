@@ -14,12 +14,9 @@ import {
 } from "@material-tailwind/react";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
-import { addModule } from "../../store/flashcards/reducer";
 import { addModuleAsync } from "../../store/flashcards/thunks";
 
 const AddModuleModal = (props) => {
-  const [visible, setVisible] = useState(false);
   const [name, setName] = useState("");
 
   const dispatch = useDispatch();
@@ -62,6 +59,7 @@ const AddModuleModal = (props) => {
                 if (name.length <= 0) return;
                 handleAdd();
                 props.setVisible(false);
+                if (props.setMainVisible) props.setMainVisible(true);
               }}
             >
               Confirm
