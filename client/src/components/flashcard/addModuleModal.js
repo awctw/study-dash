@@ -30,21 +30,14 @@ const AddModuleModal = (props) => {
 
   return (
     <>
-      <Button
-        color="blue-gray"
-        variant="text"
-        className="flex items-center h-10 justify-center mx-2 border border-gray-400/70"
-        onClick={() => setVisible(true)}
-      >
-        <PlusIcon className="h-5 w-5 text-center" />
-      </Button>
+      {props.children}
       <Dialog
-        open={visible}
-        handler={setVisible}
+        open={props.visible}
+        handler={props.setVisible}
         size="md"
         className="flex flex-row bg-transparent shadow-none items-center justify-center"
       >
-        <Card className="relative flex w-2/4 rounded-lg overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100">
+        <Card className="relative flex w-2/4 rounded-lg overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100">
           <CardBody className="mb-2">
             <Typography variant="h5" color="blue-gray" className="mb-2">
               Add a Module!
@@ -66,8 +59,9 @@ const AddModuleModal = (props) => {
               color="blue-gray"
               className="flex items-center mt-3 border border-gray-400/70"
               onClick={() => {
-                setVisible(false);
+                if (name.length <= 0) return;
                 handleAdd();
+                props.setVisible(false);
               }}
             >
               Confirm
