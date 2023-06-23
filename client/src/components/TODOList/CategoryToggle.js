@@ -1,21 +1,35 @@
-import React from "react";
-import { Button, Option, Select } from "@material-tailwind/react";
+import React, { useEffect, useState } from "react";
+import { Button, Option, Select, Spinner } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteCategory } from "../../store/todoListSlice";
+import thunk from "../../store/TODOList/thunk";
 
 // CategoryToggle provides a dropdown menu for selecting a specific category to filter
 // TODOItems by category. handleCategoryChange() handles the
 // change event of the dropdown and performs the filtering logic.
 function CategoryToggle({ handleCategoryChange }) {
-  const categories = useSelector((state) => state.todoReducer.categories);
+  const { categories, fetchCategoryList } = useSelector(
+    (state) => state.todoReducer
+  );
+
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  // updates category list in redux store from server whenever list is
+  // updated
+  useEffect(() => {
+    setLoading(true);
+    dispatch(thunk.getCategoryListAsync()).then(() => {
+      setLoading(false);
+    });
+  }, [dispatch, fetchCategoryList]);
 
   const handleDelete = (category) => {
-    dispatch(deleteCategory(category));
+    dispatch(thunk.deleteCategoryAsync(category));
   };
 
   return (
     <div className="m-2 w-60">
+      {loading && <Spinner className="h-10 w-10" />}
       <Select
         id="categoryFilter"
         label="Search by Category"

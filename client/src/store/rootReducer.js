@@ -1,4 +1,4 @@
-import todoListReducer from "./todoListSlice";
+import todoListReducer from "./TODOList/todoListSlice";
 import flashcardReducer from "./flashcards/reducer";
 import loginReducer from "./authentication/loginSlice";
 import { configureStore } from "@reduxjs/toolkit";

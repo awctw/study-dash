@@ -1,23 +1,54 @@
-import React from "react";
-import { Typography } from "@material-tailwind/react";
+import React, { useEffect, useState } from "react";
+import { Spinner, Typography } from "@material-tailwind/react";
 import ListView from "./ListView";
+import { useDispatch, useSelector } from "react-redux";
+import thunk from "../../store/TODOList/thunk";
 
-const TODOListViewer = ({ todos }) => {
+const TODOListViewer = ({ selectedCategory }) => {
+  // The useSelector hook extracts the TODOList array from the todoListSlice
+  // slice in the rootReducer. TODOList is already sorted by due-date in
+  // the server
+  const { TODOList, fetchTODOList } = useSelector((state) => state.todoReducer);
+
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+
+  // updates todoList in redux store from server whenever list is
+  // updated
+  useEffect(() => {
+    setLoading(true);
+    dispatch(thunk.getTODOListAsync()).then(() => {
+      setLoading(false);
+    });
+  }, [dispatch, fetchTODOList]);
+
   // isVisibleTODOListEmpty checks if the todos array is empty.
   const isVisibleTODOListEmpty = () => {
-    return todos.length === 0;
+    return getVisibleTODOs().length === 0;
+  };
+
+  // The getVisibleTODOs function is defined to filter the TODOList based on the selected category.
+  const getVisibleTODOs = () => {
+    if (!selectedCategory) {
+      return TODOList;
+    }
+    return TODOList.filter((todo) => todo.category === selectedCategory);
   };
 
   // Only render the ListView if the isVisibleTODOListEmpty function returns false,
   // indicating that there are visible TODOItems to display.
   return (
-    // className="border-black border-solid border-2 p-3 rounded-2xl"
     <div>
       <header className="flex justify-between">
         <Typography variant="h5">TODO List</Typography>
-        <Typography variant="small">Total Todos: {todos.length}</Typography>
+        <Typography variant="small">
+          Total Todos: {getVisibleTODOs().length}
+        </Typography>
       </header>
-      {!isVisibleTODOListEmpty() && <ListView visibleTODOs={todos} />}
+      {loading && <Spinner className="h-10 w-10" />}
+      {!isVisibleTODOListEmpty() && (
+        <ListView visibleTODOs={getVisibleTODOs()} />
+      )}
     </div>
   );
 };
