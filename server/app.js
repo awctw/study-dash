@@ -10,6 +10,7 @@ var userRouter = require("./routes/user");
 var authRouter = require("./routes/auth");
 var dbConfig = require("./config/db.config");
 var TODOListRouter = require('./routes/TODOList');
+var flashcardRouter = require('./routes/flashcards');
 
 var app = express();
 
@@ -32,6 +33,7 @@ app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
 app.use('/api/TODOList', TODOListRouter);
+app.use("/flashcards", flashcardRouter);
 
 const db = require("./models");
 
