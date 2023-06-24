@@ -4,15 +4,15 @@ import chartSettingsService from "./service";
 
 const getChartSettingsAsync = createAsyncThunk(
   actionTypes.GET_CHARTSETTINGS,
-  async () => {
-    return await chartSettingsService.getChartSettings();
+  async (userEmail) => {
+    return await chartSettingsService.getChartSettings(userEmail);
   }
 );
 
 const putChartSettingsAsync = createAsyncThunk(
   actionTypes.PUT_CHARTSETTINGS,
-  async (chartSetting) => {
-    return await chartSettingsService.putChartSettings(chartSetting);
+  async (userEmail, chartSetting) => {
+    return await chartSettingsService.putChartSettings(userEmail, chartSetting);
   }
 );
 

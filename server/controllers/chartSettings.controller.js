@@ -1,7 +1,7 @@
 const ChartSettings= require('../models/chartSettings.model');
 
 const getChartSettings = async (req, res, next) => {
-    await ChartSettings.find({ userID: req.params.userID })
+    await ChartSettings.find({ userEmail: req.params.userEmail })
         .then((result) => {
             res.status(200).send(result);
         })
@@ -11,7 +11,7 @@ const getChartSettings = async (req, res, next) => {
 }
 
 const putChartSettings = async (req, res, next) => {
-    await ChartSettings.findOneAndUpdate({ userID: req.params.userID },
+    await ChartSettings.findOneAndUpdate({ userEmail: req.params.userEmail },
         req.body, { new: true, upsert: true })
         .then((result) => {
             res.status(200).send({

@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import * as d3 from "d3";
 import "../../Styles/GanttChart.css"
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {getChartSettingsAsync} from "../../store/chartSettings/thunks";
 
 const Days = {
     Sunday: Symbol("Sunday"),
@@ -200,6 +201,14 @@ const GanttChart = (props) => {
     ]);
 
     const user = useSelector((state) => state.loginReducer);
+    const chartSettings = useSelector((state) => state.chartSettingsReducer.chartSettings);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (user.isLoggedIn) {
+            dispatch(getChartSettingsAsync(user.user.email));
+        }
+    }, [dispatch, user]);
 
     // Chart consts
     const SVG_ID = 'gantt-chart-svg';
