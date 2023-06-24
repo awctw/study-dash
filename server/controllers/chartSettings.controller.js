@@ -23,3 +23,8 @@ const putChartSettings = async (req, res, next) => {
             res.status(400).send(err);
         });
 }
+
+module.exports = {
+    getChartSettings,
+    putChartSettings,
+}
