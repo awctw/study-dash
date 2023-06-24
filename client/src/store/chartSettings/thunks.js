@@ -11,8 +11,8 @@ const getChartSettingsAsync = createAsyncThunk(
 
 const putChartSettingsAsync = createAsyncThunk(
   actionTypes.PUT_CHARTSETTINGS,
-  async (userEmail, chartSetting) => {
-    return await chartSettingsService.putChartSettings(userEmail, chartSetting);
+  async (update) => {
+    return await chartSettingsService.putChartSettings(update);
   }
 );
 

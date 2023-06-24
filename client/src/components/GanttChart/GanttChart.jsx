@@ -393,6 +393,7 @@ const GanttChart = (props) => {
               <div><i>Completion: ${d.percentCompletion}%</i></div>
               <div><i>Start Time: ${d.startTime.toLocaleTimeString()}</i></div>
               <div><i>End Time: ${d.endTime.toLocaleTimeString()}</i></div>
+              <div><i>Category: ${d.category}</i></div>
               <div>${d.description}</div>
             `);
             })
@@ -414,7 +415,7 @@ const GanttChart = (props) => {
             d.name = d.name.substring(0, d.name.lastIndexOf("-"));
             return d;
         })
-    }, [data, props]);
+    }, [chartSettings.categoryColors, data, props]);
 
     // Update the chart if data changes
     useEffect(() => {

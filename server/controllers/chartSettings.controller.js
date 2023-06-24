@@ -35,8 +35,9 @@ const putChartSettings = async (req, res, next) => {
         req.body, { new: true, upsert: true })
         .then((result) => {
             res.status(200).send({
-               axisScale: result.axisScale,
-               categoryColors: result.categoryColors
+                userEmail: req.params.userEmail,
+                axisScale: result.axisScale,
+                categoryColors: result.categoryColors
             });
         })
         .catch(err => {

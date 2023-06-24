@@ -11,13 +11,9 @@ const getChartSettings = async (userEmail) => {
     });
 };
 
-const putChartSettings = async (userEmail, chartSettings) => {
+const putChartSettings = async (update) => {
   return await axios
-    .put(URL + `chartSettings/${userEmail}`, chartSettings, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    .put(URL + `chartSettings/${update[0]}`, update[1])
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);
