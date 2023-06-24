@@ -1,6 +1,7 @@
 /* Tooltip */
 #gantt-chart-tooltip {
   position: absolute;
+  z-index: 1;
   display: none;
   background: #fff;
   box-shadow: 3px 3px 3px 0px rgb(92 92 92 / 0.5);
@@ -15,4 +16,10 @@
   color: #000;
   font-size: 14px;
   font-weight: 600;
+}
+
+.gantt-chart {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 300px;
 }

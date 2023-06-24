@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import * as d3 from "d3";
 import "../../Styles/GanttChart.css"
+import {useDispatch, useSelector} from "react-redux";
+import {getChartSettingsAsync} from "../../store/chartSettings/thunks";
 
 const Days = {
     Sunday: Symbol("Sunday"),
@@ -23,8 +25,8 @@ const GanttChart = (props) => {
             startTime: new Date(Date.now()),
             endTime: new Date(Date.now() + 60 * 60000),
             description: "Habit taking place right now for 1 hour; repeats MWF.",
-            color: '#03FCA5',
-            percentCompletion: 75
+            percentCompletion: 75,
+            category: "Biology"
         },
         {
             id: 2,
@@ -35,8 +37,8 @@ const GanttChart = (props) => {
             startTime: new Date(Date.now() - 180 * 60000),
             endTime: new Date(Date.now() + 240 * 60000),
             description: "One-time todo which started 3 hours ago.",
-            color: '#A103FC',
-            percentCompletion: 75
+            percentCompletion: 75,
+            category: "Chemistry"
         },
         {
             id: 3,
@@ -47,8 +49,8 @@ const GanttChart = (props) => {
             startTime: new Date(Date.now() + 120 * 60000),
             endTime: new Date(Date.now() + 180 * 60000),
             description: "Todo taking place in 2 hours; repeats MWF.",
-            color: '#F403FC',
-            percentCompletion: 75
+            percentCompletion: 75,
+            category: "Computer Science"
         },
         {
             id: 4,
@@ -69,8 +71,8 @@ const GanttChart = (props) => {
                 return date;
             })(),
             description: "Habit that took place 1 day in the past.",
-            color: '#03DBFC',
-            percentCompletion: 100
+            percentCompletion: 100,
+            category: "Language Arts"
         },
         {
             id: 5,
@@ -91,8 +93,8 @@ const GanttChart = (props) => {
                 return date;
             })(),
             description: "Habit taking place 1 day in the future.",
-            color: '#AD8886',
-            percentCompletion: 0
+            percentCompletion: 0,
+            category: "Math"
         },
         {
             id: 6,
@@ -103,8 +105,8 @@ const GanttChart = (props) => {
             startTime: new Date(Date.now() - 180 * 60000),
             endTime: new Date(Date.now() + 240 * 60000),
             description: "One-time todo which started 3 hours ago.",
-            color: '#A103FC',
-            percentCompletion: 75
+            percentCompletion: 75,
+            category: "Musical Art"
         },
         {
             id: 7,
@@ -115,8 +117,8 @@ const GanttChart = (props) => {
             startTime: new Date(Date.now() - 180 * 60000),
             endTime: new Date(Date.now() + 240 * 60000),
             description: "One-time todo which started 3 hours ago.",
-            color: '#A103FC',
-            percentCompletion: 75
+            percentCompletion: 75,
+            category: "Physics"
         },
         {
             id: 8,
@@ -127,23 +129,104 @@ const GanttChart = (props) => {
             startTime: new Date(Date.now() - 180 * 60000),
             endTime: new Date(Date.now() + 240 * 60000),
             description: "One-time todo which started 3 hours ago.",
-            color: '#A103FC',
-            percentCompletion: 75
+            percentCompletion: 75,
+            category: "Sports"
+        },
+        {
+            id: 9,
+            userId: 1,
+            name: "Far Future Habit",
+            isRepeating: false,
+            daysOfTheWeek: null,
+            startTime: (function() {
+                const date = new Date();
+                date.setDate(date.getDate() + 1);
+                date.setHours(date.getHours() - 5);
+                return date;
+            })(),
+            endTime: (function() {
+                const date = new Date();
+                date.setDate(date.getDate() + 1);
+                date.setHours(date.getHours() - 3);
+                return date;
+            })(),
+            description: "Habit taking place 1 day in the future.",
+            percentCompletion: 0,
+            category: "Visual Arts"
+        },
+        {
+            id: 10,
+            userId: 1,
+            name: "Far Future Habit",
+            isRepeating: false,
+            daysOfTheWeek: null,
+            startTime: (function() {
+                const date = new Date();
+                date.setDate(date.getDate() + 1);
+                date.setHours(date.getHours() - 5);
+                return date;
+            })(),
+            endTime: (function() {
+                const date = new Date();
+                date.setDate(date.getDate() + 1);
+                date.setHours(date.getHours() - 3);
+                return date;
+            })(),
+            description: "Habit taking place 1 day in the future.",
+            percentCompletion: 0,
+            category: "Work"
+        },
+        {
+            id: 11,
+            userId: 1,
+            name: "Far Future Habit",
+            isRepeating: false,
+            daysOfTheWeek: null,
+            startTime: (function() {
+                const date = new Date();
+                date.setDate(date.getDate() + 1);
+                date.setHours(date.getHours() - 5);
+                return date;
+            })(),
+            endTime: (function() {
+                const date = new Date();
+                date.setDate(date.getDate() + 1);
+                date.setHours(date.getHours() - 3);
+                return date;
+            })(),
+            description: "Habit taking place 1 day in the future.",
+            percentCompletion: 0,
+            category: "Biology"
         }
     ]);
 
+    const user = useSelector((state) => state.loginReducer);
+    const chartSettings = useSelector((state) => state.chartSettingsReducer.chartSettings);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (user.isLoggedIn) {
+            dispatch(getChartSettingsAsync(user.user.email));
+        }
+    }, [dispatch, user]);
+
+    // Chart consts
     const SVG_ID = 'gantt-chart-svg';
+    const X_AXIS_SVG_ID = 'gantt-chart-x-axis-svg';
     const CHART_ID = 'gantt-chart-g';
     const X_AXIS_G_ID = 'gantt-x-axis-g'
     const Y_AXIS_G_ID = 'gantt-y-axis-g'
+    const CIRCLE_RADIUS = 5;
     const renderChart = useCallback(() => {
         // Chart dimension calculation
         let containerWidth, containerHeight, margin, tooltipPadding;
         if (props.containerWidth === undefined) {
             containerWidth = 720;
         }
+        // Increasing containerHeight affects inner chart height
         if (props.containerHeight === undefined) {
-            containerHeight = 300;
+            // 40 px per item
+            containerHeight = 40 * data.length;
         }
         if (props.margin === undefined) {
             margin = {
@@ -178,28 +261,44 @@ const GanttChart = (props) => {
 
         // Chart group appending
         let svg = d3.select('#' + SVG_ID);
-        let chart, xAxisG, yAxisG;
+        let chart, xAxisSVG, xAxisG, yAxisG;
         if (svg.empty()) {
-            svg = d3.select('.gantt-chart').append('svg')
+            const container = d3.select('.gantt-chart');
+
+            // Create a separate SVG for the x-axis and add background rect
+            xAxisSVG = container.append('svg')
+                .attr('id', X_AXIS_SVG_ID)
+                .attr('width', containerWidth)
+                .attr('height', margin.top + CIRCLE_RADIUS)
+                .style('position', 'absolute');
+            xAxisSVG.append('rect')
+                .attr('width', containerWidth)
+                .attr('height', margin.top)
+                .style('fill', 'white');
+            xAxisG = xAxisSVG.append('g')
+                .attr('id', X_AXIS_G_ID)
+                .attr('class', 'axis x-axis')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`)
+                .style('font-size', 12);
+
+            svg = container.append('svg')
                 .attr('id', SVG_ID)
                 .attr('width', containerWidth)
                 .attr('height', containerHeight);
 
+            // Add overflow-y for scrolling
             chart = svg.append('g')
                 .attr('id', CHART_ID)
-                .attr('transform', `translate(${margin.left}, ${margin.top})`);
-
-            xAxisG = chart.append('g')
-                .attr('id', X_AXIS_G_ID)
-                .attr('class', 'axis x-axis')
-                .style('font-size', 12)
+                .attr('transform', `translate(${margin.left}, ${margin.top})`)
+                .style("overflow-y", "scroll");
 
             yAxisG = chart.append('g')
                 .attr('id', Y_AXIS_G_ID)
                 .attr('class', 'axis y-axis')
-                .style('font-size', 12)
+                .style('font-size', 12);
         } else {
             chart = d3.select('#' + CHART_ID);
+            xAxisSVG = d3.select('#' + X_AXIS_SVG_ID);
             xAxisG = d3.select('#' + X_AXIS_G_ID);
             yAxisG = d3.select('#' + Y_AXIS_G_ID);
         }
@@ -209,8 +308,8 @@ const GanttChart = (props) => {
         const yValue = d => d.name;
 
         // Set domains and filter/format data
-        const xDomainStart = Date.now() - 24 * 60 * 60 * 1000;
-        const xDomainEnd = Date.now() + 24 * 60 * 60 * 1000;
+        const xDomainStart = Date.now() - chartSettings.axisScale * 60 * 60 * 1000;
+        const xDomainEnd = Date.now() + chartSettings.axisScale * 60 * 60 * 1000;
         const filteredData = data.filter(d => xDomainStart <= d.endTime && d.startTime <= xDomainEnd);
         const formattedData = filteredData.map((d, i) => {
             d.name = d.name +  '-' + i; // This allows for duplicate habit/to do names
@@ -226,12 +325,13 @@ const GanttChart = (props) => {
         const LINE_ID = "now-line";
         d3.select('#' + CIRCLE_ID).remove();
         d3.select('#' + LINE_ID).remove();
-        svg.append("circle")
+        xAxisSVG.append("circle")
             .attr("id", CIRCLE_ID)
             .attr("class", "circle")
             .attr("cx", xCoordNow)
             .attr("cy", margin.top)
-            .attr("r", 5)
+            .attr("r", CIRCLE_RADIUS)
+            .style("position", "absolute");
         svg.append("line")
             .attr("id", LINE_ID)
             .attr("class", "line")
@@ -272,7 +372,13 @@ const GanttChart = (props) => {
             })
             .attr('height', yScale.bandwidth())
             .attr('y', d => yScale(yValue(d)))
-            .attr('fill', d => d.color)
+            .attr('fill', (d) => {
+                const categoryColor = chartSettings.categoryColors.find(c => c.category === d.category);
+                if (categoryColor !== undefined) {
+                    return categoryColor.color;
+                }
+                return "#000000";
+            })
             .attr('stroke-width', 1)
             .attr('stroke', 'black');
 
@@ -287,6 +393,7 @@ const GanttChart = (props) => {
               <div><i>Completion: ${d.percentCompletion}%</i></div>
               <div><i>Start Time: ${d.startTime.toLocaleTimeString()}</i></div>
               <div><i>End Time: ${d.endTime.toLocaleTimeString()}</i></div>
+              <div><i>Category: ${d.category}</i></div>
               <div>${d.description}</div>
             `);
             })
@@ -308,7 +415,7 @@ const GanttChart = (props) => {
             d.name = d.name.substring(0, d.name.lastIndexOf("-"));
             return d;
         })
-    }, [data, props]);
+    }, [chartSettings, data, props]);
 
     // Update the chart if data changes
     useEffect(() => {
