@@ -144,6 +144,7 @@ const GanttChart = (props) => {
         if (props.containerWidth === undefined) {
             containerWidth = 720;
         }
+        // Increasing containerHeight affects inner chart height
         if (props.containerHeight === undefined) {
             containerHeight = 300;
         }
