@@ -86,6 +86,8 @@ const FlashCardModal = (props) => {
           className="w-3/4 rounded-lg ml-2 items-center shadow-none"
           key={key}
         >
+          {/* needs at least 1 child */}
+          <></>
           {id && <Cards moduleId={id} reset={handleReset} />}
         </Card>
       </Dialog>
