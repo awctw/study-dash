@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 import {
@@ -6,17 +6,22 @@ import {
   Card,
   Dialog,
   Input,
+  Spinner,
   Textarea,
 } from "@material-tailwind/react";
-import { addCategory, addTODO } from "../../store/todoListSlice";
+import thunk from "../../store/TODOList/thunk";
+import { REQUEST_STATE } from "../../store/utils";
 
 // AddTODOItem component provides a form to add new TODOItems
 const AddTODOItem = () => {
   const dispatch = useDispatch();
-  const categories = useSelector((state) => state.todoReducer.categories);
+  const { addTODOItem, error, categories } = useSelector(
+    (state) => state.todoReducer
+  );
 
   // openAddTODO is used to control the visibility of the addTODO dialog popup.
   const [openAddTODO, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // formData state variable is used to store the values entered in the form.
   const [formData, setFormData] = useState({
@@ -26,7 +31,7 @@ const AddTODOItem = () => {
     category: "",
   });
 
-  const [error, setError] = useState("");
+  const [errMessage, setErrMessage] = useState("");
 
   const handleOpen = () => {
     setOpen(!openAddTODO);
@@ -55,13 +60,13 @@ const AddTODOItem = () => {
   // It performs validation on the input fields to ensure that the required
   // fields are not empty. If any of the required fields are empty, an error
   // message is set in the error state variable.
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const { title, dueDate, description, category } = formData;
 
     if (!title || !dueDate || !description || !category) {
-      setError("Please provide all required fields.");
+      setErrMessage("Please provide all required fields.");
       return;
     }
 
@@ -72,12 +77,13 @@ const AddTODOItem = () => {
       category,
     };
 
-    dispatch(addTODO(newTodo));
+    setLoading(true);
+    const success = await dispatch(thunk.addTODOItemAsync(newTodo));
+    setLoading(false);
 
-    // The addCategory action is dispatched to update the category list
-    // in the Redux store if the category value does not already exist in the categories array.
-    dispatch(addCategory(category));
-    handleOpen();
+    if (success) {
+      setOpen(false);
+    }
   };
 
   const resetFormHandler = () => {
@@ -87,8 +93,18 @@ const AddTODOItem = () => {
       description: "",
       category: "",
     });
-    setError("");
+    setErrMessage("");
   };
+
+  useEffect(() => {
+    if (addTODOItem === REQUEST_STATE.FULFILLED) {
+      resetFormHandler();
+    }
+
+    if (addTODOItem === REQUEST_STATE.REJECTED && error) {
+      setErrMessage(error);
+    }
+  }, [addTODOItem, error]);
 
   return (
     <>
@@ -154,7 +170,10 @@ const AddTODOItem = () => {
                 ))}
               </datalist>
             </div>
-            {error && <p className="error-msg">{error}</p>}
+
+            {loading && <Spinner className="h-10 w-10" />}
+            {errMessage && <p className="error-msg">{errMessage}</p>}
+
             <div className="AddTODOButtons">
               <Button color="light-blue" size="sm" type="submit">
                 Confirm
