@@ -11,6 +11,7 @@ var authRouter = require("./routes/auth");
 var dbConfig = require("./config/db.config");
 var TODOListRouter = require('./routes/TODOList');
 var flashcardRouter = require('./routes/flashcards');
+var habitRouter = require('./routes/habits');
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.use("/user", userRouter);
 app.use("/auth", authRouter);
 app.use('/api/TODOList', TODOListRouter);
 app.use("/flashcards", flashcardRouter);
+app.use("/habits", habitRouter);
 
 const db = require("./models");
 

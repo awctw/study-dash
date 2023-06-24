@@ -15,13 +15,44 @@ import {
 } from "@material-tailwind/react";
 import { ListBulletIcon } from "@heroicons/react/24/solid";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const HabitsView = () => {
   /* Adapted From Material UI Docs */
   const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+
+  const [habitsToggle, setHabitsToggle] = useState(false);
 
   const handleOpen = () => setOpen(!open);
+
+  const [habits, setHabits] = useState([]);
+  // let habits = [{name: "donut"}, {name: "testing"}]
+
+  const getHabits = async () => {
+    let res = await fetch("http://localhost:8080/habits", {
+      method: "GET",
+    });
+    return res.json()
+  }
+  
+  useEffect(() => {
+    getHabits().then((newHabits) => setHabits(newHabits));
+  }, [habitsToggle])
+
+  const addNewHabit = async () => {
+    console.log(name);
+    let res = { "name": name }
+    await fetch("http://localhost:8080/habits", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(res)
+    })
+    setHabitsToggle(!habitsToggle);
+    handleOpen();
+  }
 
   return (
     <>
@@ -34,66 +65,31 @@ const HabitsView = () => {
             </Typography>
           </div>
           <List>
-            <ListItem className="p-0">
-              <label
-                htmlFor="vertical-list-1"
-                className="px-3 py-2 flex items-center w-full cursor-pointer"
-              >
-                <ListItemPrefix className="mr-3">
-                  <Checkbox
-                    id="vertical-list-1"
-                    ripple={false}
-                    className="hover:before:opacity-0"
-                    containerProps={{
-                      className: "p-0",
-                    }}
-                  />
-                </ListItemPrefix>
-                <Typography color="blue-gray" className="font-medium">
-                  Sketch a Portrait
-                </Typography>
-              </label>
-            </ListItem>
-            <ListItem className="p-0">
-              <label
-                htmlFor="vertical-list-2"
-                className="px-3 py-2 flex items-center w-full cursor-pointer"
-              >
-                <ListItemPrefix className="mr-3">
-                  <Checkbox
-                    id="vertical-list-2"
-                    ripple={false}
-                    className="hover:before:opacity-0"
-                    containerProps={{
-                      className: "p-0",
-                    }}
-                  />
-                </ListItemPrefix>
-                <Typography color="blue-gray" className="font-medium">
-                  Do 20 Pushups
-                </Typography>
-              </label>
-            </ListItem>
-            <ListItem className="p-0">
-              <label
-                htmlFor="vertical-list-3"
-                className="px-3 py-2 flex items-center w-full cursor-pointer"
-              >
-                <ListItemPrefix className="mr-3">
-                  <Checkbox
-                    id="vertical-list-3"
-                    ripple={false}
-                    className="hover:before:opacity-0"
-                    containerProps={{
-                      className: "p-0",
-                    }}
-                  />
-                </ListItemPrefix>
-                <Typography color="blue-gray" className="font-medium">
-                  Finish a LeetCode Problem
-                </Typography>
-              </label>
-            </ListItem>
+            {habits.map((habit) => {
+                return (
+                  <ListItem key={habit._id} className="p-0">
+                    <label
+                      htmlFor={habit._id}
+                      className="px-3 py-2 flex items-center w-full cursor-pointer"
+                    >
+                      <ListItemPrefix className="mr-3">
+                        <Checkbox
+                          id={habit._id}
+                          ripple={false}
+                          className="hover:before:opacity-0"
+                          containerProps={{
+                            className: "p-0",
+                          }}
+                        />
+                      </ListItemPrefix>
+                      <Typography color="blue-gray" className="font-medium">
+                        {habit.name}
+                      </Typography>
+                    </label>
+                  </ListItem>
+                )
+            })
+            }
           </List>
           <div className="flex flex-col items-center mt-8">
             <Button
@@ -108,7 +104,11 @@ const HabitsView = () => {
       <Dialog open={open} handler={handleOpen}>
         <DialogHeader>Add New Habit</DialogHeader>
         <DialogBody>
-          <Input size="lg" label="Name" />
+          <Input size="lg"
+            label="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </DialogBody>
         <DialogFooter>
           <Button
@@ -120,7 +120,7 @@ const HabitsView = () => {
           </Button>
           <Button
             className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100"
-            onClick={handleOpen}
+            onClick={addNewHabit}
           >
             <span>Confirm</span>
           </Button>
