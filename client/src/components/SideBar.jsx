@@ -48,6 +48,7 @@ const SideBar = () => {
   const [alert, setAlert] = useState(false);
 
   const user = useSelector((state) => state.loginReducer);
+  const { TODOList } = useSelector((state) => state.todoReducer);
   const dispatch = useDispatch();
 
   const handleOpenLogin = () => {
@@ -130,7 +131,7 @@ const SideBar = () => {
             TODO
             <ListItemSuffix>
               <Chip
-                value="14"
+                value={TODOList.length}
                 size="sm"
                 variant="ghost"
                 color="blue-gray"

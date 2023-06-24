@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {
@@ -6,43 +6,47 @@ import {
   Card,
   Dialog,
   Input,
+  Spinner,
   Textarea,
 } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
-import { addCategory, editTODO } from "../../store/todoListSlice";
+import thunk from "../../store/TODOList/thunk";
+import { REQUEST_STATE } from "../../store/utils";
 
 // The EditTODO component allows users to edit the properties of a TODOItem
 // through a dialog popup.
-const EditTODO = (props) => {
+const EditTODO = ({ todo }) => {
   const dispatch = useDispatch();
-  const categories = useSelector((state) => state.todoReducer.categories);
+  const { getTODOItem, currentTODOItem, error, categories } = useSelector(
+    (state) => state.todoReducer
+  );
 
   // openEdit state controls the visibility of the edit dialog popup.
   const [openEdit, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // state variables that store the current values for the input fields and error messages.
-  const [title, setTitle] = useState(props.todo.title);
-  const [dueDate, setDueDate] = useState(new Date(props.todo.dueDate));
-  const [description, setDescription] = useState(props.todo.description);
-  const [category, setCategory] = useState(props.todo.category);
-  const [error, setError] = useState("");
+  const [title, setTitle] = useState("");
+  const [dueDate, setDueDate] = useState(null);
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+
+  const [errMessage, setErrMessage] = useState("");
 
   // handleOpen toggles the value of openEdit, which controls the visibility
   // of the edit dialog popup. It also sets the initial values of the input fields
   // and clears the error message.
-  const handleOpen = React.useCallback(() => {
-    setOpen((prevOpen) => !prevOpen);
-    setTitle(props.todo.title);
-    setDueDate(new Date(props.todo.dueDate));
-    setDescription(props.todo.description);
-    setCategory(props.todo.category);
-    setError("");
-  }, [
-    props.todo.title,
-    props.todo.dueDate,
-    props.todo.description,
-    props.todo.category,
-  ]);
+  const handleOpen = () => {
+    setLoading(true);
+    dispatch(thunk.getTODOItemAsync(todo.id));
+    setLoading(false);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setErrMessage("");
+    setOpen(false);
+  };
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -64,28 +68,33 @@ const EditTODO = (props) => {
   // It performs validation on the input fields to ensure that the required
   // fields are not empty. If any of the required fields are empty, an error
   // message is set in the error state variable.
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
     if (!title || !dueDate || !description || !category) {
-      setError("Please provide all required fields.");
+      setErrMessage("Please provide all required fields.");
       return;
     }
 
     const updatedTodo = {
-      ...props.todo,
       title: title,
       dueDate: dueDate.toDateString(),
       description: description,
       category: category,
     };
 
-    dispatch(editTODO(updatedTodo));
+    setLoading(true);
+    const success = await dispatch(
+      thunk.editTODOItemAsync({
+        itemID: currentTODOItem.id,
+        item: updatedTodo,
+      })
+    );
+    setLoading(false);
 
-    // The addCategory action is dispatched to update the category list
-    // in the Redux store if the category value does not already exist in the categories array.
-    dispatch(addCategory(category));
-    handleOpen();
+    if (success) {
+      setOpen(false);
+    }
   };
 
   const resetFormHandler = () => {
@@ -93,8 +102,21 @@ const EditTODO = (props) => {
     setDueDate(null);
     setDescription("");
     setCategory("");
-    setError("");
+    setErrMessage("");
   };
+
+  useEffect(() => {
+    if (getTODOItem === REQUEST_STATE.FULFILLED && currentTODOItem) {
+      setTitle(currentTODOItem.title);
+      setDescription(currentTODOItem.description);
+      setDueDate(new Date(currentTODOItem.dueDate));
+      setCategory(currentTODOItem.category);
+    }
+
+    if (getTODOItem === REQUEST_STATE.REJECTED && error) {
+      setErrMessage(error);
+    }
+  }, [currentTODOItem, error, getTODOItem]);
 
   return (
     <>
@@ -152,7 +174,10 @@ const EditTODO = (props) => {
                 ))}
               </datalist>
             </div>
-            {error && <p className="error-msg">{error}</p>}
+
+            {loading && <Spinner className="h-10 w-10" />}
+            {errMessage && <p className="error-msg">{errMessage}</p>}
+
             <div className="EditTODOButtons">
               <Button color="light-blue" size="sm" type="submit">
                 Confirm
@@ -160,7 +185,7 @@ const EditTODO = (props) => {
               <Button color="gray" size="sm" onClick={resetFormHandler}>
                 Clear
               </Button>
-              <Button color="red" size="sm" onClick={handleOpen}>
+              <Button color="red" size="sm" onClick={handleClose}>
                 Close
               </Button>
             </div>

@@ -12,6 +12,7 @@ var dbConfig = require("./config/db.config");
 var TODOListRouter = require('./routes/TODOList');
 var flashcardRouter = require('./routes/flashcards');
 var habitRouter = require('./routes/habits');
+var chartSettingsRouter = require('./routes/chartSettings');
 
 var app = express();
 
@@ -36,6 +37,7 @@ app.use("/auth", authRouter);
 app.use('/api/TODOList', TODOListRouter);
 app.use("/flashcards", flashcardRouter);
 app.use("/habits", habitRouter);
+app.use("/chartSettings", chartSettingsRouter);
 
 const db = require("./models");
 
