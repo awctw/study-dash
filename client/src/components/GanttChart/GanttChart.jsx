@@ -199,7 +199,7 @@ const GanttChart = (props) => {
         }
     ]);
 
-    // const user = useSelector((state) => state.loginReducer);
+    const user = useSelector((state) => state.loginReducer);
 
     // Chart consts
     const SVG_ID = 'gantt-chart-svg';
