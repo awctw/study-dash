@@ -308,8 +308,8 @@ const GanttChart = (props) => {
         const yValue = d => d.name;
 
         // Set domains and filter/format data
-        const xDomainStart = Date.now() - 24 * 60 * 60 * 1000;
-        const xDomainEnd = Date.now() + 24 * 60 * 60 * 1000;
+        const xDomainStart = Date.now() - chartSettings.axisScale * 60 * 60 * 1000;
+        const xDomainEnd = Date.now() + chartSettings.axisScale * 60 * 60 * 1000;
         const filteredData = data.filter(d => xDomainStart <= d.endTime && d.startTime <= xDomainEnd);
         const formattedData = filteredData.map((d, i) => {
             d.name = d.name +  '-' + i; // This allows for duplicate habit/to do names
@@ -415,7 +415,7 @@ const GanttChart = (props) => {
             d.name = d.name.substring(0, d.name.lastIndexOf("-"));
             return d;
         })
-    }, [chartSettings.categoryColors, data, props]);
+    }, [chartSettings, data, props]);
 
     // Update the chart if data changes
     useEffect(() => {

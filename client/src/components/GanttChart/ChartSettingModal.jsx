@@ -2,21 +2,22 @@ import {
     Button,
     Card,
     CardBody,
-    CardFooter,
     Dialog,
     Input,
     Typography,
 } from "@material-tailwind/react";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import { addModuleAsync } from "../../store/flashcards/thunks";
-import {putChartSettingsAsync} from "../../store/chartSettings/thunks";
+import { putChartSettingsAsync } from "../../store/chartSettings/thunks";
 
 const ChartSettingModal = (props) => {
     const user = useSelector((state) => state.loginReducer);
-    const chartSettings = useSelector((state) => state.chartSettingsReducer.chartSettings);
-    const [modalChartSettings, setModalChartSettings] = useState(chartSettings);
+    const [modalChartSettings, setModalChartSettings] = useState(structuredClone(props.chartSettings));
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        setModalChartSettings(structuredClone(props.chartSettings))
+    }, [props]);
 
     const handlePut = () => {
         dispatch(putChartSettingsAsync([user.user.email, modalChartSettings]));
@@ -33,30 +34,37 @@ const ChartSettingModal = (props) => {
             >
                 <Card className="relative flex w-2/4 rounded-lg overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100">
                     <CardBody className="mb-2">
+                        <Typography variant="h3" color="blue-gray" className="mb-2">
+                            Chart Settings
+                        </Typography>
                         <Input
-                            className="mb-2"
                             variant="outlined"
                             label="Visible Hour Range (Before and After)"
                             color="blue-gray"
+                            type="number"
                             value={modalChartSettings.axisScale}
                             onChange={(e) => setModalChartSettings((prevProps) => ({
                                 ...prevProps,
                                 axisScale: e.target.value
                             }))}
                         />
-                        {modalChartSettings.categoryColors.map((item) =>
-                            <Input
-                                key={item.category}
-                                className="mb-5"
-                                variant="outlined"
-                                label={item.category + " TODO Color"}
-                                color="blue-gray"
-                                value={item.color}
-                                onChange={(e) => setModalChartSettings((prevState) => ({
-                                    axisScale: prevState.axisScale,
-                                    categoryColors: prevState.categoryColors.map(c => c.category === item.category ? c.color = item.color : c)
-                                }))}
-                            />
+                        <Typography variant="h6" color="blue-gray" className="mt-3 mb-5">
+                            Category Colors
+                        </Typography>
+                        {modalChartSettings.categoryColors.map((item, index) =>
+                            <div key={index} className="mb-5">
+                                <Input
+                                    className="mb-5"
+                                    variant="outlined"
+                                    label={item.category + " TODO Color"}
+                                    color="blue-gray"
+                                    value={item.color}
+                                    onChange={(e) => setModalChartSettings((prevState) => ({
+                                        axisScale: prevState.axisScale,
+                                        categoryColors: prevState.categoryColors.map(c => c.category === item.category ? c.color = item.color : c)
+                                    }))}
+                                />
+                            </div>
                         )}
                         <Button
                             size="sm"
