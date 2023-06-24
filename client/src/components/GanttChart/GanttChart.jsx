@@ -25,8 +25,8 @@ const GanttChart = (props) => {
             startTime: new Date(Date.now()),
             endTime: new Date(Date.now() + 60 * 60000),
             description: "Habit taking place right now for 1 hour; repeats MWF.",
-            color: '#03FCA5',
-            percentCompletion: 75
+            percentCompletion: 75,
+            category: "Biology"
         },
         {
             id: 2,
@@ -37,8 +37,8 @@ const GanttChart = (props) => {
             startTime: new Date(Date.now() - 180 * 60000),
             endTime: new Date(Date.now() + 240 * 60000),
             description: "One-time todo which started 3 hours ago.",
-            color: '#A103FC',
-            percentCompletion: 75
+            percentCompletion: 75,
+            category: "Chemistry"
         },
         {
             id: 3,
@@ -49,8 +49,8 @@ const GanttChart = (props) => {
             startTime: new Date(Date.now() + 120 * 60000),
             endTime: new Date(Date.now() + 180 * 60000),
             description: "Todo taking place in 2 hours; repeats MWF.",
-            color: '#F403FC',
-            percentCompletion: 75
+            percentCompletion: 75,
+            category: "Computer Science"
         },
         {
             id: 4,
@@ -71,8 +71,8 @@ const GanttChart = (props) => {
                 return date;
             })(),
             description: "Habit that took place 1 day in the past.",
-            color: '#03DBFC',
-            percentCompletion: 100
+            percentCompletion: 100,
+            category: "Language Arts"
         },
         {
             id: 5,
@@ -93,8 +93,8 @@ const GanttChart = (props) => {
                 return date;
             })(),
             description: "Habit taking place 1 day in the future.",
-            color: '#AD8886',
-            percentCompletion: 0
+            percentCompletion: 0,
+            category: "Math"
         },
         {
             id: 6,
@@ -105,8 +105,8 @@ const GanttChart = (props) => {
             startTime: new Date(Date.now() - 180 * 60000),
             endTime: new Date(Date.now() + 240 * 60000),
             description: "One-time todo which started 3 hours ago.",
-            color: '#A103FC',
-            percentCompletion: 75
+            percentCompletion: 75,
+            category: "Musical Art"
         },
         {
             id: 7,
@@ -117,8 +117,8 @@ const GanttChart = (props) => {
             startTime: new Date(Date.now() - 180 * 60000),
             endTime: new Date(Date.now() + 240 * 60000),
             description: "One-time todo which started 3 hours ago.",
-            color: '#A103FC',
-            percentCompletion: 75
+            percentCompletion: 75,
+            category: "Physics"
         },
         {
             id: 8,
@@ -129,8 +129,8 @@ const GanttChart = (props) => {
             startTime: new Date(Date.now() - 180 * 60000),
             endTime: new Date(Date.now() + 240 * 60000),
             description: "One-time todo which started 3 hours ago.",
-            color: '#A103FC',
-            percentCompletion: 75
+            percentCompletion: 75,
+            category: "Sports"
         },
         {
             id: 9,
@@ -151,8 +151,8 @@ const GanttChart = (props) => {
                 return date;
             })(),
             description: "Habit taking place 1 day in the future.",
-            color: '#AD8886',
-            percentCompletion: 0
+            percentCompletion: 0,
+            category: "Visual Arts"
         },
         {
             id: 10,
@@ -173,8 +173,8 @@ const GanttChart = (props) => {
                 return date;
             })(),
             description: "Habit taking place 1 day in the future.",
-            color: '#AD8886',
-            percentCompletion: 0
+            percentCompletion: 0,
+            category: "Work"
         },
         {
             id: 11,
@@ -195,8 +195,8 @@ const GanttChart = (props) => {
                 return date;
             })(),
             description: "Habit taking place 1 day in the future.",
-            color: '#AD8886',
-            percentCompletion: 0
+            percentCompletion: 0,
+            category: "Biology"
         }
     ]);
 
@@ -372,7 +372,13 @@ const GanttChart = (props) => {
             })
             .attr('height', yScale.bandwidth())
             .attr('y', d => yScale(yValue(d)))
-            .attr('fill', d => d.color)
+            .attr('fill', (d) => {
+                const categoryColor = chartSettings.categoryColors.find(c => c.category === d.category);
+                if (categoryColor !== undefined) {
+                    return categoryColor.color;
+                }
+                return "#000000";
+            })
             .attr('stroke-width', 1)
             .attr('stroke', 'black');
 
