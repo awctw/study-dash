@@ -16,6 +16,16 @@ users to chat with each other, allowing users to form
 groups and share in-app resources, and adding gamification
 to make the learning experience more engaging.
 
+## Setup
+
+Please create a `db.config.js` file containing the MongoDB url.
+
+```
+module.exports = {
+  url: <MONGO_DB-URL>
+};
+```
+
 ## Project Task Requirements
 
 ### 3-5 Minimal Requirements (Will Definitely Complete)
@@ -82,3 +92,4 @@ to make the learning experience more engaging.
 # Crediting
 
 - [Update every minute clock used in GanttChart.jsx](https://stackoverflow.com/a/23450004)
+- [Login Authentication Code Snippets](https://www.bezkoder.com/node-js-express-login-mongodb/#Create_Nodejs_Login_with_MongoDB_App)

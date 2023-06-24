@@ -1,67 +1,88 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { REQUEST_STATE } from "../utils";
+import {
+  addFlashcardAsync,
+  addModuleAsync,
+  editFlashcardAsync,
+  getModulesAsync,
+} from "./thunks";
 
 const INIT_STATE = {
-  modules: [
-    {
-      id: "1",
-      name: "CPSC 304",
-      questions: ["What is an entity set?", "what is a primary key?"],
-      answers: [
-        "a logical container for instances of an entity type and instances of any type derived from that entity type",
-        "An attribute in that can uniquely identify each row in a relation",
-      ],
-    },
-    {
-      id: "2",
-      name: "CPSC 330",
-      questions: [
-        "What are classification problems?",
-        "what is supervised ML?",
-      ],
-      answers: [
-        "classification refers to a predictive modeling problem where a class label is predicted for a given example of input data",
-        "Supervised learning is a machine learning paradigm for problems where the available data consists of labeled examples",
-      ],
-    },
-    {
-      id: "3",
-      name: "CPEN 321",
-      questions: ["What is MVC pattern?", "What is separation of concerns?"],
-      answers: [
-        "Model–view–controller is a software design pattern commonly used for developing user interfaces that divides the related program logic into three interconnected elements",
-        "In computer science, separation of concerns is a design principle for separating a computer program into distinct sections",
-      ],
-    },
-  ],
+  modules: [],
+  getModules: REQUEST_STATE.IDLE,
+  addModule: REQUEST_STATE.IDLE,
+  addFlashcard: REQUEST_STATE.IDLE,
+  editFlashcard: REQUEST_STATE.IDLE,
+  error: null,
 };
 
 const flashcardSlice = createSlice({
   name: "flashcards",
   initialState: INIT_STATE,
-  reducers: {
-    addModule: (state, action) => {
-      const { moduleId, moduleName } = action.payload;
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getModulesAsync.pending, (state) => {
+        state.getModules = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(getModulesAsync.fulfilled, (state, action) => {
+        state.getModules = REQUEST_STATE.FULFILLED;
+        state.modules = action.payload;
+      })
+      .addCase(getModulesAsync.rejected, (state, action) => {
+        state.getModules = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(addModuleAsync.pending, (state) => {
+        state.addModule = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(addModuleAsync.fulfilled, (state, action) => {
+        state.addModule = REQUEST_STATE.FULFILLED;
+        state.modules.push(action.payload);
+      })
+      .addCase(addModuleAsync.rejected, (state, action) => {
+        state.addModule = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(addFlashcardAsync.pending, (state) => {
+        state.addFlashcard = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(addFlashcardAsync.fulfilled, (state, action) => {
+        state.addFlashcard = REQUEST_STATE.FULFILLED;
 
-      state.modules.push({
-        id: moduleId,
-        name: moduleName,
-        questions: [],
-        answers: [],
+        const idx = state.modules.findIndex(
+          (module) => module._id === action.payload._id
+        );
+        state.modules[idx] = action.payload;
+      })
+      .addCase(addFlashcardAsync.rejected, (state, action) => {
+        state.addFlashcard = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(editFlashcardAsync.pending, (state) => {
+        state.editFlashcard = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(editFlashcardAsync.fulfilled, (state, action) => {
+        state.editFlashcard = REQUEST_STATE.FULFILLED;
+
+        const idx = state.modules.findIndex(
+          (module) => module._id === action.payload.id
+        );
+
+        const cardIndex = Number(action.payload.index);
+
+        state.modules[idx].questions[cardIndex] = action.payload.question;
+        state.modules[idx].answers[cardIndex] = action.payload.answer;
+      })
+      .addCase(editFlashcardAsync.rejected, (state, action) => {
+        state.editFlashcard = REQUEST_STATE.REJECTED;
+        state.error = action.error;
       });
-    },
-    addFlashcard: (state, action) => {
-      const { moduleId, question, answer } = action.payload;
-
-      const module = state.modules.find((module) => module.id === moduleId); // return undefined if not found
-
-      if (module) {
-        module.questions.push(question);
-        module.answers.push(answer);
-      }
-    },
   },
 });
-
-export const { addModule, addFlashcard } = flashcardSlice.actions;
 
 export default flashcardSlice.reducer;
