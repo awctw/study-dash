@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import * as d3 from "d3";
 import "../../Styles/GanttChart.css"
+import {useSelector} from "react-redux";
 
 const Days = {
     Sunday: Symbol("Sunday"),
@@ -129,9 +130,78 @@ const GanttChart = (props) => {
             description: "One-time todo which started 3 hours ago.",
             color: '#A103FC',
             percentCompletion: 75
+        },
+        {
+            id: 9,
+            userId: 1,
+            name: "Far Future Habit",
+            isRepeating: false,
+            daysOfTheWeek: null,
+            startTime: (function() {
+                const date = new Date();
+                date.setDate(date.getDate() + 1);
+                date.setHours(date.getHours() - 5);
+                return date;
+            })(),
+            endTime: (function() {
+                const date = new Date();
+                date.setDate(date.getDate() + 1);
+                date.setHours(date.getHours() - 3);
+                return date;
+            })(),
+            description: "Habit taking place 1 day in the future.",
+            color: '#AD8886',
+            percentCompletion: 0
+        },
+        {
+            id: 10,
+            userId: 1,
+            name: "Far Future Habit",
+            isRepeating: false,
+            daysOfTheWeek: null,
+            startTime: (function() {
+                const date = new Date();
+                date.setDate(date.getDate() + 1);
+                date.setHours(date.getHours() - 5);
+                return date;
+            })(),
+            endTime: (function() {
+                const date = new Date();
+                date.setDate(date.getDate() + 1);
+                date.setHours(date.getHours() - 3);
+                return date;
+            })(),
+            description: "Habit taking place 1 day in the future.",
+            color: '#AD8886',
+            percentCompletion: 0
+        },
+        {
+            id: 11,
+            userId: 1,
+            name: "Far Future Habit",
+            isRepeating: false,
+            daysOfTheWeek: null,
+            startTime: (function() {
+                const date = new Date();
+                date.setDate(date.getDate() + 1);
+                date.setHours(date.getHours() - 5);
+                return date;
+            })(),
+            endTime: (function() {
+                const date = new Date();
+                date.setDate(date.getDate() + 1);
+                date.setHours(date.getHours() - 3);
+                return date;
+            })(),
+            description: "Habit taking place 1 day in the future.",
+            color: '#AD8886',
+            percentCompletion: 0
         }
     ]);
 
+    // const user = useSelector((state) => state.loginReducer);
+
+    // Chart consts
     const SVG_ID = 'gantt-chart-svg';
     const X_AXIS_SVG_ID = 'gantt-chart-x-axis-svg';
     const CHART_ID = 'gantt-chart-g';
@@ -146,7 +216,8 @@ const GanttChart = (props) => {
         }
         // Increasing containerHeight affects inner chart height
         if (props.containerHeight === undefined) {
-            containerHeight = 300;
+            // 40 px per item
+            containerHeight = 40 * data.length;
         }
         if (props.margin === undefined) {
             margin = {
