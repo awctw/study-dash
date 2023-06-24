@@ -1,12 +1,16 @@
 const ChartSettings= require('../models/chartSettings.model');
 
 const getChartSettings = async (req, res, next) => {
-    await ChartSettings.find({ userEmail: req.params.userEmail })
+    await ChartSettings.findOne({ userEmail: req.params.userEmail })
         .then((result) => {
-            res.status(200).send(result);
+            if (!result) {
+                res.status(404).send("User ChartSettings not found!");
+            } else {
+                res.status(200).send(result);
+            }
         })
         .catch((err) => {
-            res.status(400).send(err);
+            res.status(500).send(err);
         });
 }
 
@@ -20,7 +24,7 @@ const putChartSettings = async (req, res, next) => {
             });
         })
         .catch(err => {
-            res.status(400).send(err);
+            res.status(500).send(err);
         });
 }
 

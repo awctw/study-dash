@@ -31,7 +31,7 @@ const chartSettingsSlice = createSlice({
     builder
       .addCase(getChartSettingsAsync.pending, (state) => {
         state.getModules = REQUEST_STATE.PENDING;
-        state.chartSettings = null;
+        state.error = null;
       })
       .addCase(getChartSettingsAsync.fulfilled, (state, action) => {
         state.getModules = REQUEST_STATE.FULFILLED;
@@ -39,7 +39,7 @@ const chartSettingsSlice = createSlice({
       })
       .addCase(getChartSettingsAsync.rejected, (state, action) => {
         state.getModules = REQUEST_STATE.REJECTED;
-        state.chartSettings = null;
+        state.error = action.error;
       })
       .addCase(putChartSettingsAsync.pending, (state) => {
         state.getModules = REQUEST_STATE.PENDING;
