@@ -22,10 +22,28 @@ import {
 import "react-circular-progressbar/dist/styles.css";
 import TimerDisplay from "./TimerDisplay";
 import useTimer from "../../hooks/useTimer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  getTimerSettingsAsync,
+  putTimerSettingsAsync,
+} from "../../store/timerSettings/thunks";
 
 // Credits for code snippets: https://github.com/birkaany/pomodoro-app/tree/master
 const Pomodoro = () => {
+  const user = useSelector((state) => state.loginReducer);
+  const dispatch = useDispatch();
+
+  console.log(user.user);
+  useEffect(() => {
+    const settings = getTimerSettingsAsync(user.user._id);
+    console.log(settings);
+  }, [user.user._id]);
+
+  const handlePut = () => {
+    dispatch(putTimerSettingsAsync(user.user._id));
+  };
+
   const { pomodoro, selectedControl, setPomodoro, getRemainingTimePercentage } =
     useTimer();
   const [open, setOpen] = useState(false);
