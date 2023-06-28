@@ -18,4 +18,6 @@ router.post("/signin", controller.signin);
 
 router.post("/signout", controller.signout);
 
+router.put("/edit", controller.edit);
+
 module.exports = router;

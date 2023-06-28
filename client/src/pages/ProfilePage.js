@@ -1,18 +1,60 @@
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Typography } from "@material-tailwind/react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import SideBar from "../components/SideBar";
+import { userEditAsync } from "../store/authentication/thunks";
 
 const ProfilePage = () => {
   // Referenced https://www.pluralsight.com/guides/uploading-files-with-reactjs for file upload
   const user = useSelector((state) => state.loginReducer);
+  const dispatch = useDispatch();
   const [selectedFile, setSelectedFile] = useState();
   const [isFilePicked, setIsFilePicked] = useState(false);
+
+  const [username, setUsername] = useState(
+    user.isLoggedIn ? user.user.username : ""
+  );
+  const [firstName, setFirstName] = useState(
+    user.isLoggedIn ? user.user.firstName : ""
+  );
+  const [lastName, setLastName] = useState(
+    user.isLoggedIn ? user.user.lastName : ""
+  );
+  const [email, setEmail] = useState(user.isLoggedIn ? user.user.email : "");
 
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
     setIsFilePicked(true);
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    const id = user.user.userID;
+    const updatedUser = {
+      userID: id,
+      username,
+      firstName,
+      lastName,
+      email,
+    };
+    dispatch(userEditAsync(updatedUser));
+  };
+
+  const usernameHandler = (event) => {
+    setUsername(event.target.value);
+  };
+
+  const firstNameHandler = (event) => {
+    setFirstName(event.target.value);
+  };
+
+  const lastNameHandler = (event) => {
+    setLastName(event.target.value);
+  };
+
+  const emailHandler = (event) => {
+    setEmail(event.target.value);
   };
 
   const handleUpload = (event) => {};
@@ -79,10 +121,11 @@ const ProfilePage = () => {
                 <div className="mt-2">
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                     <input
+                      onChange={usernameHandler}
                       type="text"
                       name="username"
                       id="username"
-                      defaultValue={user.isLoggedIn ? user.user.username : ""}
+                      value={username}
                       autoComplete="username"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     />
@@ -100,10 +143,11 @@ const ProfilePage = () => {
                   </label>
                   <div className="mt-2">
                     <input
+                      onChange={firstNameHandler}
                       type="text"
                       name="first-name"
                       id="first-name"
-                      defaultValue={user.isLoggedIn ? user.user.firstName : ""}
+                      value={firstName}
                       autoComplete="given-name"
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
@@ -119,11 +163,12 @@ const ProfilePage = () => {
                   </label>
                   <div className="mt-2">
                     <input
+                      onChange={lastNameHandler}
                       type="text"
                       name="last-name"
                       id="last-name"
                       autoComplete="family-name"
-                      defaultValue={user.isLoggedIn ? user.user.lastName : ""}
+                      value={lastName}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -138,11 +183,12 @@ const ProfilePage = () => {
                   </label>
                   <div className="mt-2">
                     <input
+                      onChange={emailHandler}
                       id="email"
                       name="email"
                       type="email"
                       autoComplete="email"
-                      defaultValue={user.isLoggedIn ? user.user.email : ""}
+                      value={email}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -159,6 +205,7 @@ const ProfilePage = () => {
               Cancel
             </button>
             <button
+              onClick={submitHandler}
               type="submit"
               className="rounded-md bg-indigo-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >

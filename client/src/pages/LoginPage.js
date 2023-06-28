@@ -57,7 +57,7 @@ const LoginPage = () => {
   return (
     <div>
       <div className="flex justify-center mt-10">
-        <Typography variant="h1">StudyDash</Typography>
+        <Typography variant="h1">STUDYDASH</Typography>
       </div>
       <div className="flex justify-center items-center">
         <div className="flex mb-20">

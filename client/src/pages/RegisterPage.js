@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userRegisterAsync } from "../store/authentication/thunks";
 import { Player } from "@lottiefiles/react-lottie-player";
+import { v4 as uuidv4 } from "uuid";
 
 const RegisterPage = () => {
   const [username, setUserName] = useState("");
@@ -48,6 +49,7 @@ const RegisterPage = () => {
 
   const registerHandler = () => {
     const newUser = {
+      userID: uuidv4(),
       username: username,
       firstName: firstName,
       lastName: lastName,
@@ -69,7 +71,7 @@ const RegisterPage = () => {
   return (
     <div>
       <div className="flex justify-center mt-10">
-        <Typography variant="h1">StudyDash</Typography>
+        <Typography variant="h1">STUDYDASH</Typography>
       </div>
       <div className="flex justify-center items-center mt-10">
         <Card className="m-10 w-full max-w-[30rem]">
