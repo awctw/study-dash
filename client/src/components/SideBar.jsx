@@ -11,11 +11,6 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Input,
-  Alert,
 } from "@material-tailwind/react";
 import {
   RectangleGroupIcon,
@@ -25,75 +20,33 @@ import {
   ChartBarIcon,
   UserCircleIcon,
   UserGroupIcon,
-  ClockIcon,
   PowerIcon,
-  ArrowRightOnRectangleIcon,
-  InformationCircleIcon,
 } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  userLoginAsync,
-  userLogoutAsync,
-} from "../store/authentication/thunks";
+import { userLogoutAsync } from "../store/authentication/thunks";
 
 // Credits: Material Tailwind doc example
 const SideBar = () => {
-  const [openLogin, setOpenLogin] = useState(false);
   const [openLogout, setOpenLogout] = useState(false);
-
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [alert, setAlert] = useState(false);
 
   const user = useSelector((state) => state.loginReducer);
   const { TODOList } = useSelector((state) => state.todoReducer);
   const dispatch = useDispatch();
 
-  const handleOpenLogin = () => {
-    setOpenLogin(!openLogin);
-  };
-
   const handleOpenLogout = () => {
     setOpenLogout(!openLogout);
   };
 
-  const handleLogin = () => {
-    const newUser = {
-      username: username,
-      password: password,
-    };
-    dispatch(userLoginAsync(newUser));
-  };
-
   const handleLogout = () => {
     setOpenLogout(false);
-    setOpenLogin(false);
 
-    const user = {
-      username: username,
-      password: password,
+    const logoutUser = {
+      username: user.user.username,
     };
 
-    dispatch(userLogoutAsync(user));
-  };
-
-  useEffect(() => {
-    if (user.error) {
-      setAlert(true);
-    } else {
-      setAlert(false);
-    }
-  }, [user]);
-
-  const userNameHandler = (event) => {
-    setAlert(false);
-    setUserName(event.target.value);
-  };
-
-  const passwordHandler = (event) => {
-    setPassword(event.target.value);
+    dispatch(userLogoutAsync(logoutUser));
   };
 
   return (
@@ -148,14 +101,6 @@ const SideBar = () => {
             Habits
           </ListItem>
         </NavLink>
-        <NavLink to={"/timer"}>
-          <ListItem>
-            <ListItemPrefix>
-              <ClockIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            Timer
-          </ListItem>
-        </NavLink>
         <NavLink to={"/statistics"}>
           <ListItem>
             <ListItemPrefix>
@@ -173,7 +118,7 @@ const SideBar = () => {
           </ListItem>
         </NavLink>
 
-        {user.isLoggedIn ? (
+        {user.isLoggedIn && (
           <>
             <ListItem onClick={handleOpenLogout}>
               <ListItemPrefix>
@@ -195,93 +140,12 @@ const SideBar = () => {
                 >
                   <span>Cancel</span>
                 </Button>
-                <NavLink to={"/dashboard"}>
+                <NavLink to={"/"}>
                   <Button className="bg-indigo-300" onClick={handleLogout}>
                     <span>Confirm</span>
                   </Button>
                 </NavLink>
               </DialogFooter>
-            </Dialog>
-          </>
-        ) : (
-          <>
-            <ListItem onClick={handleOpenLogin}>
-              <ListItemPrefix>
-                <ArrowRightOnRectangleIcon className="h-5 w-5" />
-              </ListItemPrefix>
-              Sign In
-            </ListItem>
-            <Dialog
-              size="xs"
-              open={openLogin}
-              handler={handleOpenLogin}
-              className="bg-transparent shadow-none"
-            >
-              <Card className="mx-auto w-full max-w-[24rem]">
-                <CardHeader
-                  variant="gradient"
-                  className="mb-4 grid h-28 place-items-center bg-indigo-300"
-                >
-                  <Typography variant="h3" color="white">
-                    Sign In
-                  </Typography>
-                </CardHeader>
-
-                <CardBody className="flex flex-col gap-4">
-                  {alert && (
-                    <div className="flex w-full flex-col gap-2">
-                      <Alert
-                        className="bg-indigo-300"
-                        icon={
-                          <InformationCircleIcon
-                            strokeWidth={2}
-                            className="h-6 w-6"
-                          />
-                        }
-                      >
-                        Error: {user.error}
-                      </Alert>
-                    </div>
-                  )}
-
-                  <Input
-                    label="Username"
-                    size="lg"
-                    onChange={userNameHandler}
-                  />
-                  <Input
-                    label="Password"
-                    type="Password"
-                    size="lg"
-                    onChange={passwordHandler}
-                  />
-                </CardBody>
-                <CardFooter className="pt-0">
-                  <NavLink to={"/dashboard"}>
-                    <Button
-                      className="bg-indigo-300"
-                      onClick={handleLogin}
-                      fullWidth
-                    >
-                      Sign In
-                    </Button>
-                  </NavLink>
-                  <div className="mt-6 flex justify-center items-center">
-                    <Typography variant="small">
-                      Don&apos;t have an account?
-                    </Typography>
-                    <NavLink to={"/register"}>
-                      <Typography
-                        variant="small"
-                        className="ml-1 font-bold text-indigo-300"
-                        onClick={handleOpenLogin}
-                      >
-                        Sign up
-                      </Typography>
-                    </NavLink>
-                  </div>
-                </CardFooter>
-              </Card>
             </Dialog>
           </>
         )}

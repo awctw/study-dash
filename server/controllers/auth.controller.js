@@ -7,6 +7,7 @@ var bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
   const user = new User({
+    userID: req.body.userID,
     username: req.body.username,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -26,6 +27,7 @@ exports.signup = (req, res) => {
     req.session.token = token;
 
     res.status(200).send({
+      userID: user.userID,
       username: user.username,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -54,12 +56,13 @@ exports.signin = (req, res) => {
       return res.status(200).send({ message: "Invalid Password!" });
     }
 
-    var token = jwt.sign({ id: user.id }, config.secret, {
+    var token = jwt.sign({ id: user.userID }, config.secret, {
       expiresIn: 86400, // 24 hours
     });
     req.session.token = token;
 
     res.status(200).send({
+      userID: user.userID,
       username: user.username,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -76,4 +79,32 @@ exports.signout = async (req, res) => {
   } catch (err) {
     this.next(err);
   }
+};
+
+exports.edit = async (req, res) => {
+  const user = await User.findOneAndUpdate(
+    { userID: req.body.userID },
+    {
+      userID: req.body.userID,
+      username: req.body.username,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+    },
+    { new: true, upsert: false }
+  );
+
+  var token = jwt.sign({ id: user.userID }, config.secret, {
+    expiresIn: 86400, // 24 hours
+  });
+  req.session.token = token;
+
+  res.status(200).send({
+    userID: user.userID,
+    username: user.username,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    accessToken: token,
+  });
 };
