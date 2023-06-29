@@ -1,6 +1,9 @@
-import { UserCircleIcon } from "@heroicons/react/24/solid";
-import { Typography } from "@material-tailwind/react";
-import { useState } from "react";
+import {
+  UserCircleIcon,
+  InformationCircleIcon,
+} from "@heroicons/react/24/solid";
+import { Typography, Alert } from "@material-tailwind/react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import SideBar from "../components/SideBar";
 import { userEditAsync } from "../store/authentication/thunks";
@@ -9,6 +12,7 @@ const ProfilePage = () => {
   // Referenced https://www.pluralsight.com/guides/uploading-files-with-reactjs for file upload
   const user = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
+  const [alert, setAlert] = useState(false);
   const [selectedFile, setSelectedFile] = useState();
   const [isFilePicked, setIsFilePicked] = useState(false);
 
@@ -30,16 +34,25 @@ const ProfilePage = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    const id = user.user.userID;
+    const userID = user.user.userID;
     const updatedUser = {
-      userID: id,
+      userID,
       username,
       firstName,
       lastName,
       email,
     };
+
     dispatch(userEditAsync(updatedUser));
   };
+
+  useEffect(() => {
+    if (user.error) {
+      setAlert(true);
+    } else {
+      setAlert(false);
+    }
+  }, [user]);
 
   const usernameHandler = (event) => {
     setUsername(event.target.value);
@@ -73,7 +86,6 @@ const ProfilePage = () => {
                 This information will be displayed publicly so be careful what
                 you share.
               </p>
-
               <div className="col-span-full">
                 <label
                   htmlFor="photo"
@@ -110,6 +122,22 @@ const ProfilePage = () => {
               <p className="mt-1 text-sm leading-6 text-gray-600">
                 Use a permanent address where you can receive mail.
               </p>
+
+              {alert && (
+                <div className="flex justify-center w-full flex-col gap-2 my-4">
+                  <Alert
+                    className="bg-indigo-300"
+                    icon={
+                      <InformationCircleIcon
+                        strokeWidth={2}
+                        className="h-6 w-6"
+                      />
+                    }
+                  >
+                    Error: {user.error}
+                  </Alert>
+                </div>
+              )}
 
               <div className="sm:col-span-4">
                 <label

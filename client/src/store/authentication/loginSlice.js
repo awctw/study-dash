@@ -91,9 +91,15 @@ const loginSlice = createSlice({
         state.error = null;
       })
       .addCase(userEditAsync.fulfilled, (state, action) => {
-        state.edit = REQUEST_STATE.FULFILLED;
-        state.isLoggedIn = true;
-        state.user = action.payload;
+        if (action.payload.message !== undefined) {
+          state.register = REQUEST_STATE.REJECTED;
+          state.isLoggedIn = true;
+          state.error = action.payload.message;
+        } else {
+          state.register = REQUEST_STATE.FULFILLED;
+          state.isLoggedIn = true;
+          state.user = action.payload;
+        }
       })
       .addCase(userEditAsync.rejected, (state, action) => {
         state.edit = REQUEST_STATE.REJECTED;
