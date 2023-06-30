@@ -5,6 +5,7 @@ import {
   userLoginAsync,
   userLogoutAsync,
   userRegisterAsync,
+  userEditAsync,
 } from "./thunks";
 import { REQUEST_STATE } from "../utils";
 
@@ -83,6 +84,25 @@ const loginSlice = createSlice({
       })
       .addCase(userRegisterAsync.rejected, (state, action) => {
         state.register = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(userEditAsync.pending, (state) => {
+        state.edit = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(userEditAsync.fulfilled, (state, action) => {
+        if (action.payload.message !== undefined) {
+          state.register = REQUEST_STATE.REJECTED;
+          state.isLoggedIn = true;
+          state.error = action.payload.message;
+        } else {
+          state.register = REQUEST_STATE.FULFILLED;
+          state.isLoggedIn = true;
+          state.user = action.payload;
+        }
+      })
+      .addCase(userEditAsync.rejected, (state, action) => {
+        state.edit = REQUEST_STATE.REJECTED;
         state.error = action.error;
       });
   },
