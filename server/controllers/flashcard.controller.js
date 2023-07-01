@@ -1,8 +1,12 @@
 const Module = require('../models/flashcard.model');
 
 const addModule = async (req, res, next) => {
+
+    const { moduleName, userID } = req.body;
+
     const module = new Module({
-        name: req.body.moduleName,
+        name: moduleName,
+        userID: userID,
         questions: [],
         answers: [],
     });
@@ -11,17 +15,17 @@ const addModule = async (req, res, next) => {
         await module.save();
         res.status(200).send(JSON.stringify(module));
     } catch (err) {
-        res.status(400).send(err);
+        res.status(500).send(err);
     }
 };
 
 const getAllModules = async (req, res, next) => {
-    await Module.find({})
+    await Module.find({userID: req.params.userID})
         .then((result) => {
             res.status(200).send(result);
         })
         .catch((err) => {
-            res.status(400).send(err);
+            res.status(500).send(err);
         });
 };
 
@@ -38,7 +42,7 @@ const addFlashcard = async (req, res, next) => {
             res.status(200).send(module);
         })
         .catch((err) => { 
-            res.status(400).send(err);
+            res.status(500).send(err);
         });
 }
 
@@ -61,7 +65,7 @@ const editFlashcard = async (req, res, next) => {
             });
         })
         .catch(err => {
-            res.status(400).send(err);
+            res.status(500).send(err);
         });
 }
 

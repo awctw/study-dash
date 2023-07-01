@@ -4,7 +4,7 @@ const { addModule, getAllModules, addFlashcard, editFlashcard } = require('../co
 
 router.post('/', addModule);
 
-router.get('/', getAllModules);
+router.get('/:userID', getAllModules);
 
 router.patch('/:moduleId', addFlashcard);
 
