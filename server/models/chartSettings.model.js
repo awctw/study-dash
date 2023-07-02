@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const ChartSettings = mongoose.model(
     "ChartSettings",
     new mongoose.Schema({
-        userEmail: String,
+        userID: String,
         axisScale: Number,
         categoryColors: [{ category: String, color: String}]
     })

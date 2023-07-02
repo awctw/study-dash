@@ -20,7 +20,7 @@ const ChartSettingModal = (props) => {
     }, [props]);
 
     const handlePut = () => {
-        dispatch(putChartSettingsAsync([user.user.email, modalChartSettings]));
+        dispatch(putChartSettingsAsync([user.user.userID, modalChartSettings]));
     };
 
     return (

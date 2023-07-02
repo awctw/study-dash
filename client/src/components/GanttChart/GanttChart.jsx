@@ -206,7 +206,7 @@ const GanttChart = (props) => {
 
     useEffect(() => {
         if (user.isLoggedIn) {
-            dispatch(getChartSettingsAsync(user.user.email));
+            dispatch(getChartSettingsAsync(user.user.userID));
         }
     }, [dispatch, user]);
 

@@ -17,7 +17,7 @@ const defaultChartSettings = {
 }
 
 const getChartSettings = async (req, res, next) => {
-    await ChartSettings.findOne({ userEmail: req.params.userEmail })
+    await ChartSettings.findOne({ userID: req.params.userID })
         .then((result) => {
             if (!result) {
                 res.status(200).send(defaultChartSettings);
@@ -31,11 +31,11 @@ const getChartSettings = async (req, res, next) => {
 }
 
 const putChartSettings = async (req, res, next) => {
-    await ChartSettings.findOneAndUpdate({ userEmail: req.params.userEmail },
+    await ChartSettings.findOneAndUpdate({ userID: req.params.userID },
         req.body, { new: true, upsert: true })
         .then((result) => {
             res.status(200).send({
-                userEmail: req.params.userEmail,
+                userID: req.params.userID,
                 axisScale: result.axisScale,
                 categoryColors: result.categoryColors
             });
