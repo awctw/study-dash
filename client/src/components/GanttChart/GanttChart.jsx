@@ -417,10 +417,10 @@ const GanttChart = (props) => {
         })
     }, [chartSettings, data, props]);
 
-    // Update the chart if data changes
+    // Update the chart if data or chart settings changes
     useEffect(() => {
         renderChart();
-    }, [data, props, renderChart]);
+    }, [data, props, renderChart, chartSettings]);
 
     // Update the chart on every minute change (to keep 'now' line accurate)
     // New instance of setTimeOut() every runClock() so no memory build-up due to garbage collector

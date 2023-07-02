@@ -61,7 +61,12 @@ const ChartSettingModal = (props) => {
                                     value={item.color}
                                     onChange={(e) => setModalChartSettings((prevState) => ({
                                         axisScale: prevState.axisScale,
-                                        categoryColors: prevState.categoryColors.map(c => c.category === item.category ? c.color = item.color : c)
+                                        categoryColors: prevState.categoryColors.map(c => {
+                                            if (c.category === item.category) {
+                                                c.color = e.target.value;
+                                            }
+                                            return c;
+                                        })
                                     }))}
                                 />
                             </div>
