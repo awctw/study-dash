@@ -30,9 +30,25 @@ const editFlashcardAsync = createAsyncThunk(
   }
 );
 
+const deleteFlashcardAsync = createAsyncThunk(
+  actionTypes.DEL_FLASHCARD,
+  async (cardData) => {
+    return await flashcardService.deleteFlashcard(cardData);
+  }
+);
+
+const deleteModuleAsync = createAsyncThunk(
+  actionTypes.DEL_MODULE,
+  async (moduleId) => {
+    return await flashcardService.deleteModule(moduleId);
+  }
+);
+
 export {
   getModulesAsync,
   addModuleAsync,
   addFlashcardAsync,
   editFlashcardAsync,
+  deleteFlashcardAsync,
+  deleteModuleAsync,
 };
