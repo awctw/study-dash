@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import {useState, useEffect, useCallback, useRef} from "react";
 import * as d3 from "d3";
 import "../../Styles/GanttChart.css"
 import {useDispatch, useSelector} from "react-redux";
@@ -203,12 +203,9 @@ const GanttChart = (props) => {
     const user = useSelector((state) => state.loginReducer);
     const chartSettings = useSelector((state) => state.chartSettingsReducer.chartSettings);
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (user.isLoggedIn) {
-            dispatch(getChartSettingsAsync(user.user.userID));
-        }
-    }, [dispatch, user]);
+    // useRef needed for accessing up-to-date store in SetTimeout
+    let upToDateChartSettings = useRef(chartSettings);
+    let upToDateData = useRef(data);
 
     // Chart consts
     const SVG_ID = 'gantt-chart-svg';
@@ -308,9 +305,9 @@ const GanttChart = (props) => {
         const yValue = d => d.name;
 
         // Set domains and filter/format data
-        const xDomainStart = Date.now() - chartSettings.axisScale * 60 * 60 * 1000;
-        const xDomainEnd = Date.now() + chartSettings.axisScale * 60 * 60 * 1000;
-        const filteredData = data.filter(d => xDomainStart <= d.endTime && d.startTime <= xDomainEnd);
+        const xDomainStart = Date.now() - upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
+        const xDomainEnd = Date.now() + upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
+        const filteredData = upToDateData.current.filter(d => xDomainStart <= d.endTime && d.startTime <= xDomainEnd);
         const formattedData = filteredData.map((d, i) => {
             d.name = d.name +  '-' + i; // This allows for duplicate habit/to do names
             return d;
@@ -373,7 +370,7 @@ const GanttChart = (props) => {
             .attr('height', yScale.bandwidth())
             .attr('y', d => yScale(yValue(d)))
             .attr('fill', (d) => {
-                const categoryColor = chartSettings.categoryColors.find(c => c.category === d.category);
+                const categoryColor = upToDateChartSettings.current.categoryColors.find(c => c.category === d.category);
                 if (categoryColor !== undefined) {
                     return categoryColor.color;
                 }
@@ -415,12 +412,26 @@ const GanttChart = (props) => {
             d.name = d.name.substring(0, d.name.lastIndexOf("-"));
             return d;
         })
-    }, [chartSettings, data, props]);
+    }, [data, props]);
 
-    // Update the chart if data or chart settings changes
+    // Get chart settings on first render
     useEffect(() => {
-        renderChart();
-    }, [data, props, renderChart, chartSettings]);
+        if (user.isLoggedIn) {
+            dispatch(getChartSettingsAsync(user.user.userID));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Sync ref variables and re-render chart whenever data or chartSettings changes
+    useEffect(() => {
+        if (chartSettings !== null && data !== null) {
+            upToDateChartSettings.current = chartSettings;
+            upToDateData.current = data;
+            renderChart();
+            runClock();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, chartSettings]);
 
     // Update the chart on every minute change (to keep 'now' line accurate)
     // New instance of setTimeOut() every runClock() so no memory build-up due to garbage collector
@@ -432,9 +443,6 @@ const GanttChart = (props) => {
            runClock();
         }, timeToNextTick);
     }
-
-    // Clock start
-    runClock();
 
     return <div id="gantt-chart-tooltip"></div>
 }
