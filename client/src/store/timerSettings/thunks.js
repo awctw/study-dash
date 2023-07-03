@@ -4,15 +4,15 @@ import timerSettingsService from "./service";
 
 const getTimerSettingsAsync = createAsyncThunk(
   actionTypes.GET_TIMERSETTINGS,
-  async (_id) => {
-    return await timerSettingsService.getTimerSettings(_id);
+  async (userID) => {
+    return await timerSettingsService.getTimerSettings(userID);
   }
 );
 
 const putTimerSettingsAsync = createAsyncThunk(
   actionTypes.PUT_TIMERSETTINGS,
-  async (update) => {
-    return await timerSettingsService.putTimerSettings(update);
+  async (settings) => {
+    return await timerSettingsService.putTimerSettings(settings);
   }
 );
 

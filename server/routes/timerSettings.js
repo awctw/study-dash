@@ -5,8 +5,8 @@ const {
   putTimerSettings,
 } = require("../controllers/timerSettings.controller");
 
-router.get("/:_id", getTimerSettings);
+router.get("/:userID", getTimerSettings);
 
-router.put("/:_id", putTimerSettings);
+router.put("/", putTimerSettings);
 
 module.exports = router;

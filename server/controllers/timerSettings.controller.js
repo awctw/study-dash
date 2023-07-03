@@ -1,16 +1,15 @@
 const TimerSettings = require("../models/timerSettings.model");
 
-const defaultTimerSettings = {
-  pomodoroTime: 25,
-  shortBreakTime: 5,
-  longBreakTime: 15,
-};
-
 const getTimerSettings = async (req, res, next) => {
-  await TimerSettings.findOne({ _id: req.params._id })
+  await TimerSettings.findOne({ userID: req.params.userID })
     .then((result) => {
       if (!result) {
-        res.status(200).send(defaultTimerSettings);
+        res.status(200).send({
+          userID: req.params.userID,
+          pomodoroTime: 25 * 60,
+          shortBreakTime: 5 * 60,
+          longBreakTime: 15 * 60,
+        });
       } else {
         res.status(200).send(result);
       }
@@ -21,15 +20,16 @@ const getTimerSettings = async (req, res, next) => {
 };
 
 const putTimerSettings = async (req, res, next) => {
-  await TimerSettings.findOneAndUpdate({ _id: req.params._id }, req.body, {
+  await TimerSettings.findOneAndUpdate({ userID: req.body.userID }, req.body, {
     new: true,
     upsert: true,
   })
-    .then((result) => {
+    .then(() => {
       res.status(200).send({
-        pomodoroTime: result.pomodoroTime,
-        shortBreakTime: result.shortBreakTime,
-        longBreakTime: result.longBreakTime,
+        userID: req.body.userID,
+        pomodoroTime: req.body.pomodoroTime,
+        shortBreakTime: req.body.shortBreakTime,
+        longBreakTime: req.body.longBreakTime,
       });
     })
     .catch((err) => {

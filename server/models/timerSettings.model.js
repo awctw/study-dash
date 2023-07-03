@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 
-const Timer = mongoose.model(
-  "Timer",
+const TimerSetting = mongoose.model(
+  "TimerSettings",
   new mongoose.Schema({
     pomodoroTime: Number,
     shortBreakTime: Number,
     longBreakTime: Number,
-    _id: String,
+    userID: String,
   })
 );
 
-module.exports = Timer;
+module.exports = TimerSetting;

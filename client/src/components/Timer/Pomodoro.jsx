@@ -32,30 +32,59 @@ import {
 // Credits for code snippets: https://github.com/birkaany/pomodoro-app/tree/master
 const Pomodoro = () => {
   const user = useSelector((state) => state.loginReducer);
+  const timerSettings = useSelector(
+    (state) => state.timerSettingsReducer.timerSettings
+  );
   const dispatch = useDispatch();
-
-  console.log(user.user);
-  useEffect(() => {
-    const settings = getTimerSettingsAsync(user.user._id);
-    console.log(settings);
-  }, [user.user._id]);
-
-  const handlePut = () => {
-    dispatch(putTimerSettingsAsync(user.user._id));
-  };
 
   const { pomodoro, selectedControl, setPomodoro, getRemainingTimePercentage } =
     useTimer();
   const [open, setOpen] = useState(false);
   const [customPomodoro, setCustomPomodoro] = useState(
-    pomodoro.pomodoroTime / 60
+    timerSettings.pomodoroTime / 60
   );
   const [customShortBreak, setCustomShortBreak] = useState(
-    pomodoro.shortBreakTime / 60
+    timerSettings.shortBreakTime / 60
   );
   const [customLongBreak, setCustomLongBreak] = useState(
-    pomodoro.longBreakTime / 60
+    timerSettings.longBreakTime / 60
   );
+
+  useEffect(() => {
+    if (user.isLoggedIn) {
+      dispatch(getTimerSettingsAsync(user.user.userID));
+    }
+  }, [dispatch, user]);
+
+  const handlePut = () => {
+    const customTimes = {
+      userID: user.user.userID,
+      pomodoroTime: customPomodoro * 60,
+      shortBreakTime: customShortBreak * 60,
+      longBreakTime: customLongBreak * 60,
+    };
+    dispatch(putTimerSettingsAsync(customTimes));
+  };
+
+  useEffect(() => {
+    setCustomPomodoro(timerSettings.pomodoroTime / 60);
+    setCustomShortBreak(timerSettings.shortBreakTime / 60);
+    setCustomLongBreak(timerSettings.longBreakTime / 60);
+
+    setPomodoro({
+      pomodoroTime: timerSettings.pomodoroTime,
+      shortBreakTime: timerSettings.shortBreakTime,
+      longBreakTime: timerSettings.longBreakTime,
+      totalTimes: [
+        timerSettings.pomodoroTime,
+        timerSettings.shortBreakTime,
+        timerSettings.longBreakTime,
+      ],
+      isPaused: true,
+      period: 1,
+      cycle: 0,
+    });
+  }, [setPomodoro, timerSettings]);
 
   const handleCustomPomodoro = (event) => {
     setCustomPomodoro(event.target.value);
@@ -95,7 +124,7 @@ const Pomodoro = () => {
       period: 1,
       cycle: 0,
     });
-    // getRemainingTimePercentage();
+    handlePut();
   };
 
   return (
