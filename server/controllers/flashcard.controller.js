@@ -12,8 +12,7 @@ const addModule = async (req, res, next) => {
     const module = new Module({
         name: moduleName,
         userID: userID,
-        questions: [],
-        answers: [],
+        flashcards: [],
     });
 
     try {
@@ -45,8 +44,17 @@ const addFlashcard = async (req, res, next) => {
 
     const module = await Module.findById(id);
 
-    module.questions.push(req.body.question);
-    module.answers.push(req.body.answer);
+    const flashcard = {
+        question: req.body.question,
+        answer: req.body.answer,
+        quality: 0,
+        reps: 0,
+        easeFactor: 2.5,
+        interval: 0,
+        reviewDate: new Date(2030, 11, 31),
+    }
+
+    module.flashcards.push(flashcard);
 
     await module.save()
         .then(() => {
@@ -63,16 +71,16 @@ const editFlashcard = async (req, res, next) => {
     
     const module = await Module.findById(id);
 
-    module.questions[cardIndex] = req.body.question;
-    module.answers[cardIndex] = req.body.answer;
+    module.flashcards[cardIndex].question = req.body.question;
+    module.flashcards[cardIndex].answer = req.body.answer;
 
     await module.save()
         .then(() => {
             res.status(200).send({
                 id: module._id,
                 index: cardIndex,
-                question: module.questions[cardIndex],
-                answer: module.answers[cardIndex],
+                question: module.flashcards[cardIndex].question,
+                answer: module.flashcards[cardIndex].answer,
             });
         })
         .catch(err => {
@@ -85,8 +93,7 @@ const deleteFlashcard = async (req, res, next) => {
 
     const module = await Module.findById(moduleId);
 
-    module.questions.splice(index, 1);
-    module.answers.splice(index, 1);
+    module.flashcards.splice(index, 1);
 
     await module.save()
         .then(() => {
