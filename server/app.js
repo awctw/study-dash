@@ -56,4 +56,7 @@ db.mongoose
     process.exit();
   });
 
+// const messagesRouter = require("./routes/messages");
+// app.use("/messages", messagesRouter);
+
 module.exports = app;
