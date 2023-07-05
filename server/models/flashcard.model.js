@@ -3,6 +3,7 @@ const { Schema, model } = mongoose;
 
 const flashcardModuleSchema = new Schema({
     name: String,
+    userID: String,
     questions: [String],
     answers: [String],
 });

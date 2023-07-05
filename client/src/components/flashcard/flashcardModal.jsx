@@ -5,18 +5,24 @@ import {
   List,
   ListItem,
   Typography,
+  ListItemSuffix,
+  IconButton,
 } from "@material-tailwind/react";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Cards from "./flashcards";
 import AddModuleModal from "./addModuleModal";
+import DeleteModal from "./confirmDeleteModal";
+import { Player } from "@lottiefiles/react-lottie-player";
+
 
 const FlashCardModal = (props) => {
   const modules = useSelector((state) => state.flashcards.modules);
   const [id, setId] = useState(props.moduleId);
   const [key, setKey] = useState(props.moduleId);
   const [visible, setVisible] = useState(false);
+  const [deleteVisible, setDeleteVisible] = useState(false);
 
   useEffect(() => {
     setId(props.moduleId);
@@ -51,14 +57,23 @@ const FlashCardModal = (props) => {
           <List>
             {modules && modules.map((module, i) => (
               <ListItem
+                ripple={false}
                 selected={module._id === id}
                 key={module._id}
+                className="py-1 pr-1 pl-4"
                 onClick={() => {
                   setId(module._id);
                   setKey(module._id);
                 }}
               >
                 {module.name}
+                <ListItemSuffix className="p-0">
+                  <IconButton variant="text" color="blue-gray" onClick={() => {
+                    setDeleteVisible(!deleteVisible);
+                  }}>
+                    <TrashIcon className="h-4 w-4" />
+                  </IconButton>
+                </ListItemSuffix>
               </ListItem>
             ))}
           </List>
@@ -74,6 +89,13 @@ const FlashCardModal = (props) => {
             </Button>
             </div>
           </AddModuleModal>
+          <DeleteModal 
+            visible={deleteVisible} 
+            setVisible={setDeleteVisible} 
+            object={"module"}
+            moduleId={id}
+            setId={setId}
+          />
         </Card>
         {/* 
                         Self-note: Passing key below was critical to re-render each module from the beginning!
@@ -83,7 +105,7 @@ const FlashCardModal = (props) => {
                         including its child components. 
                  */}
         <Card
-          className="w-3/4 rounded-lg ml-2 items-center shadow-none"
+          className="w-3/4 rounded-lg ml-2 items-center justify-center shadow-none"
           key={key}
         >
           {/* needs at least 1 child */}
