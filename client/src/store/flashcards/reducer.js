@@ -79,8 +79,9 @@ const flashcardSlice = createSlice({
 
         const cardIndex = Number(action.payload.index);
 
-        state.modules[idx].questions[cardIndex] = action.payload.question;
-        state.modules[idx].answers[cardIndex] = action.payload.answer;
+        state.modules[idx].flashcards[cardIndex].question =
+          action.payload.question;
+        state.modules[idx].flashcards[cardIndex].answer = action.payload.answer;
       })
       .addCase(editFlashcardAsync.rejected, (state, action) => {
         state.editFlashcard = REQUEST_STATE.REJECTED;
@@ -99,8 +100,7 @@ const flashcardSlice = createSlice({
           (module) => module._id === moduleId
         );
 
-        state.modules[modIdx].questions.splice(index, 1);
-        state.modules[modIdx].answers.splice(index, 1);
+        state.modules[modIdx].flashcards.splice(index, 1);
       })
       .addCase(deleteFlashcardAsync.rejected, (state, action) => {
         state.deleteFlashcard = REQUEST_STATE.REJECTED;

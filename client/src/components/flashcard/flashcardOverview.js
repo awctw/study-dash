@@ -36,29 +36,28 @@ const Overview = (props) => {
           </div>
           <CardBody className="pt-0 overflow-y-auto scrollbar-hide">
             <List className="pl-0">
-              {modules &&
-                modules.map((module, i) => (
-                  <ListItem
-                    key={module._id}
-                    onClick={() => {
-                      setModId(module._id);
-                      setVisible(true);
-                    }}
-                  >
-                    <div>
-                      <Typography variant="h6" color="blue-gray">
-                        {module.name}
-                      </Typography>
-                      <Typography
-                        variant="small"
-                        color="gray"
-                        className="font-normal"
-                      >
-                        {module.questions.length} flashcards
-                      </Typography>
-                    </div>
-                  </ListItem>
-                ))}
+              {modules.map((module, i) => (
+                <ListItem
+                  key={module._id}
+                  onClick={() => {
+                    setModId(module._id);
+                    setVisible(true);
+                  }}
+                >
+                  <div>
+                    <Typography variant="h6" color="blue-gray">
+                      {module.name}
+                    </Typography>
+                    <Typography
+                      variant="small"
+                      color="gray"
+                      className="font-normal"
+                    >
+                      {module.flashcards.length} flashcards
+                    </Typography>
+                  </div>
+                </ListItem>
+              ))}
             </List>
           </CardBody>
           <CardFooter className="py-3 h-[4rem] border-t border-gray-400/50">

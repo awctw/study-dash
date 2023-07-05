@@ -16,7 +16,7 @@ const Cards = (props) => {
     state.flashcards.modules.find((module) => module._id === props.moduleId)
   );
 
-  const numCards = module ? module.questions.length : 0;
+  const numCards = module ? module.flashcards.length : 0;
   const [flip, setFlip] = useState(false);
   const [answered, setAnswered] = useState([]);
   const [numCorrect, setNumCorrect] = useState(0);
@@ -75,7 +75,7 @@ const Cards = (props) => {
         // Need to change next arrow so that it can be disabled
       >
         {module &&
-          module.questions.map((question, i) => (
+          module.flashcards.map((flashcard, i) => (
             <Card
               key={module._id + "-" + i}
               className="w-full h-full object-cover bg-transparent items-center justify-center rounded-none"
@@ -91,12 +91,12 @@ const Cards = (props) => {
                     variant="h2"
                     className="text-gray-50 mx-28 text-center"
                   >
-                    {question}
+                    {flashcard.question}
                   </Typography>
                   <EditFlashcard
                     moduleId={module._id}
-                    question={question}
-                    answer={module.answers[i]}
+                    question={flashcard.question}
+                    answer={flashcard.answer}
                     cardIndex={i}
                   />
                 </div>
@@ -105,7 +105,7 @@ const Cards = (props) => {
                     variant="h4"
                     className="text-gray-50 mx-28 text-center"
                   >
-                    {module.answers[i]}
+                    {flashcard.answer}
                   </Typography>
                   <div className="absolute justify-between flex bottom-0 left-0 right-0">
                     <IconButton
