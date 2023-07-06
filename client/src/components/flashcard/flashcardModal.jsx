@@ -26,6 +26,7 @@ const FlashCardModal = (props) => {
 
   useEffect(() => {
     setId(props.moduleId);
+    setKey(props.moduleId);
   }, [props.moduleId]);
 
   const handleReset = () => {
@@ -110,7 +111,29 @@ const FlashCardModal = (props) => {
         >
           {/* needs at least 1 child */}
           <></>
-          {id && <Cards moduleId={id} reset={handleReset} />}
+          {
+            modules.length > 0 ? 
+            (
+              <>
+                {id && <Cards moduleId={id} reset={handleReset} />}
+              </>
+            ) :
+            (
+              <>
+              <Player
+                src={
+                  "https://assets8.lottiefiles.com/datafiles/wqxpXEEPRQf1JnQ/data.json"
+                }
+                style={{ height: "250px", width: "250px", padding: 0 }}
+                autoplay
+                loop
+              />
+              <Typography className="text-blue-gray-300/70 font-sans text-lg">
+                Looks like you don't have any modules. Please create one to get started!
+              </Typography>
+              </>
+            )
+          }
         </Card>
       </Dialog>
     </>

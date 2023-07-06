@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import StatusBar from "./statusBar";
 import AddFlashcard from "./addFlashcard";
 import EditFlashcard from "./editFlashcard";
+import Scale from "./answerScale";
 
 const Cards = (props) => {
   const module = useSelector((state) =>
@@ -107,65 +108,15 @@ const Cards = (props) => {
                   >
                     {flashcard.answer}
                   </Typography>
-                  <div className="absolute justify-between flex bottom-0 left-0 right-0">
-                    <IconButton
+                  <div className="absolute flex bottom-0 w-full">
+                    <Scale
                       disabled={answered[i]}
-                      size="md"
-                      className="rounded-xl bg-transparent mx-3 my-3 border border-green-400 hover:shadow-none shadow-none"
-                      onClick={() => {
-                        setAnswered((prevArray) => {
-                          const newArr = [...prevArray];
-                          newArr[i] = true;
-                          return newArr;
-                        });
-                        setNumCorrect((numCorrect) => numCorrect + 1);
-                        setFlip(false);
-                      }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="text-green-400 w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M4.5 12.75l6 6 9-13.5"
-                        />
-                      </svg>
-                    </IconButton>
-                    <IconButton
-                      disabled={answered[i]}
-                      size="md"
-                      className="rounded-xl bg-transparent mx-3 my-3 border border-red-500 hover:shadow-none shadow-none"
-                      onClick={() => {
-                        setAnswered((prevArray) => {
-                          const newArr = [...prevArray];
-                          newArr[i] = true;
-                          return newArr;
-                        });
-                        setNumWrong((numWrong) => numWrong + 1);
-                        setFlip(false);
-                      }}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="text-red-500 w-6 h-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </IconButton>
+                      setAnswered={setAnswered}
+                      cardIndex={i}
+                      setNumCorrect={setNumCorrect}
+                      setNumWrong={setNumWrong}
+                      setFlip={setFlip}
+                    />
                   </div>
                 </div>
               </div>
