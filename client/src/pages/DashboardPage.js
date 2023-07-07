@@ -14,8 +14,8 @@ const DashboardPage = () => {
   const user = useSelector((state) => state.loginReducer);
 
   useEffect(() => {
-    dispatch(getModulesAsync());
-  }, [dispatch]);
+    dispatch(getModulesAsync(user.user.userID));
+  }, []);
 
   return (
     <div>
