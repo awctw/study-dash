@@ -9,7 +9,8 @@ var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
 var authRouter = require("./routes/auth");
 var dbConfig = require("./config/db.config");
-var TODOListRouter = require("./routes/TODOList");
+var categoryRouter = require("./routes/Categories")
+var TODOListRouter = require("./routes/TODOItems");
 var flashcardRouter = require("./routes/flashcards");
 var habitRouter = require("./routes/habits");
 var chartSettingsRouter = require("./routes/chartSettings");
@@ -35,6 +36,7 @@ app.use(
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
+app.use("/api/categories", categoryRouter)
 app.use("/api/TODOList", TODOListRouter);
 app.use("/flashcards", flashcardRouter);
 app.use("/habits", habitRouter);

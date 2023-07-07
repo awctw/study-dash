@@ -15,9 +15,9 @@ const getCategoryListAsync = createAsyncThunk(
 
 const deleteCategoryAsync = createAsyncThunk(
   actionTypes.DELETE_CATEGORY,
-  async (category) => {
+  async (categoryID) => {
     try {
-      return await services.deleteCategory(category);
+      return await services.deleteCategory(categoryID);
     } catch (error) {
       throw new Error(error.message);
     }
@@ -26,9 +26,9 @@ const deleteCategoryAsync = createAsyncThunk(
 
 const getTODOListAsync = createAsyncThunk(
   actionTypes.GET_TODO_LIST,
-  async () => {
+  async ({ userID, categoryID }) => {
     try {
-      return await services.getTODOList();
+      return await services.getTODOList(userID, categoryID);
     } catch (error) {
       throw new Error(error.message);
     }

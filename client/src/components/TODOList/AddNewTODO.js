@@ -19,6 +19,10 @@ const AddTODOItem = () => {
     (state) => state.todoReducer
   );
 
+  // The current logged-in user of the application.
+  // This is where we obtain the userID attribute
+  const { user } = useSelector((state) => state.loginReducer);
+
   // openAddTODO is used to control the visibility of the addTODO dialog popup.
   const [openAddTODO, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,10 +30,17 @@ const AddTODOItem = () => {
   // formData state variable is used to store the values entered in the form.
   const [formData, setFormData] = useState({
     title: "",
-    dueDate: null,
+    startDate: null,
+    endDate: null,
     description: "",
     category: "",
   });
+
+  // Assign red to the AM time options in DatePicker.
+  // Assign green to the PM values of the time menu
+  const assignTimeColor = (time) => {
+    return time.getHours() > 12 ? "text-success" : "text-error";
+  };
 
   const [errMessage, setErrMessage] = useState("");
 
@@ -47,12 +58,21 @@ const AddTODOItem = () => {
     }));
   };
 
-  // handleDueDateInput function is responsible for updating the dueDate field
+  // handleStartDateInput function is responsible for updating the startDate field
   // in the formData state when the value of the DatePicker component changes.
-  const handleDueDateInput = (date) => {
+  const handleStartDateInput = (date) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      dueDate: date,
+      startDate: date,
+    }));
+  };
+
+  // handleEndDateInput function is responsible for updating the endDate field
+  // in the formData state when the value of the DatePicker component changes.
+  const handleEndDateInput = (date) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      endDate: date,
     }));
   };
 
@@ -63,18 +83,20 @@ const AddTODOItem = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, dueDate, description, category } = formData;
+    const { title, startDate, endDate, description, category } = formData;
 
-    if (!title || !dueDate || !description || !category) {
+    if (!title || !startDate || !endDate || !description || !category) {
       setErrMessage("Please provide all required fields.");
       return;
     }
 
     const newTodo = {
-      title,
-      dueDate: dueDate.toDateString(),
-      description,
-      category,
+      title: title,
+      startDate: startDate,
+      endDate: endDate,
+      description: description,
+      category: category,
+      userID: user.userID
     };
 
     setLoading(true);
@@ -89,7 +111,8 @@ const AddTODOItem = () => {
   const resetFormHandler = () => {
     setFormData({
       title: "",
-      dueDate: null,
+      startDate: null,
+      endDate: null,
       description: "",
       category: "",
     });
@@ -136,12 +159,27 @@ const AddTODOItem = () => {
               />
             </div>
             <div className="inputField">
-              <label htmlFor="add-dueDate">Due Date:</label>
+              <label htmlFor="add-startDate">Start Date:</label>
               <DatePicker
-                id="add-dueDate"
+                id="add-startDate"
+                name="startDate"
                 className="bg-orange-200"
-                selected={formData.dueDate}
-                onChange={handleDueDateInput}
+                showTimeSelect
+                selected={formData.startDate}
+                onChange={handleStartDateInput}
+                timeClassName={assignTimeColor}
+              />
+            </div>
+            <div className="inputField">
+              <label htmlFor="add-endDate">End Date:</label>
+              <DatePicker
+                id="add-endDate"
+                name="endDate"
+                className="bg-orange-200"
+                showTimeSelect
+                selected={formData.endDate}
+                onChange={handleEndDateInput}
+                timeClassName={assignTimeColor}
               />
             </div>
             <div className="inputField">
@@ -166,7 +204,7 @@ const AddTODOItem = () => {
               />
               <datalist id="categoryOptions">
                 {categories.map((category) => (
-                  <option key={category} value={category}></option>
+                  <option key={category._id} value={category.category}></option>
                 ))}
               </datalist>
             </div>

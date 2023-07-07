@@ -25,22 +25,33 @@ const EditTODO = ({ todo }) => {
   const [openEdit, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // state variables that store the current values for the input fields and error messages.
-  const [title, setTitle] = useState("");
-  const [dueDate, setDueDate] = useState(null);
-  const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+  // formData state variable is used to store the values entered in the form.
+  const [formData, setFormData] = useState({
+    title: "",
+    startDate: null,
+    endDate: null,
+    description: "",
+    category: "",
+  });
+
+  // Assign red to the AM time options in DatePicker.
+  // Assign green to the PM values of the time menu
+  const assignTimeColor = (time) => {
+    return time.getHours() > 12 ? "text-success" : "text-error";
+  };
 
   const [errMessage, setErrMessage] = useState("");
 
   // handleOpen toggles the value of openEdit, which controls the visibility
   // of the edit dialog popup. It also sets the initial values of the input fields
   // and clears the error message.
-  const handleOpen = () => {
+  const handleOpen = async () => {
     setLoading(true);
-    dispatch(thunk.getTODOItemAsync(todo.id));
+    const success = await dispatch(thunk.getTODOItemAsync(todo._id));
     setLoading(false);
-    setOpen(true);
+    if (success) {
+      setOpen(true);
+    }
   };
 
   const handleClose = () => {
@@ -48,20 +59,32 @@ const EditTODO = ({ todo }) => {
     setOpen(false);
   };
 
-  const handleTitleChange = (e) => {
-    setTitle(e.target.value);
+  // Function to handle the input changes for all attributes
+  const handleInputChange = (e) => {
+    // e.target.name is referring to the "name" value of each Input component
+    // in the form below
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  const handleDueDateChange = (date) => {
-    setDueDate(date);
+  // handleStartDateInput function is responsible for updating the startDate field
+  // in the formData state when the value of the DatePicker component changes.
+  const handleStartDateInput = (date) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      startDate: date,
+    }));
   };
 
-  const handleDescriptionChange = (e) => {
-    setDescription(e.target.value);
-  };
-
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
+  // handleEndDateInput function is responsible for updating the endDate field
+  // in the formData state when the value of the DatePicker component changes.
+  const handleEndDateInput = (date) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      endDate: date,
+    }));
   };
 
   // The handleFormSubmit function is called when the form is submitted.
@@ -69,16 +92,21 @@ const EditTODO = ({ todo }) => {
   // fields are not empty. If any of the required fields are empty, an error
   // message is set in the error state variable.
   const handleFormSubmit = async (e) => {
+    // added to prevent edit input form from being submitted
+    // prior to input validation
     e.preventDefault();
 
-    if (!title || !dueDate || !description || !category) {
+    const { title, startDate, endDate, description, category } = formData;
+
+    if (!title || !startDate || !endDate || !description || !category) {
       setErrMessage("Please provide all required fields.");
       return;
     }
 
     const updatedTodo = {
       title: title,
-      dueDate: dueDate.toDateString(),
+      startDate: startDate,
+      endDate: endDate,
       description: description,
       category: category,
     };
@@ -86,7 +114,7 @@ const EditTODO = ({ todo }) => {
     setLoading(true);
     const success = await dispatch(
       thunk.editTODOItemAsync({
-        itemID: currentTODOItem.id,
+        itemID: currentTODOItem._id,
         item: updatedTodo,
       })
     );
@@ -98,19 +126,30 @@ const EditTODO = ({ todo }) => {
   };
 
   const resetFormHandler = () => {
-    setTitle("");
-    setDueDate(null);
-    setDescription("");
-    setCategory("");
+    setFormData({
+      title: "",
+      startDate: null,
+      endDate: null,
+      description: "",
+      category: "",
+    });
     setErrMessage("");
   };
 
   useEffect(() => {
     if (getTODOItem === REQUEST_STATE.FULFILLED && currentTODOItem) {
-      setTitle(currentTODOItem.title);
-      setDescription(currentTODOItem.description);
-      setDueDate(new Date(currentTODOItem.dueDate));
-      setCategory(currentTODOItem.category);
+      setFormData({
+        title: currentTODOItem.title,
+        startDate: currentTODOItem.startDate,
+        endDate: currentTODOItem.endDate,
+        description: currentTODOItem.description,
+
+        // currentTODOItem only stores a reference to a Category
+        // object. The actual Category object has its value
+        // stored within the "category" field. To access the
+        // Category value we do currentTODOItem.category.category
+        category: currentTODOItem.category.category,
+      });
     }
 
     if (getTODOItem === REQUEST_STATE.REJECTED && error) {
@@ -136,18 +175,34 @@ const EditTODO = ({ todo }) => {
               <label htmlFor="edit-title">Title:</label>
               <Input
                 id="edit-title"
-                value={title}
+                value={formData.title}
                 label="title"
-                onChange={handleTitleChange}
+                name="title"
+                onChange={handleInputChange}
               />
             </div>
             <div className="inputField">
-              <label htmlFor="edit-dueDate">Due Date:</label>
+              <label htmlFor="edit-startDate">Start Date:</label>
               <DatePicker
-                id="edit-dueDate"
+                id="edit-startDate"
+                name="startDate"
                 className="bg-orange-200"
-                selected={dueDate}
-                onChange={handleDueDateChange}
+                showTimeSelect
+                selected={formData.startDate}
+                onChange={handleStartDateInput}
+                timeClassName={assignTimeColor}
+              />
+            </div>
+            <div className="inputField">
+              <label htmlFor="edit-endDate">End Date:</label>
+              <DatePicker
+                id="edit-endDate"
+                name="endDate"
+                className="bg-orange-200"
+                showTimeSelect
+                selected={formData.endDate}
+                onChange={handleEndDateInput}
+                timeClassName={assignTimeColor}
               />
             </div>
             <div className="inputField">
@@ -155,8 +210,9 @@ const EditTODO = ({ todo }) => {
               <Textarea
                 id="edit-description"
                 label="description"
-                value={description}
-                onChange={handleDescriptionChange}
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
               />
             </div>
             <div className="inputField">
@@ -164,13 +220,14 @@ const EditTODO = ({ todo }) => {
               <Input
                 id="edit-category"
                 label="category"
-                value={category}
+                name="category"
+                value={formData.category}
                 list="categoryOptions"
-                onChange={handleCategoryChange}
+                onChange={handleInputChange}
               />
               <datalist id="categoryOptions">
                 {categories.map((category) => (
-                  <option key={category} value={category}></option>
+                  <option key={category._id} value={category.category}></option>
                 ))}
               </datalist>
             </div>

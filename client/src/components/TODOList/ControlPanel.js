@@ -4,11 +4,11 @@ import CategoryToggle from "./CategoryToggle";
 
 // ControlPanel component provides functionalities for clearing all TODOItems,
 // adding new TODOItems, and filtering TODOs by category.
-const ControlPanel = ({ setSelectedCategory }) => {
+const ControlPanel = ({ setSelectedCategoryID }) => {
   return (
     <div className="flex p-3">
       <AddTODOItem />
-      <CategoryToggle handleCategoryChange={setSelectedCategory} />
+      <CategoryToggle setSelectedCategoryID={setSelectedCategoryID} />
     </div>
   );
 };

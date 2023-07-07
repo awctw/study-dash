@@ -13,13 +13,22 @@ const TODOItem = ({ todo }) => {
 
   // deletes the current todoItem
   const handleDelete = () => {
-    dispatch(thunk.deleteTODOItemAsync(todo.id));
+    dispatch(thunk.deleteTODOItemAsync(todo._id));
   };
+
+  const startDateVal = `${todo.startDate.toDateString()} ${todo.startDate.toLocaleTimeString(
+    "en-CA"
+  )}`;
+
+  const endDateVal = `${todo.endDate.toDateString()} ${todo.endDate.toLocaleTimeString(
+    "en-CA"
+  )}`;
 
   return (
     <Card className="p-3 m-3">
       <h3>Title: {todo.title}</h3>
-      <p>Due Date: {todo.dueDate}</p>
+      <p>Start Date: {startDateVal}</p>
+      <p>End Date: {endDateVal}</p>
       <div id="todoItemButtons">
         <Button
           className="border-indigo-300 bg-white text-indigo-300 border-solid border"
