@@ -220,11 +220,6 @@ const GanttChart = (props) => {
         if (props.containerWidth === undefined) {
             containerWidth = 720;
         }
-        // Increasing containerHeight affects inner chart height
-        if (props.containerHeight === undefined) {
-            // 40 px per item
-            containerHeight = 40 * data.length;
-        }
         if (props.margin === undefined) {
             margin = {
                 top: 35,
@@ -232,6 +227,11 @@ const GanttChart = (props) => {
                 bottom: 25,
                 left: 110
             };
+        }
+        // Increasing containerHeight affects inner chart height
+        if (props.containerHeight === undefined) {
+            // 40 px per item
+            containerHeight = margin.top + margin.bottom + 30 * data.length;
         }
         if (props.tooltipPadding === undefined) {
             tooltipPadding = 15;
