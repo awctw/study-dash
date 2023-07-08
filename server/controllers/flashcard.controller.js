@@ -125,7 +125,15 @@ const refreshFlashcard = async (req, res, next) => {
 
     const module = await Module.findById(id);
 
-    const flashcard = module.flashcards[cardIndex];
+    const flashcard = module.flashcards[cardIndex], now = new Date();
+
+    /**
+     * No need to run the algo if the review is early. This is necessary to avoid
+     * the continuous increase of review date if a user excessively reviews during short intervals
+     */ 
+    if (flashcard.reviewDate > now) {
+        return res.status(200).send("Early review: no action needed");
+    }
 
     // run the algo passing in prev values of attributes
     const { reps, easeFactor, interval, reviewDate } = spacedRep(
@@ -150,6 +158,35 @@ const refreshFlashcard = async (req, res, next) => {
         });
 }
 
+const getScheduledCards = async (req, res, next) => {
+
+    if (!req.params.userID) {
+        res.status(400).send("Bad request: No userId provided");
+        return;
+    }
+
+    let now = new Date();
+
+    await Module.find(
+        { userID: req.params.userID }
+    )
+        .then((modules) => {
+            let cards = []
+            modules.forEach((module) => {
+                const toReview = module.flashcards.filter((card) => {
+                    return card.reviewDate <= now
+                })
+
+                cards = cards.concat(toReview);
+            })
+            res.status(200).send(cards);
+        })
+        .catch((err) => {
+            res.status(500).send(err);
+        });
+    
+}
+
 module.exports = {
     addModule,
     getAllModules,
@@ -158,6 +195,7 @@ module.exports = {
     deleteFlashcard,
     deleteModule,
     refreshFlashcard,
+    getScheduledCards,
 }
 
 /**

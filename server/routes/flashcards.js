@@ -1,10 +1,12 @@
 var express = require('express');
 var router = express.Router();
-const { addModule, getAllModules, addFlashcard, editFlashcard, deleteFlashcard, deleteModule, refreshFlashcard } = require('../controllers/flashcard.controller');
+const { addModule, getAllModules, addFlashcard, editFlashcard, deleteFlashcard, deleteModule, refreshFlashcard, getScheduledCards } = require('../controllers/flashcard.controller');
 
 router.post('/', addModule);
 
 router.get('/:userID', getAllModules);
+
+router.get('/sra/:userID', getScheduledCards);
 
 router.patch('/:moduleId', addFlashcard);
 

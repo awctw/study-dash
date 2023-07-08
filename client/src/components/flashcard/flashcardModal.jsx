@@ -98,13 +98,6 @@ const FlashCardModal = (props) => {
             setId={setId}
           />
         </Card>
-        {/* 
-                        Self-note: Passing key below was critical to re-render each module from the beginning!
-                        When React renders a list of components, it uses the key prop to identify each component uniquely. 
-                        When the key prop of a component changes, React considers it as a completely new instance, even if 
-                        the component type remains the same. This triggers a re-render of the component, 
-                        including its child components. 
-                 */}
         <Card
           className="w-3/4 rounded-lg ml-2 items-center justify-center shadow-none"
           key={key}
@@ -120,17 +113,17 @@ const FlashCardModal = (props) => {
             ) :
             (
               <>
-              <Player
-                src={
-                  "https://assets8.lottiefiles.com/datafiles/wqxpXEEPRQf1JnQ/data.json"
-                }
-                style={{ height: "250px", width: "250px", padding: 0 }}
-                autoplay
-                loop
-              />
-              <Typography className="text-blue-gray-300/70 font-sans text-lg">
-                Looks like you don't have any modules. Please create one to get started!
-              </Typography>
+                <Player
+                  src={
+                    "https://assets8.lottiefiles.com/datafiles/wqxpXEEPRQf1JnQ/data.json"
+                  }
+                  style={{ height: "250px", width: "250px", padding: 0 }}
+                  autoplay
+                  loop
+                />
+                <Typography className="text-blue-gray-300/70 font-sans text-lg">
+                  Looks like you don't have any modules. Please create one to get started!
+                </Typography>
               </>
             )
           }

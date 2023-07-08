@@ -7,7 +7,7 @@ const Scale = (props) => {
   return (
     <Card className="w-full bg-transparent flex flex-row justify-evenly shadow-none">
       {confidenceColors.map((color, i) => (
-        <div className="flex flex-col items-center">
+        <div key={i} className="flex flex-col items-center">
           <Button
             disabled={props.disabled}
             variant="gradient"
