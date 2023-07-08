@@ -10,7 +10,7 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { putChartSettingsAsync } from "../../store/chartSettings/thunks";
 
-const ChartSettingModal = (props) => {
+const ChartSettingsModal = (props) => {
     const user = useSelector((state) => state.loginReducer);
     const [modalChartSettings, setModalChartSettings] = useState(structuredClone(props.chartSettings));
     const dispatch = useDispatch();
@@ -70,7 +70,7 @@ const ChartSettingModal = (props) => {
                         </div>
                     )}
                 </DialogBody>
-                <DialogFooter tabIndex={1}>
+                <DialogFooter>
                     <Button
                         onClick={() => {
                             props.setVisible(false);
@@ -100,4 +100,4 @@ const ChartSettingModal = (props) => {
     );
 };
 
-export default ChartSettingModal;
+export default ChartSettingsModal;

@@ -1,6 +1,6 @@
 import { Typography } from "@material-tailwind/react";
 import GanttChart from "./GanttChart";
-import ChartSettingModal from "./ChartSettingModal";
+import ChartSettingsModal from "./ChartSettingsModal";
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
 import {Cog6ToothIcon} from "@heroicons/react/20/solid";
@@ -24,7 +24,7 @@ const GanttChartContainer = () => {
             <GanttChart />
         </div>
         {user.isLoggedIn && chartSettings !== null ?
-            <ChartSettingModal
+            <ChartSettingsModal
                 visible={visible}
                 setVisible={setVisible}
                 chartSettings={chartSettings}
