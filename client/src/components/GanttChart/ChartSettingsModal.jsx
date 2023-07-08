@@ -30,6 +30,7 @@ const ChartSettingsModal = (props) => {
                 open={props.visible}
                 handler={props.setVisible}
                 size="xs"
+                className="min-w-max"
             >
                 <DialogBody divider className="h-[40rem] overflow-y-auto">
                     <Typography variant="h3" color="blue-gray" className="mb-2">
@@ -49,26 +50,28 @@ const ChartSettingsModal = (props) => {
                     <Typography variant="h6" color="blue-gray" className="mt-3 mb-5">
                         Category Colors
                     </Typography>
-                    {modalChartSettings.categoryColors.map((item, index) =>
-                        <div key={index} className="mb-5">
-                            <Input
-                                className="mb-5"
-                                variant="outlined"
-                                label={item.category + " TODO Color"}
-                                color="blue-gray"
-                                value={item.color}
-                                onChange={(e) => setModalChartSettings((prevState) => ({
-                                    axisScale: prevState.axisScale,
-                                    categoryColors: prevState.categoryColors.map(c => {
-                                        if (c.category === item.category) {
-                                            c.color = e.target.value;
-                                        }
-                                        return c;
-                                    })
-                                }))}
-                            />
-                        </div>
-                    )}
+                    <div className="grid gap-x-3 gap-y-5 sm:grid-cols-3">
+                        {modalChartSettings.categoryColors.map((item, index) =>
+                            <div key={index} className="sm:col-span-1">
+                                <Input
+                                    className="mb-5"
+                                    variant="outlined"
+                                    label={item.category + " TODO Color"}
+                                    color="blue-gray"
+                                    value={item.color}
+                                    onChange={(e) => setModalChartSettings((prevState) => ({
+                                        axisScale: prevState.axisScale,
+                                        categoryColors: prevState.categoryColors.map(c => {
+                                            if (c.category === item.category) {
+                                                c.color = e.target.value;
+                                            }
+                                            return c;
+                                        })
+                                    }))}
+                                />
+                            </div>
+                        )}
+                    </div>
                 </DialogBody>
                 <DialogFooter>
                     <Button
