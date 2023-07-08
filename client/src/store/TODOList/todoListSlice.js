@@ -3,7 +3,7 @@ import { REQUEST_STATE } from "../utils";
 import thunk from "./thunk";
 
 // TODOListSlice sets up the initial redux state, defines reducers for adding,
-// editing, and deleting TODO items
+// editing, and deleting TODOItems
 
 const INITIAL_STATE = {
   categories: [],

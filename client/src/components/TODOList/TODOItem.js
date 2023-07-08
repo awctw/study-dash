@@ -16,11 +16,14 @@ const TODOItem = ({ todo }) => {
     dispatch(thunk.deleteTODOItemAsync(todo._id));
   };
 
-  const startDateVal = `${todo.startDate.toDateString()} ${todo.startDate.toLocaleTimeString(
+  const startDateObj = new Date(todo.startDate);
+  const endDateObj = new Date(todo.endDate);
+
+  const startDateVal = `${startDateObj.toDateString()}, ${startDateObj.toLocaleTimeString(
     "en-CA"
   )}`;
 
-  const endDateVal = `${todo.endDate.toDateString()} ${todo.endDate.toLocaleTimeString(
+  const endDateVal = `${endDateObj.toDateString()}, ${endDateObj.toLocaleTimeString(
     "en-CA"
   )}`;
 

@@ -16,9 +16,13 @@ const CategoryDelete = ({ category, setSelectedCategoryID }) => {
 
   return (
     <>
-      {deleteCategory === "PENDING" && <Spinner className="h-10 w-10" />}
-      <Button color="red" size="sm" onClick={handleDelete}>
-        Delete
+      <Button
+        color="red"
+        size="sm"
+        onClick={handleDelete}
+        disabled={deleteCategory === "PENDING"}
+      >
+        {deleteCategory === "PENDING" && <Spinner className="h-5 w-5" />} Delete
       </Button>
     </>
   );

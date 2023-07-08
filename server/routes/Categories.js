@@ -15,15 +15,17 @@ router.get('/', async (req, res) => {
 
 router.delete('/:categoryID', async (req, res) => {
   try {
-    const items = await TODOItem
-      .find({
-        category: req.params.categoryID
-      });
+    const items = await TODOItem.find({
+      category: req.params.categoryID,
+    });
 
-    // Do not delete the category if there are TODOItems that belongs to it
+    // Do not delete the category if there are TODOItems that belong to it
     if (items.length) {
-      return res.status(403).send('The category is still used by other TODO Items. ' +
-        'So, the category cannot be deleted');
+      return res
+        .status(409)
+        .send(
+          'The category is still used by other TODO Items. So, the category cannot be deleted'
+        );
     }
 
     const category = await Category.findByIdAndDelete(req.params.categoryID);

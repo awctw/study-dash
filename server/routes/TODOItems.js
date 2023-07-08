@@ -17,10 +17,16 @@ router.get('/fetchAllItems/:userID/:categoryID?', async (req, res) => {
       filter.category = req.params.categoryID;
     }
 
-    const outputList = await TODOItem
+    let outputList = await TODOItem
       .find(filter)
-      .sort({ startDate: 1 })
       .select({ _id: 1, title: 1, startDate: 1, endDate: 1 });
+
+    // sort the todoItems by their startDate attribute
+    outputList = outputList.sort((todoOne, todoTwo) => {
+      const dateOne = new Date(todoOne.startDate);
+      const dateTwo = new Date(todoTwo.startDate);
+      return dateOne - dateTwo;
+    });
 
     res.send(outputList);
   } catch (error) {

@@ -34,7 +34,11 @@ function CategoryToggle({ setSelectedCategoryID }) {
       >
         <Option value="">All Categories</Option>
         {categories.map((category) => (
-          <Option key={category._id} value={category._id}>
+          <Option
+            key={category._id}
+            value={category._id}
+            className="categoryOption"
+          >
             {category.category}
             <CategoryDelete
               category={category}

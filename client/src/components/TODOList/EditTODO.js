@@ -21,6 +21,10 @@ const EditTODO = ({ todo }) => {
     (state) => state.todoReducer
   );
 
+  // The current logged-in user of the application.
+  // This is where we obtain the userID attribute
+  const user = useSelector((state) => state.loginReducer);
+
   // openEdit state controls the visibility of the edit dialog popup.
   const [openEdit, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -105,10 +109,11 @@ const EditTODO = ({ todo }) => {
 
     const updatedTodo = {
       title: title,
-      startDate: startDate,
-      endDate: endDate,
+      startDate: startDate.toString(),
+      endDate: endDate.toString(),
       description: description,
       category: category,
+      userID: user.user.userID,
     };
 
     setLoading(true);
@@ -140,8 +145,8 @@ const EditTODO = ({ todo }) => {
     if (getTODOItem === REQUEST_STATE.FULFILLED && currentTODOItem) {
       setFormData({
         title: currentTODOItem.title,
-        startDate: currentTODOItem.startDate,
-        endDate: currentTODOItem.endDate,
+        startDate: new Date(currentTODOItem.startDate),
+        endDate: new Date(currentTODOItem.endDate),
         description: currentTODOItem.description,
 
         // currentTODOItem only stores a reference to a Category
@@ -185,7 +190,6 @@ const EditTODO = ({ todo }) => {
               <label htmlFor="edit-startDate">Start Date:</label>
               <DatePicker
                 id="edit-startDate"
-                name="startDate"
                 className="bg-orange-200"
                 showTimeSelect
                 selected={formData.startDate}
@@ -197,7 +201,6 @@ const EditTODO = ({ todo }) => {
               <label htmlFor="edit-endDate">End Date:</label>
               <DatePicker
                 id="edit-endDate"
-                name="endDate"
                 className="bg-orange-200"
                 showTimeSelect
                 selected={formData.endDate}

@@ -9,7 +9,7 @@ const TODOListViewer = ({ selectedCategoryID }) => {
   // slice in the rootReducer. TODOList is already sorted by due-date in
   // the server
   const { TODOList, fetchTODOList } = useSelector((state) => state.todoReducer);
-  const { user } = useSelector((state) => state.loginReducer);
+  const user = useSelector((state) => state.loginReducer);
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -18,12 +18,15 @@ const TODOListViewer = ({ selectedCategoryID }) => {
   // updated
   useEffect(() => {
     setLoading(true);
-    dispatch(thunk.getTODOListAsync(user.userID, selectedCategoryID)).then(
-      () => {
-        setLoading(false);
-      }
-    );
-  }, [dispatch, fetchTODOList, selectedCategoryID, user.userID]);
+    dispatch(
+      thunk.getTODOListAsync({
+        userID: user.user.userID,
+        categoryID: selectedCategoryID,
+      })
+    ).then(() => {
+      setLoading(false);
+    });
+  }, [dispatch, fetchTODOList, selectedCategoryID, user.user.userID]);
 
   // Only render the ListView if the isVisibleTODOListEmpty function returns false,
   // indicating that there are visible TODOItems to display.
@@ -31,7 +34,9 @@ const TODOListViewer = ({ selectedCategoryID }) => {
     <div>
       <header className="flex justify-between">
         <Typography variant="h5">TODO List</Typography>
-        <Typography variant="small">Total Todos: {TODOList.length}</Typography>
+        <Typography variant="small" className="ml-12">
+          Total Todos: {TODOList.length}
+        </Typography>
       </header>
       {loading && <Spinner className="h-10 w-10" />}
       <ListView />

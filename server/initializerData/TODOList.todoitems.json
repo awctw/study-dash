@@ -1,0 +1,86 @@
+[
+  {
+    "_id": {
+      "$oid": "64a8f59ad2e5dea6de8b031c"
+    },
+    "title": "buy lots of eggs and milk",
+    "startDate": "Wed Feb 01 2023 17:00:00 GMT-0800 (Pacific Standard Time)",
+    "endDate": "Wed Feb 01 2023 18:00:00 GMT-0800 (Pacific Standard Time)",
+    "description": "Buy eggs and milk from Superstore",
+    "category": {
+      "$oid": "64a8f59ad2e5dea6de8b031a"
+    },
+    "userID": "234a7ddf-4fed-4a0b-88f7-68c8b8605fb6",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "64a8f831d2e5dea6de8b0377"
+    },
+    "title": "wash dishes",
+    "startDate": "Mon May 01 2023 18:30:00 GMT-0700 (Pacific Daylight Time)",
+    "endDate": "Mon May 01 2023 19:00:00 GMT-0700 (Pacific Daylight Time)",
+    "description": "Need to clean it up quick",
+    "category": {
+      "$oid": "64a8f831d2e5dea6de8b0375"
+    },
+    "userID": "234a7ddf-4fed-4a0b-88f7-68c8b8605fb6",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "64a8f8e22fcd3abdf2c342ea"
+    },
+    "title": "walk the dog",
+    "startDate": "Sun Jul 02 2023 17:00:00 GMT-0700 (Pacific Daylight Time)",
+    "endDate": "Sun Jul 02 2023 19:00:00 GMT-0700 (Pacific Daylight Time)",
+    "description": "walk around stanley park with Sparky the poodle",
+    "category": {
+      "$oid": "64a8f831d2e5dea6de8b0375"
+    },
+    "userID": "234a7ddf-4fed-4a0b-88f7-68c8b8605fb6",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "64a8fb8a47ab18a419b04ab7"
+    },
+    "title": "buy a new bicycle",
+    "startDate": "Wed Mar 08 2023 12:00:00 GMT-0800 (Pacific Standard Time)",
+    "endDate": "Wed Mar 08 2023 14:30:00 GMT-0800 (Pacific Standard Time)",
+    "description": "Need a new bike for the upcoming race",
+    "category": {
+      "$oid": "64a8f59ad2e5dea6de8b031a"
+    },
+    "userID": "234a7ddf-4fed-4a0b-88f7-68c8b8605fb6",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "64a8ffd5f461352f6174cb44"
+    },
+    "title": "finish cs 455 milestone 4",
+    "startDate": "Fri Jul 07 2023 22:00:00 GMT-0700 (Pacific Daylight Time)",
+    "endDate": "Fri Jul 07 2023 23:00:00 GMT-0700 (Pacific Daylight Time)",
+    "description": "Need to add MongoDB database to TODOList module.",
+    "category": {
+      "$oid": "64a8ffd5f461352f6174cb42"
+    },
+    "userID": "234a7ddf-4fed-4a0b-88f7-68c8b8605fb6",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "64a90019f461352f6174cb4a"
+    },
+    "title": "finish assign 4",
+    "startDate": "Fri Jul 14 2023 19:00:00 GMT-0700 (Pacific Daylight Time)",
+    "endDate": "Fri Jul 14 2023 22:00:00 GMT-0700 (Pacific Daylight Time)",
+    "description": "Need to fix React useEffect hook error in mainPage component.",
+    "category": {
+      "$oid": "64a8ffd5f461352f6174cb42"
+    },
+    "userID": "234a7ddf-4fed-4a0b-88f7-68c8b8605fb6",
+    "__v": 0
+  }
+]

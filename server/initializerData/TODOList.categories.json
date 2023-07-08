@@ -1,0 +1,23 @@
+[
+  {
+    "_id": {
+      "$oid": "64a8f59ad2e5dea6de8b031a"
+    },
+    "category": "SHOPPING",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "64a8f831d2e5dea6de8b0375"
+    },
+    "category": "HOUSEWORK",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "64a8ffd5f461352f6174cb42"
+    },
+    "category": "HOMEWORK",
+    "__v": 0
+  }
+]

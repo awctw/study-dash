@@ -21,7 +21,7 @@ const AddTODOItem = () => {
 
   // The current logged-in user of the application.
   // This is where we obtain the userID attribute
-  const { user } = useSelector((state) => state.loginReducer);
+  const user = useSelector((state) => state.loginReducer);
 
   // openAddTODO is used to control the visibility of the addTODO dialog popup.
   const [openAddTODO, setOpen] = useState(false);
@@ -92,11 +92,11 @@ const AddTODOItem = () => {
 
     const newTodo = {
       title: title,
-      startDate: startDate,
-      endDate: endDate,
+      startDate: startDate.toString(),
+      endDate: endDate.toString(),
       description: description,
       category: category,
-      userID: user.userID
+      userID: user.user.userID,
     };
 
     setLoading(true);
@@ -162,7 +162,6 @@ const AddTODOItem = () => {
               <label htmlFor="add-startDate">Start Date:</label>
               <DatePicker
                 id="add-startDate"
-                name="startDate"
                 className="bg-orange-200"
                 showTimeSelect
                 selected={formData.startDate}
@@ -174,7 +173,6 @@ const AddTODOItem = () => {
               <label htmlFor="add-endDate">End Date:</label>
               <DatePicker
                 id="add-endDate"
-                name="endDate"
                 className="bg-orange-200"
                 showTimeSelect
                 selected={formData.endDate}

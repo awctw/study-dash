@@ -11,11 +11,11 @@ const TODOItemSchema = new mongoose.Schema({
     trim: true,
   },
   startDate: {
-    type: Date,
+    type: String,
     required: true
   },
   endDate: {
-    type: Date,
+    type: String,
     required: true
   },
   description: {
@@ -48,6 +48,7 @@ function validateTODOItem(item) {
     endDate: Joi.date().required(),
     description: Joi.string().trim().required(),
     category: Joi.string().trim().uppercase().required(),
+    userID: Joi.string().trim().required(),
   });
 
   return schema.validate(item);
