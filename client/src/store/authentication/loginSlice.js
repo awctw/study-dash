@@ -9,7 +9,7 @@ import {
 } from "./thunks";
 import { REQUEST_STATE } from "../utils";
 
-const user = JSON.parse(localStorage.getItem("user"));
+const user = JSON.parse(sessionStorage.getItem("user"));
 
 const initialUserState = user
   ? { isLoggedIn: true, user, error: null }

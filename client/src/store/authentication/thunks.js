@@ -26,6 +26,7 @@ export const userRegisterAsync = createAsyncThunk(
   async (user) => {
     return await AuthService.register(
       user.userID,
+      user.groupID,
       user.username,
       user.firstName,
       user.lastName,

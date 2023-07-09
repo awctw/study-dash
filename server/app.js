@@ -8,6 +8,7 @@ var cors = require("cors");
 var indexRouter = require("./routes/index");
 var userRouter = require("./routes/user");
 var authRouter = require("./routes/auth");
+var chatRouter = require("./routes/chat");
 var dbConfig = require("./config/db.config");
 var TODOListRouter = require("./routes/TODOList");
 var flashcardRouter = require("./routes/flashcards");
@@ -40,6 +41,7 @@ app.use("/flashcards", flashcardRouter);
 app.use("/habits", habitRouter);
 app.use("/chartSettings", chartSettingsRouter);
 app.use("/timerSettings", timerSettingsRouter);
+app.use("/chat", chatRouter);
 
 const db = require("./models");
 

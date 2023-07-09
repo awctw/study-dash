@@ -8,6 +8,7 @@ var bcrypt = require("bcryptjs");
 exports.signup = (req, res) => {
   const user = new User({
     userID: req.body.userID,
+    groupID: req.body.groupID,
     username: req.body.username,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -21,13 +22,14 @@ exports.signup = (req, res) => {
       return;
     }
 
-    var token = jwt.sign({ id: user.id }, config.secret, {
+    var token = jwt.sign({ id: user.userID }, config.secret, {
       expiresIn: 86400, // 24 hours
     });
     req.session.token = token;
 
     res.status(200).send({
       userID: user.userID,
+      groupID: user.groupID,
       username: user.username,
       firstName: user.firstName,
       lastName: user.lastName,
