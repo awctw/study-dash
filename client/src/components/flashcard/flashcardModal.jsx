@@ -8,21 +8,29 @@ import {
   ListItemSuffix,
   IconButton,
 } from "@material-tailwind/react";
-import { PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { BoltIcon, PlusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Cards from "./flashcards";
 import AddModuleModal from "./addModuleModal";
 import DeleteModal from "./confirmDeleteModal";
 import { Player } from "@lottiefiles/react-lottie-player";
+import SraIntroModal from "./sraIntroModal";
+import SmartCards from "./smartStudyCarousel";
+import { getScheduledCardsAsync } from "../../store/flashcards/thunks";
 
 
 const FlashCardModal = (props) => {
   const modules = useSelector((state) => state.flashcards.modules);
+  const user = useSelector((state) => state.loginReducer);
   const [id, setId] = useState(props.moduleId);
   const [key, setKey] = useState(props.moduleId);
   const [visible, setVisible] = useState(false);
+  const [sraVisible, setSraVisible] = useState(false);
+  const [showSra, setShowSra] = useState(false);
   const [deleteVisible, setDeleteVisible] = useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setId(props.moduleId);
@@ -56,6 +64,27 @@ const FlashCardModal = (props) => {
             </Typography>
           </div>
           <List>
+            {
+              modules.length > 0 ? 
+              (
+                <>
+                  <SraIntroModal visible={sraVisible} setVisible={setSraVisible} setShowSra={setShowSra} >
+                    <Button 
+                      className="flex w-full justify-center items-center gap-3 bg-pink-50 text-pink-600 py-2.5 shadow-none hover:shadow-pink-100 hover:shadow-none normal-case font-sans font-semibold text-sm border"
+                      onClick={() => {
+                        setSraVisible(!sraVisible);
+                        setKey("sra");
+                        dispatch(getScheduledCardsAsync(user.user.userID));
+                      }}
+                    >
+                      <BoltIcon className="w-5 h-5" strokeWidth={2} /> Smart Study
+                    </Button>
+                  </SraIntroModal>
+                  <hr className="my-2 border-blue-gray-200/30" />
+                </>
+              ) :
+              <></>
+            }
             {modules && modules.map((module, i) => (
               <ListItem
                 ripple={false}
@@ -65,6 +94,7 @@ const FlashCardModal = (props) => {
                 onClick={() => {
                   setId(module._id);
                   setKey(module._id);
+                  setShowSra(false);
                 }}
               >
                 {module.name}
@@ -108,7 +138,11 @@ const FlashCardModal = (props) => {
             modules.length > 0 ? 
             (
               <>
-                {id && <Cards moduleId={id} reset={handleReset} />}
+                {
+                  showSra ? 
+                  <SmartCards reset={handleReset} /> :
+                  (id && <Cards moduleId={id} reset={handleReset} />)
+                }
               </>
             ) :
             (

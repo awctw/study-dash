@@ -7,11 +7,14 @@ import {
   deleteModuleAsync,
   editFlashcardAsync,
   getModulesAsync,
+  getScheduledCardsAsync,
 } from "./thunks";
 
 const INIT_STATE = {
   modules: [],
+  scheduledCards: [],
   getModules: REQUEST_STATE.IDLE,
+  getScheduledCards: REQUEST_STATE.IDLE,
   addModule: REQUEST_STATE.IDLE,
   addFlashcard: REQUEST_STATE.IDLE,
   editFlashcard: REQUEST_STATE.IDLE,
@@ -121,6 +124,18 @@ const flashcardSlice = createSlice({
       })
       .addCase(deleteModuleAsync.rejected, (state, action) => {
         state.deleteModule = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(getScheduledCardsAsync.pending, (state) => {
+        state.getScheduledCards = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(getScheduledCardsAsync.fulfilled, (state, action) => {
+        state.getScheduledCards = REQUEST_STATE.FULFILLED;
+        state.scheduledCards = action.payload;
+      })
+      .addCase(getScheduledCardsAsync.rejected, (state, action) => {
+        state.getScheduledCards = REQUEST_STATE.REJECTED;
         state.error = action.error;
       });
   },

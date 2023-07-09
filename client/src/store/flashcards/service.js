@@ -97,6 +97,17 @@ const deleteModule = async (moduleId) => {
   return moduleId;
 };
 
+const getScheduledCards = async (userID) => {
+  const response = await axios
+    .get(URL + `flashcards/sra/${userID}`)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  return response;
+};
+
 export default {
   addModule,
   getModules,
@@ -104,4 +115,5 @@ export default {
   editFlashcard,
   deleteFlashcard,
   deleteModule,
+  getScheduledCards,
 };

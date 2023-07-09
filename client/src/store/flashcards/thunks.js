@@ -44,8 +44,16 @@ const deleteModuleAsync = createAsyncThunk(
   }
 );
 
+const getScheduledCardsAsync = createAsyncThunk(
+  actionTypes.GET_SCHEDULED_CARDS,
+  async (userID) => {
+    return await flashcardService.getScheduledCards(userID);
+  }
+);
+
 export {
   getModulesAsync,
+  getScheduledCardsAsync,
   addModuleAsync,
   addFlashcardAsync,
   editFlashcardAsync,
