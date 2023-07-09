@@ -24,4 +24,6 @@ router.put(
   controller.edit
 );
 
+router.put("/groupChat", controller.groupChat);
+
 module.exports = router;

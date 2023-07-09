@@ -48,3 +48,10 @@ export const userEditAsync = createAsyncThunk(
     );
   }
 );
+
+export const groupChatAsync = createAsyncThunk(
+  actionTypes.PUT_GROUP_CHAT,
+  async (user) => {
+    return await AuthService.groupChat(user.userID, user.groupID);
+  }
+);

@@ -68,11 +68,27 @@ const edit = (userID, username, firstName, lastName, email) => {
     });
 };
 
+const groupChat = (userID, groupID) => {
+  return axios
+    .put(API_URL + "groupChat", {
+      userID,
+      groupID,
+    })
+    .then((response) => {
+      if (response.data.accessToken) {
+        sessionStorage.setItem("user", JSON.stringify(response.data));
+      }
+
+      return response.data;
+    });
+};
+
 const AuthService = {
   login,
   logout,
   register,
   edit,
+  groupChat,
 };
 
 export default AuthService;

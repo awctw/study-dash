@@ -88,6 +88,7 @@ exports.edit = async (req, res) => {
     { userID: req.body.userID },
     {
       userID: req.body.userID,
+      groupID: req.body.groupID,
       username: req.body.username,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -103,6 +104,32 @@ exports.edit = async (req, res) => {
 
   res.status(200).send({
     userID: user.userID,
+    groupID: user.groupID,
+    username: user.username,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    accessToken: token,
+  });
+};
+
+exports.groupChat = async (req, res) => {
+  const user = await User.findOneAndUpdate(
+    { userID: req.body.userID },
+    {
+      groupID: req.body.groupID,
+    },
+    { new: true, upsert: false }
+  );
+
+  var token = jwt.sign({ id: user.userID }, config.secret, {
+    expiresIn: 86400, // 24 hours
+  });
+  req.session.token = token;
+
+  res.status(200).send({
+    userID: user.userID,
+    groupID: user.groupID,
     username: user.username,
     firstName: user.firstName,
     lastName: user.lastName,

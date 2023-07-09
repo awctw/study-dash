@@ -6,6 +6,7 @@ import {
   userLogoutAsync,
   userRegisterAsync,
   userEditAsync,
+  groupChatAsync,
 } from "./thunks";
 import { REQUEST_STATE } from "../utils";
 
@@ -102,6 +103,17 @@ const loginSlice = createSlice({
         }
       })
       .addCase(userEditAsync.rejected, (state, action) => {
+        state.edit = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(groupChatAsync.pending, (state) => {
+        state.edit = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(groupChatAsync.fulfilled, (state, action) => {
+        state.user.groupID = action.payload.groupID;
+      })
+      .addCase(groupChatAsync.rejected, (state, action) => {
         state.edit = REQUEST_STATE.REJECTED;
         state.error = action.error;
       });
