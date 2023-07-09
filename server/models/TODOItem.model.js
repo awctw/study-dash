@@ -23,6 +23,11 @@ const TODOItemSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  // determines whether current TODOItem is finished or not
+  isFinished: {
+    type: Boolean,
+    required: true,
+  },
   // references a Category document
   category: {
     type: mongoose.SchemaTypes.ObjectId,
@@ -47,6 +52,7 @@ function validateTODOItem(item) {
     startDate: Joi.date().required(),
     endDate: Joi.date().required(),
     description: Joi.string().trim().required(),
+    isFinished: Joi.boolean().required(),
     category: Joi.string().trim().uppercase().required(),
     userID: Joi.string().trim().required(),
   });

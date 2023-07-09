@@ -4,9 +4,9 @@ import services from "./services";
 
 const getCategoryListAsync = createAsyncThunk(
   actionTypes.GET_CATEGORY_LIST,
-  async () => {
+  async (userID) => {
     try {
-      return await services.getCategories();
+      return await services.getCategories(userID);
     } catch (error) {
       throw new Error(error.message);
     }

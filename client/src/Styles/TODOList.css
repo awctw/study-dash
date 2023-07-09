@@ -8,10 +8,24 @@
   border-radius: 30px;
 }
 
+.todoDoneMessage {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  height: 1.5rem;
+}
+
+.todoItemCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
 #todoItemButtons {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  margin-top: 1rem;
 }
 
 .categoryOption {
@@ -27,6 +41,12 @@
   justify-content: space-evenly;
   align-items: center;
   padding: 1rem;
+}
+
+.dateSelectors {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 .TODOForm {

@@ -3,9 +3,9 @@ import axios from "axios";
 const API_TODO_ITEMS_URL = "http://localhost:8080/api/TODOList";
 const API_CATEGORIES_URL = "http://localhost:8080/api/categories";
 
-const getCategories = async () => {
+const getCategories = async (userID) => {
   try {
-    const response = await axios.get(API_CATEGORIES_URL);
+    const response = await axios.get(`${API_CATEGORIES_URL}/${userID}`);
     return response.data;
   } catch (error) {
     throw handleRequestError(error);

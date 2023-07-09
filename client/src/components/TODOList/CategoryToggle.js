@@ -12,6 +12,8 @@ function CategoryToggle({ setSelectedCategoryID }) {
     (state) => state.todoReducer
   );
 
+  const user = useSelector((state) => state.loginReducer);
+
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
@@ -19,10 +21,10 @@ function CategoryToggle({ setSelectedCategoryID }) {
   // updated
   useEffect(() => {
     setLoading(true);
-    dispatch(thunk.getCategoryListAsync()).then(() => {
+    dispatch(thunk.getCategoryListAsync(user.user.userID)).then(() => {
       setLoading(false);
     });
-  }, [dispatch, fetchCategoryList]);
+  }, [dispatch, fetchCategoryList, user.user.userID]);
 
   return (
     <div className="m-2 w-60">

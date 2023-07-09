@@ -36,12 +36,6 @@ const AddTODOItem = () => {
     category: "",
   });
 
-  // Assign red to the AM time options in DatePicker.
-  // Assign green to the PM values of the time menu
-  const assignTimeColor = (time) => {
-    return time.getHours() > 12 ? "text-success" : "text-error";
-  };
-
   const [errMessage, setErrMessage] = useState("");
 
   const handleOpen = () => {
@@ -96,6 +90,7 @@ const AddTODOItem = () => {
       endDate: endDate.toString(),
       description: description,
       category: category,
+      isFinished: false,
       userID: user.user.userID,
     };
 
@@ -140,52 +135,54 @@ const AddTODOItem = () => {
         Add
       </Button>
       <Dialog
-        size="lg"
+        size="md"
         open={openAddTODO}
         handler={handleOpen}
-        className="addTODODialog shadow-none"
+        className="shadow-none"
       >
-        <Card className="addTODOForm">
+        <Card className="addTODOForm max-w-xl">
           <h2>Add TODO Item</h2>
           <form onSubmit={handleSubmit}>
             <div className="inputField">
-              <label htmlFor="add-title">TODO:</label>
+              <label htmlFor="add-title">Title:</label>
               <Input
                 id="add-title"
                 name="title"
                 value={formData.title}
-                label="title"
+                label="Title"
                 onChange={handleInputChange}
               />
             </div>
-            <div className="inputField">
-              <label htmlFor="add-startDate">Start Date:</label>
-              <DatePicker
-                id="add-startDate"
-                className="bg-orange-200"
-                showTimeSelect
-                selected={formData.startDate}
-                onChange={handleStartDateInput}
-                timeClassName={assignTimeColor}
-              />
-            </div>
-            <div className="inputField">
-              <label htmlFor="add-endDate">End Date:</label>
-              <DatePicker
-                id="add-endDate"
-                className="bg-orange-200"
-                showTimeSelect
-                selected={formData.endDate}
-                onChange={handleEndDateInput}
-                timeClassName={assignTimeColor}
-              />
+            <div className="dateSelectors">
+              <div className="inputField mr-4">
+                <label htmlFor="add-startDate">Start Date:</label>
+                <DatePicker
+                  id="add-startDate"
+                  className="bg-orange-200"
+                  dateFormat="MMM-dd-yyyy, h:mm aa"
+                  showTimeSelect
+                  selected={formData.startDate}
+                  onChange={handleStartDateInput}
+                />
+              </div>
+              <div className="inputField">
+                <label htmlFor="add-endDate">End Date:</label>
+                <DatePicker
+                  id="add-endDate"
+                  className="bg-orange-200"
+                  dateFormat="MMM-dd-yyyy, h:mm aa"
+                  showTimeSelect
+                  selected={formData.endDate}
+                  onChange={handleEndDateInput}
+                />
+              </div>
             </div>
             <div className="inputField">
               <label htmlFor="add-description">Description:</label>
               <Textarea
                 id="add-description"
                 name="description"
-                label="description"
+                label="Description"
                 value={formData.description}
                 onChange={handleInputChange}
               />
@@ -195,7 +192,8 @@ const AddTODOItem = () => {
               <Input
                 id="add-category"
                 name="category"
-                label="category"
+                label="Category"
+                autoComplete="off"
                 value={formData.category}
                 list="categoryOptions"
                 onChange={handleInputChange}

@@ -11,10 +11,12 @@ const TODOListMainView = () => {
   const [selectedCategoryID, setSelectedCategoryID] = useState("");
 
   return (
-    <Card className="flex flex-col items-center m-8 p-10 w-100">
-      <TODOListViewer selectedCategoryID={selectedCategoryID} />
-      <ControlPanel setSelectedCategoryID={setSelectedCategoryID} />
-    </Card>
+    <>
+      <Card className="flex flex-col items-center m-8 p-10 max-w-xl">
+        <TODOListViewer selectedCategoryID={selectedCategoryID} />
+        <ControlPanel setSelectedCategoryID={setSelectedCategoryID} />
+      </Card>
+    </>
   );
 };
 

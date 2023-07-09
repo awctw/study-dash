@@ -3,9 +3,11 @@ const Category = require('../models/Category.model');
 const { TODOItem } = require("../models/TODOItem.model");
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/:userID', async (req, res) => {
   try {
-    const outputList = await Category.find().sort({ category: 1 });
+    const outputList = await Category
+      .find({userID: req.params.userID})
+      .sort({ category: 1 });
     res.send(outputList);
   } catch (error) {
     console.error('Error fetching categories:', error);

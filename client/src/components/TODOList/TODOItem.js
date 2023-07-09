@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Card, Spinner } from "@material-tailwind/react";
 import EditTODO from "./EditTODO";
 import thunk from "../../store/TODOList/thunk";
+import { REQUEST_STATE } from "../../store/utils";
+import TODODoneNotice from "./TODODoneNotice";
 
 // The TODOItem component represents an individual TODOItem in the list.
 const TODOItem = ({ todo }) => {
@@ -28,18 +30,27 @@ const TODOItem = ({ todo }) => {
   )}`;
 
   return (
-    <Card className="p-3 m-3">
-      <h3>Title: {todo.title}</h3>
-      <p>Start Date: {startDateVal}</p>
-      <p>End Date: {endDateVal}</p>
+    <Card className="todoItemCard p-3 m-3">
+      {todo.isFinished && <TODODoneNotice />}
+      <h3>
+        <strong className="text-light-blue-200">Title:</strong> {todo.title}
+      </h3>
+      <p>
+        <strong className="text-red-400">Start Date:</strong> {startDateVal}
+      </p>
+      <p>
+        <strong className="text-red-400">End Date:</strong> {endDateVal}
+      </p>
       <div id="todoItemButtons">
         <Button
           className="border-indigo-300 bg-white text-indigo-300 border-solid border"
           size="sm"
           onClick={handleDelete}
         >
-          {deleteTODOItem === "PENDING" && <Spinner className="h-10 w-10" />}
-          Finished
+          {deleteTODOItem === REQUEST_STATE.PENDING && (
+            <Spinner className="h-10 w-10" />
+          )}
+          Delete
         </Button>
         <EditTODO todo={todo} />
       </div>

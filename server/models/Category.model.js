@@ -6,6 +6,12 @@ const categorySchema = new mongoose.Schema({
     trim: true,
     uppercase: true,
     required: true,
+  },
+  // references the user object that this TODOItem belongs to
+  userID: {
+    type: String,
+    required: true,
+    trim: true,
   }
 });
 

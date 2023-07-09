@@ -19,7 +19,7 @@ router.get('/fetchAllItems/:userID/:categoryID?', async (req, res) => {
 
     let outputList = await TODOItem
       .find(filter)
-      .select({ _id: 1, title: 1, startDate: 1, endDate: 1 });
+      .select({ _id: 1, title: 1, startDate: 1, endDate: 1, isFinished: 1 });
 
     // sort the todoItems by their startDate attribute
     outputList = outputList.sort((todoOne, todoTwo) => {
@@ -68,6 +68,7 @@ router.post('/', async (req, res) => {
     if (!category) {
       category = new Category({
         category: req.body.category,
+        userID: req.body.userID
       });
       category = await category.save();
     }
@@ -77,6 +78,7 @@ router.post('/', async (req, res) => {
       startDate: req.body.startDate,
       endDate: req.body.endDate,
       description: req.body.description,
+      isFinished: req.body.isFinished,
       category: category._id,
 
       // userID from user object in loginSlice redux store
@@ -106,6 +108,7 @@ router.put('/:itemID', async (req, res) => {
     if (!category) {
       category = new Category({
         category: req.body.category,
+        userID: req.body.userID
       });
       category = await category.save();
     }
@@ -117,6 +120,7 @@ router.put('/:itemID', async (req, res) => {
         startDate: req.body.startDate,
         endDate: req.body.endDate,
         description: req.body.description,
+        isFinished: req.body.isFinished,
         category: category._id,
       },
       // new=true set so that item returned from findByIdAndUpdate()

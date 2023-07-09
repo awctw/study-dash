@@ -4,6 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import {
   Button,
   Card,
+  Checkbox,
   Dialog,
   Input,
   Spinner,
@@ -36,13 +37,8 @@ const EditTODO = ({ todo }) => {
     endDate: null,
     description: "",
     category: "",
+    isFinished: false,
   });
-
-  // Assign red to the AM time options in DatePicker.
-  // Assign green to the PM values of the time menu
-  const assignTimeColor = (time) => {
-    return time.getHours() > 12 ? "text-success" : "text-error";
-  };
 
   const [errMessage, setErrMessage] = useState("");
 
@@ -91,6 +87,15 @@ const EditTODO = ({ todo }) => {
     }));
   };
 
+  // handleIsFinishedInput function is responsible for updating the isFinished field
+  // in the formData state when the value of the CheckBox component changes.
+  const handleIsFinishedInput = (event) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      isFinished: event.target.checked,
+    }));
+  };
+
   // The handleFormSubmit function is called when the form is submitted.
   // It performs validation on the input fields to ensure that the required
   // fields are not empty. If any of the required fields are empty, an error
@@ -100,7 +105,14 @@ const EditTODO = ({ todo }) => {
     // prior to input validation
     e.preventDefault();
 
-    const { title, startDate, endDate, description, category } = formData;
+    const { title, startDate, endDate, description, category, isFinished } =
+      formData;
+
+    let isFinishedVal = false;
+
+    if (isFinished) {
+      isFinishedVal = isFinished;
+    }
 
     if (!title || !startDate || !endDate || !description || !category) {
       setErrMessage("Please provide all required fields.");
@@ -112,6 +124,7 @@ const EditTODO = ({ todo }) => {
       startDate: startDate.toString(),
       endDate: endDate.toString(),
       description: description,
+      isFinished: isFinishedVal,
       category: category,
       userID: user.user.userID,
     };
@@ -137,6 +150,7 @@ const EditTODO = ({ todo }) => {
       endDate: null,
       description: "",
       category: "",
+      isFinished: false,
     });
     setErrMessage("");
   };
@@ -148,6 +162,7 @@ const EditTODO = ({ todo }) => {
         startDate: new Date(currentTODOItem.startDate),
         endDate: new Date(currentTODOItem.endDate),
         description: currentTODOItem.description,
+        isFinished: currentTODOItem.isFinished,
 
         // currentTODOItem only stores a reference to a Category
         // object. The actual Category object has its value
@@ -168,12 +183,12 @@ const EditTODO = ({ todo }) => {
         Details
       </Button>
       <Dialog
-        size="lg"
+        size="md"
         open={openEdit}
         handler={handleOpen}
         className="shadow-none"
       >
-        <Card className="editTODOForm">
+        <Card className="editTODOForm max-w-xl">
           <h2>Edit TODO</h2>
           <form className="TODOForm" onSubmit={handleFormSubmit}>
             <div className="inputField">
@@ -181,49 +196,59 @@ const EditTODO = ({ todo }) => {
               <Input
                 id="edit-title"
                 value={formData.title}
-                label="title"
+                label="Title"
                 name="title"
                 onChange={handleInputChange}
               />
             </div>
-            <div className="inputField">
-              <label htmlFor="edit-startDate">Start Date:</label>
-              <DatePicker
-                id="edit-startDate"
-                className="bg-orange-200"
-                showTimeSelect
-                selected={formData.startDate}
-                onChange={handleStartDateInput}
-                timeClassName={assignTimeColor}
-              />
-            </div>
-            <div className="inputField">
-              <label htmlFor="edit-endDate">End Date:</label>
-              <DatePicker
-                id="edit-endDate"
-                className="bg-orange-200"
-                showTimeSelect
-                selected={formData.endDate}
-                onChange={handleEndDateInput}
-                timeClassName={assignTimeColor}
-              />
+            <div className="dateSelectors">
+              <div className="inputField mr-4">
+                <label htmlFor="edit-startDate">Start Date:</label>
+                <DatePicker
+                  id="edit-startDate"
+                  className="bg-orange-200"
+                  dateFormat="MMM-dd-yyyy, h:mm aa"
+                  showTimeSelect
+                  selected={formData.startDate}
+                  onChange={handleStartDateInput}
+                />
+              </div>
+              <div className="inputField">
+                <label htmlFor="edit-endDate">End Date:</label>
+                <DatePicker
+                  id="edit-endDate"
+                  className="bg-orange-200"
+                  dateFormat="MMM-dd-yyyy, h:mm aa"
+                  showTimeSelect
+                  selected={formData.endDate}
+                  onChange={handleEndDateInput}
+                />
+              </div>
             </div>
             <div className="inputField">
               <label htmlFor="edit-description">Description:</label>
               <Textarea
                 id="edit-description"
-                label="description"
+                label="Description"
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
               />
             </div>
             <div className="inputField">
+              <Checkbox
+                label="Is TODO item finished?"
+                checked={formData.isFinished}
+                onChange={handleIsFinishedInput}
+              />
+            </div>
+            <div className="inputField">
               <label htmlFor="edit-category">Category:</label>
               <Input
                 id="edit-category"
-                label="category"
+                label="Category"
                 name="category"
+                autoComplete="off"
                 value={formData.category}
                 list="categoryOptions"
                 onChange={handleInputChange}
