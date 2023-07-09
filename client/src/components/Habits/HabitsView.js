@@ -16,43 +16,60 @@ import {
 import { ListBulletIcon } from "@heroicons/react/24/solid";
 
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getHabitsAsync, addHabitAsync } from "../../store/habits/thunks";
 
 const HabitsView = () => {
   /* Adapted From Material UI Docs */
+  const user = useSelector((state) => state.loginReducer);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
+
+  const { habits } = useSelector((state) => state.habitReducer);
+  const dispatch = useDispatch();
 
   const [habitsToggle, setHabitsToggle] = useState(false);
 
   const handleOpen = () => setOpen(!open);
 
-  const [habits, setHabits] = useState([]);
-  // let habits = [{name: "donut"}, {name: "testing"}]
-
-  const getHabits = async () => {
-    let res = await fetch("http://localhost:8080/habits", {
-      method: "GET",
-    });
-    return res.json()
-  }
-  
   useEffect(() => {
-    getHabits().then((newHabits) => setHabits(newHabits));
-  }, [habitsToggle])
+    dispatch(getHabitsAsync(user.user.userID));
+  }, [dispatch, user]);
 
-  const addNewHabit = async () => {
-    console.log(name);
-    let res = { "name": name }
-    await fetch("http://localhost:8080/habits", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(res)
-    })
-    setHabitsToggle(!habitsToggle);
-    handleOpen();
-  }
+  const addNewHabit = () => {
+    const habit = {
+      userID: user.user.userID,
+      name: name,
+    }
+    dispatch(addHabitAsync(habit));
+  };
+
+  // const [habits, setHabits] = useState([]);
+
+  // const getHabits = async () => {
+  //   let res = await fetch("http://localhost:8080/habits", {
+  //     method: "GET",
+  //   });
+  //   return res.json()
+  // }
+  
+  // useEffect(() => {
+  //   getHabits().then((newHabits) => setHabits(newHabits));
+  // }, [habitsToggle])
+
+  // const addNewHabit = async () => {
+  //   console.log(name);
+  //   let res = { "name": name }
+  //   await fetch("http://localhost:8080/habits", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json"
+  //     },
+  //     body: JSON.stringify(res)
+  //   })
+  //   setHabitsToggle(!habitsToggle);
+  //   handleOpen();
+  // }
 
   return (
     <>
