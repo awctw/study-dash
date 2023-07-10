@@ -117,11 +117,13 @@ const ChatPage = () => {
         <SideBar />
       </div>
       <div className="p-5 !pl-[300px]">
-        <Chip
-          value={"Test"}
-          variant="outlined"
-          className="mx-24 text-indigo-300 text-center"
-        />
+        <div className="flex justify-center">
+          <Chip
+            value={"Group Chat"}
+            variant="outlined"
+            className="text-center text-indigo-300 w-3/5"
+          />
+        </div>
 
         <div className="absolute top-0 right-0 m-5">
           <IconButton
@@ -141,34 +143,36 @@ const ChatPage = () => {
           </IconButton>
         </div>
 
-        <div className="mx-24 mb-5 absolute bottom-0 w-3/5">
-          <Card className="flex mb-5">
-            <ul className="p-5 max-h-[30rem] overflow-y-auto">
-              {chat.history
-                ? chat.history.map((message, index) => (
-                    <li key={index}>
-                      <span className="font-bold">{message.username}: </span>
-                      {message.message}
-                    </li>
-                  ))
-                : null}
-            </ul>
-          </Card>
-          <Card className="flex">
-            <form onSubmit={handleSubmit} className="flex p-5">
-              <Textarea
-                label="Message"
-                value={message}
-                onChange={(event) => setMessage(event.target.value)}
-              />
+        <div className="flex justify-center">
+          <div className="mb-5 absolute bottom-0 w-3/5">
+            <Card className="flex mb-5">
+              <ul className="p-5 max-h-[30rem] overflow-y-auto scrollbar-width:none">
+                {chat.history
+                  ? chat.history.map((message, index) => (
+                      <li key={index}>
+                        <span className="font-bold">{message.username}: </span>
+                        {message.message}
+                      </li>
+                    ))
+                  : null}
+              </ul>
+            </Card>
+            <Card className="flex">
+              <form onSubmit={handleSubmit} className="flex p-5">
+                <Textarea
+                  label="Message"
+                  value={message}
+                  onChange={(event) => setMessage(event.target.value)}
+                />
 
-              <div className="flex items-center">
-                <IconButton type="submit" className="flex bg-indigo-300 ml-5">
-                  <PaperAirplaneIcon className="h-3 w-3" />
-                </IconButton>
-              </div>
-            </form>
-          </Card>
+                <div className="flex items-center">
+                  <IconButton type="submit" className="flex bg-indigo-300 ml-5">
+                    <PaperAirplaneIcon className="h-3 w-3" />
+                  </IconButton>
+                </div>
+              </form>
+            </Card>
+          </div>
         </div>
       </div>
 
