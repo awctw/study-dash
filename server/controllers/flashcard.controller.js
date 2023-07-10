@@ -116,45 +116,49 @@ const deleteModule = async (req, res, next) => {
 }
 
 const refreshFlashcard = async (req, res, next) => {
-    const id = req.params.moduleId, cardIndex = req.query.cardIndex, quality = req.body.quality;
+    const cardId = req.params.cardId, quality = req.body.quality;
 
     if (quality > 5 || quality < 0) {
         res.status(400).send("Bad request: quality must be within 0-5");
         return;
     }
 
-    const module = await Module.findById(id);
+    let now = new Date();
 
-    const flashcard = module.flashcards[cardIndex], now = new Date();
+    await Module.findOne({
+        'flashcards._id': cardId
+    })
+        .then((module) => {
+            const card = module.flashcards.id(cardId);
 
-    /**
-     * No need to run the algo if the review is early. This is necessary to avoid
-     * the continuous increase of review date if a user excessively reviews during short intervals
-     */ 
-    if (flashcard.reviewDate > now) {
-        return res.status(200).send("Early review: no action needed");
-    }
+            /**
+             * No need to run the algo if the review is early. This is necessary to avoid
+             * the continuous increase of review date if a user excessively reviews during short intervals
+             */ 
+            if (card.reviewDate > now) {
+                return res.status(200).send("Early review: no action needed");
+            }
 
-    // run the algo passing in prev values of attributes
-    const { reps, easeFactor, interval, reviewDate } = spacedRep(
-        quality,
-        flashcard.reps,
-        flashcard.interval,
-        flashcard.easeFactor
-    );
+            // run the algo passing in prev values of attributes
+            const { reps, easeFactor, interval, reviewDate } = spacedRep(
+                quality,
+                card.reps,
+                card.interval,
+                card.easeFactor
+            );
 
-    // update the card attributes with newly generated values
-    flashcard.reps = reps;
-    flashcard.easeFactor = easeFactor;
-    flashcard.interval = interval;
-    flashcard.reviewDate = reviewDate;
+            // update the card attributes with newly generated values
+            card.reps = reps;
+            card.easeFactor = easeFactor;
+            card.interval = interval;
+            card.reviewDate = reviewDate;
 
-    await module.save()
-        .then(() => {
-            res.status(200).send(module.flashcards[cardIndex]);
+            module.save();
+
+            return res.status(200).send(card);
         })
         .catch((err) => {
-            res.status(500).send(err);
+            return res.status(500).send(err);
         });
 }
 
