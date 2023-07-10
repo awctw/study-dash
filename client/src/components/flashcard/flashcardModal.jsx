@@ -72,7 +72,15 @@ const FlashCardModal = (props) => {
                     <Button 
                       className="flex w-full justify-center items-center gap-3 bg-pink-50 text-pink-600 py-2.5 shadow-none hover:shadow-pink-100 hover:shadow-none normal-case font-sans font-semibold text-sm border"
                       onClick={() => {
-                        setSraVisible(!sraVisible);
+                        const alreadySeen = sessionStorage.getItem("seenIntro");
+
+                        if (!alreadySeen) {
+                          setSraVisible(!sraVisible);
+                          sessionStorage.setItem("seenIntro", "true");
+                        } else {
+                          setShowSra(true);
+                        }
+                        
                         setKey("sra");
                         dispatch(getScheduledCardsAsync(user.user.userID));
                       }}
