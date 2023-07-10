@@ -38,7 +38,7 @@ const chatSlice = createSlice({
       })
       .addCase(postChatHistoryAsync.fulfilled, (state, action) => {
         state.getModules = REQUEST_STATE.FULFILLED;
-        state.chat.groupID = action.payload.groupID;
+        state.chat = action.payload;
       })
       .addCase(postChatHistoryAsync.rejected, (state, action) => {
         state.getModules = REQUEST_STATE.REJECTED;

@@ -1,10 +1,27 @@
 import io from "socket.io-client";
 import { useState, useEffect } from "react";
 import SideBar from "../components/SideBar";
-import { Card, IconButton, Textarea } from "@material-tailwind/react";
+import {
+  Card,
+  IconButton,
+  Textarea,
+  Chip,
+  Dialog,
+  Typography,
+  CardBody,
+  Button,
+  CardHeader,
+  Input,
+  CardFooter,
+} from "@material-tailwind/react";
 import { useSelector, useDispatch } from "react-redux";
-import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
+import {
+  PaperAirplaneIcon,
+  PencilSquareIcon,
+  UserPlusIcon,
+} from "@heroicons/react/24/solid";
 import { getChatHistoryAsync, putChatHistoryAsync } from "../store/chat/thunks";
+import { inviteUserAsync, getUserAsync } from "../store/authentication/thunks";
 
 // Credits: Setting up socket io for chat
 // https://dev.to/bhavik786/building-a-real-time-chat-application-using-mern-stack-and-socketio-1obn
@@ -12,15 +29,22 @@ const ChatPage = () => {
   const dispatch = useDispatch();
   const chat = useSelector((state) => state.chatReducer.chat);
   const user = useSelector((state) => state.loginReducer);
-  const username = user.user.username;
   const groupID = window.location.pathname.split("/").pop();
+
+  const [socket, setSocket] = useState(null);
+  const [message, setMessage] = useState("");
+  const [openUser, setOpenUser] = useState(false);
+  const [openName, setOpenName] = useState(false);
+
+  const [name, setName] = useState(user.user ? user.user.groupID : "");
+  const [userInvite, setUserInvite] = useState(
+    user.user ? user.user.groupID : ""
+  );
+  const username = user.user ? user.user.username : "";
 
   useEffect(() => {
     dispatch(getChatHistoryAsync(groupID));
   }, [dispatch, groupID]);
-
-  const [socket, setSocket] = useState(null);
-  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const newSocket = io("http://localhost:8080");
@@ -56,15 +80,70 @@ const ChatPage = () => {
     }
   };
 
+  const addUserHandler = () => {
+    setOpenUser((cur) => !cur);
+  };
+
+  const changeNameHandler = () => {
+    setOpenName((cur) => !cur);
+  };
+
+  const onChangeName = (event) => {
+    setName(event.target.value);
+  };
+
+  const onInviteUser = (event) => {
+    setUserInvite(event.target.value);
+  };
+
+  const inviteDispatch = () => {
+    const updatedUser = {
+      username: userInvite,
+      groupID: groupID,
+    };
+
+    dispatch(inviteUserAsync(updatedUser));
+
+    addUserHandler();
+  };
+
+  if (!user.user) {
+    return null;
+  }
+
   return (
     <div>
       <div className="fixed left-0 top-0 z-[1035] h-screen">
         <SideBar />
       </div>
       <div className="p-5 !pl-[300px]">
+        <Chip
+          value={"Test"}
+          variant="outlined"
+          className="mx-24 text-indigo-300 text-center"
+        />
+
+        <div className="absolute top-0 right-0 m-5">
+          <IconButton
+            type="submit"
+            onClick={changeNameHandler}
+            className="flex bg-indigo-300 ml-5 mb-2"
+          >
+            <PencilSquareIcon className="h-5 w-5 " />
+          </IconButton>
+
+          <IconButton
+            type="submit"
+            onClick={addUserHandler}
+            className="flex bg-indigo-300 ml-5 mb-2"
+          >
+            <UserPlusIcon className="h-5 w-5" />
+          </IconButton>
+        </div>
+
         <div className="mx-24 mb-5 absolute bottom-0 w-3/5">
           <Card className="flex mb-5">
-            <ul className="p-5 max-h-[30rem] overflow-y-scroll">
+            <ul className="p-5 max-h-[30rem] overflow-y-auto">
               {chat.history
                 ? chat.history.map((message, index) => (
                     <li key={index}>
@@ -92,6 +171,71 @@ const ChatPage = () => {
           </Card>
         </div>
       </div>
+
+      <Dialog
+        size="sm"
+        open={openUser}
+        handler={addUserHandler}
+        className="bg-transparent shadow-none"
+      >
+        <Card className="mx-auto w-full max-w-[24rem]">
+          <CardHeader
+            variant="gradient"
+            className="mb-4 grid h-28 place-items-center bg-indigo-300"
+          >
+            <Typography variant="h3" color="white">
+              Invite Friend
+            </Typography>
+          </CardHeader>
+          <CardBody className="flex flex-col gap-4">
+            <Input label="Username" size="lg" onChange={onInviteUser} />
+          </CardBody>
+          <CardFooter className="pt-0">
+            <Button
+              className="bg-indigo-300"
+              onClick={inviteDispatch}
+              fullWidth
+            >
+              Invite
+            </Button>
+          </CardFooter>
+        </Card>
+      </Dialog>
+
+      <Dialog
+        size="sm"
+        open={openName}
+        handler={changeNameHandler}
+        className="bg-transparent shadow-none"
+      >
+        <Card className="mx-auto w-full max-w-[24rem]">
+          <CardHeader
+            variant="gradient"
+            className="mb-4 grid h-28 place-items-center bg-indigo-300"
+          >
+            <Typography variant="h3" color="white">
+              Change Group Name
+            </Typography>
+          </CardHeader>
+          <CardBody className="flex flex-col gap-4">
+            <Input
+              label="Name"
+              size="lg"
+              value={name}
+              onChange={onChangeName}
+            />
+          </CardBody>
+          <CardFooter className="pt-0">
+            <Button
+              className="bg-indigo-300"
+              onClick={changeNameHandler}
+              fullWidth
+            >
+              Change
+            </Button>
+          </CardFooter>
+        </Card>
+      </Dialog>
     </div>
   );
 };

@@ -26,4 +26,8 @@ router.put(
 
 router.put("/groupChat", controller.groupChat);
 
+router.put("/inviteUser", controller.inviteUser);
+
+router.get("/getUser/:userID", controller.getUser);
+
 module.exports = router;

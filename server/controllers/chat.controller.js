@@ -38,8 +38,6 @@ const putChatHistory = async (req, res, next) => {
 
   const chat = await Chat.findOne({ groupID });
 
-  chat.history.shift();
-
   chat.history.push(newMessage);
 
   await Chat.findOneAndUpdate(

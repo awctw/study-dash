@@ -68,10 +68,10 @@ const edit = (userID, username, firstName, lastName, email) => {
     });
 };
 
-const groupChat = (userID, groupID) => {
+const groupChat = (username, groupID) => {
   return axios
     .put(API_URL + "groupChat", {
-      userID,
+      username,
       groupID,
     })
     .then((response) => {
@@ -83,12 +83,34 @@ const groupChat = (userID, groupID) => {
     });
 };
 
+const inviteUser = (username, groupID) => {
+  return axios
+    .put(API_URL + "inviteUser", {
+      username,
+      groupID,
+    })
+    .then((response) => {
+      return response.data;
+    });
+};
+
+const getUser = (userID) => {
+  return axios.get(API_URL + `getUser/${userID}`).then((response) => {
+    if (response.data.accessToken) {
+      sessionStorage.setItem("user", JSON.stringify(response.data));
+    }
+    return response.data;
+  });
+};
+
 const AuthService = {
   login,
   logout,
   register,
   edit,
   groupChat,
+  inviteUser,
+  getUser,
 };
 
 export default AuthService;

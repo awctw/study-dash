@@ -114,26 +114,58 @@ exports.edit = async (req, res) => {
 };
 
 exports.groupChat = async (req, res) => {
-  const user = await User.findOneAndUpdate(
-    { userID: req.body.userID },
+  const { username, groupID } = req.body;
+
+  const foundUser = await User.findOne({ username });
+
+  await User.findOneAndUpdate(
+    { username: username },
     {
-      groupID: req.body.groupID,
+      groupID: [...foundUser.groupID, groupID],
     },
     { new: true, upsert: false }
   );
 
-  var token = jwt.sign({ id: user.userID }, config.secret, {
+  var token = jwt.sign({ id: foundUser.userID }, config.secret, {
     expiresIn: 86400, // 24 hours
   });
   req.session.token = token;
 
   res.status(200).send({
-    userID: user.userID,
-    groupID: user.groupID,
-    username: user.username,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
+    userID: foundUser.userID,
+    groupID: foundUser.groupID,
+    username: foundUser.username,
+    firstName: foundUser.firstName,
+    lastName: foundUser.lastName,
+    email: foundUser.email,
     accessToken: token,
   });
+};
+
+exports.inviteUser = async (req, res) => {
+  const { username, groupID } = req.body;
+
+  const foundUser = await User.findOne({ username });
+
+  foundUser.groupID.push(groupID);
+
+  await User.findOneAndUpdate(
+    { username: username },
+    {
+      groupID: foundUser.groupID,
+    },
+    { new: true, upsert: false }
+  );
+
+  res.status(200);
+};
+
+exports.getUser = async (req, res, next) => {
+  await User.findOne({ userID: req.params.userID })
+    .then((result) => {
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 };

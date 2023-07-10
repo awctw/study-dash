@@ -1,11 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { actionTypes } from "./actionTypes";
 import AuthService from "./AuthService";
-import UserService from "./UserService";
-
-export const getUserAsync = createAsyncThunk(actionTypes.GET_USER, async () => {
-  return await UserService.getUserBoard();
-});
 
 export const userLogoutAsync = createAsyncThunk(
   actionTypes.POST_USER_SIGNOUT,
@@ -52,6 +47,20 @@ export const userEditAsync = createAsyncThunk(
 export const groupChatAsync = createAsyncThunk(
   actionTypes.PUT_GROUP_CHAT,
   async (user) => {
-    return await AuthService.groupChat(user.userID, user.groupID);
+    return await AuthService.groupChat(user.username, user.groupID);
+  }
+);
+
+export const inviteUserAsync = createAsyncThunk(
+  actionTypes.PUT_INVITE_USER,
+  async (user) => {
+    return await AuthService.inviteUser(user.username, user.groupID);
+  }
+);
+
+export const getUserAsync = createAsyncThunk(
+  actionTypes.GET_USER,
+  async (user) => {
+    return await AuthService.getUser(user);
   }
 );
