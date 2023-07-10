@@ -1,8 +1,21 @@
 import { Button, Card, Typography } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { refreshFlashCardAsync } from "../../store/flashcards/thunks";
 
 const Scale = (props) => {
   const confidenceColors = ["red", "orange", "amber", "green", "light-green"];
+
+  const dispatch = useDispatch();
+
+  const handleRefresh = (quality) => {
+    dispatch(
+      refreshFlashCardAsync({
+        quality: quality,
+        cardId: props.cardId,
+      })
+    );
+  };
 
   return (
     <Card className="w-full bg-transparent flex flex-row justify-evenly shadow-none">
@@ -14,6 +27,8 @@ const Scale = (props) => {
             color={color}
             className="rounded-full w-10 h-10 p-0"
             onClick={() => {
+              handleRefresh(i + 1);
+
               props.setAnswered((prevArray) => {
                 const newArr = [...prevArray];
                 newArr[props.cardIndex] = true;

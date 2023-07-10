@@ -108,6 +108,27 @@ const getScheduledCards = async (userID) => {
   return response;
 };
 
+const refreshFlashcard = async (cardData) => {
+  const response = await axios
+    .patch(
+      URL + `flashcards/refresh/${cardData.cardId}`,
+      {
+        quality: cardData.quality,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  return response;
+};
+
 export default {
   addModule,
   getModules,
@@ -116,4 +137,5 @@ export default {
   deleteFlashcard,
   deleteModule,
   getScheduledCards,
+  refreshFlashcard,
 };

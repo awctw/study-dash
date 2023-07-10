@@ -123,6 +123,7 @@ const SmartCards = (props) => {
                     </Typography>
                     <div className="absolute flex bottom-0 w-full">
                       <Scale
+                        cardId={flashcard._id}
                         disabled={answered[i]}
                         setAnswered={setAnswered}
                         cardIndex={i}
@@ -185,7 +186,7 @@ const SmartCards = (props) => {
             keepLastFrame
           />
           <Typography className="text-blue-gray-300/70 font-sans text-lg">
-            No cards to review. You're All Caught Up!
+            No cards to review. You're all caught up!
           </Typography>
         </Card>
       )}

@@ -6,4 +6,5 @@ export const actionTypes = {
   EDIT_FLASHCARD: "flashcards/editFlashcard",
   DEL_FLASHCARD: "flashcards/delFlashcard",
   DEL_MODULE: "flashcards/delModule",
+  REFRESH_FLASHCARD: "flashcards/refreshFlashcard",
 };

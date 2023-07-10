@@ -110,6 +110,7 @@ const Cards = (props) => {
                   </Typography>
                   <div className="absolute flex bottom-0 w-full">
                     <Scale
+                      cardId={flashcard._id}
                       disabled={answered[i]}
                       setAnswered={setAnswered}
                       cardIndex={i}

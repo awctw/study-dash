@@ -51,6 +51,13 @@ const getScheduledCardsAsync = createAsyncThunk(
   }
 );
 
+const refreshFlashCardAsync = createAsyncThunk(
+  actionTypes.REFRESH_FLASHCARD,
+  async (cardData) => {
+    return await flashcardService.refreshFlashcard(cardData);
+  }
+);
+
 export {
   getModulesAsync,
   getScheduledCardsAsync,
@@ -59,4 +66,5 @@ export {
   editFlashcardAsync,
   deleteFlashcardAsync,
   deleteModuleAsync,
+  refreshFlashCardAsync,
 };
