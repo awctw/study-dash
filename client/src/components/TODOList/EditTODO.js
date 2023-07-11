@@ -179,36 +179,38 @@ const EditTODO = ({ todo }) => {
 
   return (
     <>
-      <Button onClick={handleOpen} className="bg-indigo-300">
+      <Button onClick={handleOpen} className="bg-indigo-300 mb-4">
         Details
       </Button>
       <Dialog
-        size="md"
+        size="lg"
         open={openEdit}
         handler={handleOpen}
         className="shadow-none"
       >
-        <Card className="editTODOForm max-w-xl">
-          <h2>Edit TODO</h2>
-          <form className="TODOForm" onSubmit={handleFormSubmit}>
+        <Card className="m-4">
+          <h2 className="flex flex-row justify-center">Edit TODO</h2>
+          <form
+            className="flex flex-col justify-evenly h-[30rem] overflow-y-auto"
+            onSubmit={handleFormSubmit}
+          >
             <div className="inputField">
-              <label htmlFor="edit-title">Title:</label>
               <Input
-                id="edit-title"
                 value={formData.title}
                 label="Title"
                 name="title"
                 onChange={handleInputChange}
               />
             </div>
-            <div className="dateSelectors">
-              <div className="inputField mr-4">
+            <div className="flex flex-row justify-between flex-wrap">
+              <div className="inputField">
                 <label htmlFor="edit-startDate">Start Date:</label>
                 <DatePicker
                   id="edit-startDate"
-                  className="bg-orange-200"
+                  className="bg-orange-200 w-[12rem]"
                   dateFormat="MMM-dd-yyyy, h:mm aa"
-                  showTimeSelect
+                  showTimeInput
+                  timeInputLabel="Time:"
                   selected={formData.startDate}
                   onChange={handleStartDateInput}
                 />
@@ -217,18 +219,17 @@ const EditTODO = ({ todo }) => {
                 <label htmlFor="edit-endDate">End Date:</label>
                 <DatePicker
                   id="edit-endDate"
-                  className="bg-orange-200"
+                  className="bg-orange-200 w-[12rem]"
                   dateFormat="MMM-dd-yyyy, h:mm aa"
-                  showTimeSelect
+                  showTimeInput
+                  timeInputLabel="Time:"
                   selected={formData.endDate}
                   onChange={handleEndDateInput}
                 />
               </div>
             </div>
             <div className="inputField">
-              <label htmlFor="edit-description">Description:</label>
               <Textarea
-                id="edit-description"
                 label="Description"
                 name="description"
                 value={formData.description}
@@ -243,9 +244,7 @@ const EditTODO = ({ todo }) => {
               />
             </div>
             <div className="inputField">
-              <label htmlFor="edit-category">Category:</label>
               <Input
-                id="edit-category"
                 label="Category"
                 name="category"
                 autoComplete="off"
@@ -261,16 +260,35 @@ const EditTODO = ({ todo }) => {
             </div>
 
             {loading && <Spinner className="h-10 w-10" />}
-            {errMessage && <p className="error-msg">{errMessage}</p>}
+            {errMessage && (
+              <p className="error-msg flex flex-row justify-center">
+                {errMessage}
+              </p>
+            )}
 
-            <div className="EditTODOButtons">
-              <Button color="light-blue" size="sm" type="submit">
+            <div className="flex flex-row justify-evenly flex-wrap">
+              <Button
+                className="mb-4"
+                color="light-blue"
+                size="sm"
+                type="submit"
+              >
                 Confirm
               </Button>
-              <Button color="gray" size="sm" onClick={resetFormHandler}>
+              <Button
+                className="mb-4"
+                color="gray"
+                size="sm"
+                onClick={resetFormHandler}
+              >
                 Clear
               </Button>
-              <Button color="red" size="sm" onClick={handleClose}>
+              <Button
+                className="mb-4"
+                color="red"
+                size="sm"
+                onClick={handleClose}
+              >
                 Close
               </Button>
             </div>

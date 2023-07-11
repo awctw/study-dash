@@ -7,7 +7,7 @@ import CategoryDelete from "./CategoryDelete";
 // CategoryToggle provides a dropdown menu for selecting a specific category to filter
 // TODOItems by category. handleCategoryChange() handles the
 // change event of the dropdown and performs the filtering logic.
-function CategoryToggle({ setSelectedCategoryID }) {
+function CategoryToggle({ setSelectedCategoryID, setErrMessage }) {
   const { categories, fetchCategoryList } = useSelector(
     (state) => state.todoReducer
   );
@@ -26,20 +26,25 @@ function CategoryToggle({ setSelectedCategoryID }) {
     });
   }, [dispatch, fetchCategoryList, user.user.userID]);
 
+  const handleCategorySelection = (selectedID) => {
+    setSelectedCategoryID(selectedID);
+    setErrMessage("");
+  };
+
   return (
-    <div className="m-2 w-60">
+    <div className="mt-4 w-[13rem]">
       {loading && <Spinner className="h-10 w-10" />}
       <Select
         id="categoryFilter"
         label="Search by Category"
-        onChange={setSelectedCategoryID}
+        onChange={handleCategorySelection}
       >
         <Option value="">All Categories</Option>
         {categories.map((category) => (
           <Option
             key={category._id}
             value={category._id}
-            className="categoryOption"
+            className="flex flex-row justify-between flex-wrap"
           >
             {category.category}
             <CategoryDelete

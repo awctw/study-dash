@@ -128,39 +128,41 @@ const AddTODOItem = () => {
     <>
       <Button
         id="AddNewTODOButton"
-        className="bg-indigo-300 text-white m-2"
+        className="bg-indigo-300 text-white mt-4 m-4"
         size="sm"
         onClick={handleOpen}
       >
         Add
       </Button>
       <Dialog
-        size="md"
+        size="lg"
         open={openAddTODO}
         handler={handleOpen}
         className="shadow-none"
       >
-        <Card className="addTODOForm max-w-xl">
-          <h2>Add TODO Item</h2>
-          <form onSubmit={handleSubmit}>
+        <Card className="m-4">
+          <h2 className="flex flex-row justify-center">Add TODO Item</h2>
+          <form
+            className="flex flex-col justify-evenly h-[30rem] overflow-y-auto"
+            onSubmit={handleSubmit}
+          >
             <div className="inputField">
-              <label htmlFor="add-title">Title:</label>
               <Input
-                id="add-title"
                 name="title"
                 value={formData.title}
                 label="Title"
                 onChange={handleInputChange}
               />
             </div>
-            <div className="dateSelectors">
+            <div className="flex flex-row justify-between flex-wrap">
               <div className="inputField mr-4">
                 <label htmlFor="add-startDate">Start Date:</label>
                 <DatePicker
                   id="add-startDate"
-                  className="bg-orange-200"
+                  className="bg-orange-200 w-[12rem]"
                   dateFormat="MMM-dd-yyyy, h:mm aa"
-                  showTimeSelect
+                  showTimeInput
+                  timeInputLabel="Time (hh:mm:AM/PM):"
                   selected={formData.startDate}
                   onChange={handleStartDateInput}
                 />
@@ -169,18 +171,17 @@ const AddTODOItem = () => {
                 <label htmlFor="add-endDate">End Date:</label>
                 <DatePicker
                   id="add-endDate"
-                  className="bg-orange-200"
+                  className="bg-orange-200 w-[12rem]"
                   dateFormat="MMM-dd-yyyy, h:mm aa"
-                  showTimeSelect
+                  showTimeInput
+                  timeInputLabel="Time (hh:mm:AM/PM):"
                   selected={formData.endDate}
                   onChange={handleEndDateInput}
                 />
               </div>
             </div>
             <div className="inputField">
-              <label htmlFor="add-description">Description:</label>
               <Textarea
-                id="add-description"
                 name="description"
                 label="Description"
                 value={formData.description}
@@ -188,9 +189,7 @@ const AddTODOItem = () => {
               />
             </div>
             <div className="inputField">
-              <label htmlFor="add-category">Category:</label>
               <Input
-                id="add-category"
                 name="category"
                 label="Category"
                 autoComplete="off"
@@ -206,13 +205,23 @@ const AddTODOItem = () => {
             </div>
 
             {loading && <Spinner className="h-10 w-10" />}
-            {errMessage && <p className="error-msg">{errMessage}</p>}
+            {errMessage && (
+              <p className="error-msg flex flex-row justify-center">
+                {errMessage}
+              </p>
+            )}
 
-            <div className="AddTODOButtons">
-              <Button color="light-blue" size="sm" type="submit">
+            <div className="flex flex-row justify-evenly flex-wrap">
+              <Button
+                className="mb-4"
+                color="light-blue"
+                size="sm"
+                type="submit"
+              >
                 Confirm
               </Button>
               <Button
+                className="mb-4"
                 color="gray"
                 size="sm"
                 type="reset"
@@ -220,7 +229,13 @@ const AddTODOItem = () => {
               >
                 Clear
               </Button>
-              <Button color="red" size="sm" type="button" onClick={handleOpen}>
+              <Button
+                className="mb-4"
+                color="red"
+                size="sm"
+                type="button"
+                onClick={handleOpen}
+              >
                 Close
               </Button>
             </div>

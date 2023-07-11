@@ -17,7 +17,7 @@ const CategoryDelete = ({ category, setSelectedCategoryID }) => {
 
   return (
     <>
-      <Button color="red" size="sm" onClick={handleDelete}>
+      <Button color="red" size="sm" onClick={handleDelete} className="ml-8">
         {deleteCategory === REQUEST_STATE.PENDING && (
           <Spinner className="h-5 w-5" />
         )}

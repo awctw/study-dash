@@ -6,7 +6,10 @@ import { useSelector } from "react-redux";
 const ListView = () => {
   const { TODOList } = useSelector((state) => state.todoReducer);
   return (
-    <div className="list-view">
+    <div
+      className="flex flex-col items-center max-h-[15rem]
+    overflow-y-auto rounded-[30px] p-4"
+    >
       {TODOList.map((todo) => (
         <TodoItem key={todo._id} todo={todo} />
       ))}

@@ -12,7 +12,7 @@ const TODOListMainView = () => {
 
   return (
     <>
-      <Card className="flex flex-col items-center m-8 p-10 max-w-xl">
+      <Card className="flex flex-col items-center m-4 p-8 max-w-[50rem]">
         <TODOListViewer selectedCategoryID={selectedCategoryID} />
         <ControlPanel setSelectedCategoryID={setSelectedCategoryID} />
       </Card>

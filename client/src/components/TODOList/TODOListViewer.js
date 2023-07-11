@@ -32,9 +32,9 @@ const TODOListViewer = ({ selectedCategoryID }) => {
   // indicating that there are visible TODOItems to display.
   return (
     <div>
-      <header className="flex justify-between">
+      <header className="flex justify-between flex-wrap">
         <Typography variant="h5">TODO List</Typography>
-        <Typography variant="small" className="ml-12">
+        <Typography variant="small" className="">
           Total Todos: {TODOList.length}
         </Typography>
       </header>

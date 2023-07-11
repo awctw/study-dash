@@ -53,7 +53,7 @@ function validateTODOItem(item) {
     endDate: Joi.date().required(),
     description: Joi.string().trim().required(),
     isFinished: Joi.boolean().required(),
-    category: Joi.string().trim().uppercase().required(),
+    category: Joi.string().trim().required(),
     userID: Joi.string().trim().required(),
   });
 

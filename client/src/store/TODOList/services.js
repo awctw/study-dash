@@ -8,7 +8,7 @@ const getCategories = async (userID) => {
     const response = await axios.get(`${API_CATEGORIES_URL}/${userID}`);
     return response.data;
   } catch (error) {
-    throw handleRequestError(error);
+    handleRequestError(error);
   }
 };
 
@@ -17,7 +17,7 @@ const deleteCategory = async (categoryID) => {
     const response = await axios.delete(`${API_CATEGORIES_URL}/${categoryID}`);
     return response.data;
   } catch (error) {
-    throw handleRequestError(error);
+    handleRequestError(error);
   }
 };
 
@@ -28,7 +28,7 @@ const getTODOList = async (userID, categoryID) => {
     );
     return response.data;
   } catch (error) {
-    throw handleRequestError(error);
+    handleRequestError(error);
   }
 };
 
@@ -37,7 +37,7 @@ const getTODOItem = async (itemID) => {
     const response = await axios.get(`${API_TODO_ITEMS_URL}/${itemID}`);
     return response.data;
   } catch (error) {
-    throw handleRequestError(error);
+    handleRequestError(error);
   }
 };
 
@@ -46,7 +46,7 @@ const addTODOItem = async (item) => {
     const response = await axios.post(API_TODO_ITEMS_URL, item);
     return response.data;
   } catch (error) {
-    throw handleRequestError(error);
+    handleRequestError(error);
   }
 };
 
@@ -55,7 +55,7 @@ const editTODOItem = async (itemID, item) => {
     const response = await axios.put(`${API_TODO_ITEMS_URL}/${itemID}`, item);
     return response.data;
   } catch (error) {
-    throw handleRequestError(error);
+    handleRequestError(error);
   }
 };
 
@@ -64,18 +64,18 @@ const deleteTODOItem = async (itemID) => {
     const response = await axios.delete(`${API_TODO_ITEMS_URL}/${itemID}`);
     return response.data;
   } catch (error) {
-    throw handleRequestError(error);
+    handleRequestError(error);
   }
 };
 
 const handleRequestError = (error) => {
   if (error.response) {
-    const errorMsg = error.response.data.message;
-    return new Error(errorMsg);
+    const errorMsg = error.response.data;
+    throw new Error(errorMsg);
   } else if (error.request) {
-    return new Error("No response received from the server.");
+    throw new Error("No response received from the server.");
   } else {
-    return new Error("An error occurred while making the request.");
+    throw new Error("An error occurred while making the request.");
   }
 };
 

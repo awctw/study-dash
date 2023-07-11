@@ -30,7 +30,7 @@ const TODOItem = ({ todo }) => {
   )}`;
 
   return (
-    <Card className="todoItemCard p-3 m-3">
+    <Card className="flex flex-col justify-evenly p-3 m-3">
       {todo.isFinished && <TODODoneNotice />}
       <h3>
         <strong className="text-light-blue-200">Title:</strong> {todo.title}
@@ -41,9 +41,10 @@ const TODOItem = ({ todo }) => {
       <p>
         <strong className="text-red-400">End Date:</strong> {endDateVal}
       </p>
-      <div id="todoItemButtons">
+      <div className="flex flex-row justify-evenly mt-4 flex-wrap">
         <Button
-          className="border-indigo-300 bg-white text-indigo-300 border-solid border"
+          className="border-indigo-300 bg-white
+          text-indigo-300 border-solid border mb-4"
           size="sm"
           onClick={handleDelete}
         >
