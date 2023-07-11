@@ -30,4 +30,6 @@ router.put("/inviteUser", controller.inviteUser);
 
 router.get("/getUser/:userID", controller.getUser);
 
+router.patch("/leaveChat", controller.leaveChat);
+
 module.exports = router;

@@ -6,4 +6,5 @@ export const actionTypes = {
   PUT_USER_EDIT: "auth/edit",
   PUT_GROUP_CHAT: "auth/groupChat",
   PUT_INVITE_USER: "auth/inviteUser",
+  PATCH_LEAVECHAT: "auth/leaveChat",
 };

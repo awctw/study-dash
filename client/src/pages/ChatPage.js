@@ -13,20 +13,30 @@ import {
   CardHeader,
   Input,
   CardFooter,
+  DialogHeader,
+  DialogFooter,
+  DialogBody,
 } from "@material-tailwind/react";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  ArrowRightOnRectangleIcon,
   PaperAirplaneIcon,
   PencilSquareIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/solid";
 import { getChatHistoryAsync, putChatHistoryAsync } from "../store/chat/thunks";
-import { inviteUserAsync, getUserAsync } from "../store/authentication/thunks";
+import {
+  inviteUserAsync,
+  getUserAsync,
+  leaveChatAsync,
+} from "../store/authentication/thunks";
+import { useNavigate } from "react-router-dom";
 
 // Credits: Setting up socket io for chat
 // https://dev.to/bhavik786/building-a-real-time-chat-application-using-mern-stack-and-socketio-1obn
 const ChatPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const chat = useSelector((state) => state.chatReducer.chat);
   const user = useSelector((state) => state.loginReducer);
   const groupID = window.location.pathname.split("/").pop();
@@ -35,6 +45,7 @@ const ChatPage = () => {
   const [message, setMessage] = useState("");
   const [openUser, setOpenUser] = useState(false);
   const [openName, setOpenName] = useState(false);
+  const [openExit, setOpenExit] = useState(false);
 
   const [name, setName] = useState(user.user ? user.user.groupID : "");
   const [userInvite, setUserInvite] = useState(
@@ -84,6 +95,10 @@ const ChatPage = () => {
     setOpenUser((cur) => !cur);
   };
 
+  const exitUserHandler = () => {
+    setOpenExit((cur) => !cur);
+  };
+
   const changeNameHandler = () => {
     setOpenName((cur) => !cur);
   };
@@ -94,6 +109,17 @@ const ChatPage = () => {
 
   const onInviteUser = (event) => {
     setUserInvite(event.target.value);
+  };
+
+  const onExitUser = () => {
+    dispatch(
+      leaveChatAsync({
+        username: username,
+        groupID: groupID,
+      })
+    );
+    exitUserHandler();
+    navigate(`/studyGroups`);
   };
 
   const inviteDispatch = () => {
@@ -140,6 +166,14 @@ const ChatPage = () => {
             className="flex bg-indigo-300 ml-5 mb-2"
           >
             <UserPlusIcon className="h-5 w-5" />
+          </IconButton>
+
+          <IconButton
+            type="submit"
+            onClick={exitUserHandler}
+            className="flex bg-indigo-300 ml-5 mb-2"
+          >
+            <ArrowRightOnRectangleIcon className="h-5 w-5" />
           </IconButton>
         </div>
 
@@ -239,6 +273,34 @@ const ChatPage = () => {
             </Button>
           </CardFooter>
         </Card>
+      </Dialog>
+
+      <Dialog open={openExit} handler={exitUserHandler} size="sm">
+        <DialogHeader>Are you sure you want to leave this chat?</DialogHeader>
+        <DialogBody divider>
+          Please note that you'll only be able to join this chat agian through
+          an invitation.
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            size="sm"
+            variant="text"
+            color="blue-gray"
+            className="flex items-center mr-2 border border-gray-400/70"
+            onClick={exitUserHandler}
+          >
+            Cancel
+          </Button>
+          <Button
+            size="sm"
+            variant="text"
+            color="blue-gray"
+            className="flex items-center border border-gray-400/70"
+            onClick={onExitUser}
+          >
+            Yes
+          </Button>
+        </DialogFooter>
       </Dialog>
     </div>
   );

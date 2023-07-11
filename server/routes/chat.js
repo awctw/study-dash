@@ -4,6 +4,7 @@ const {
   getChatHistory,
   putChatHistory,
   postChatHistory,
+  leaveChat,
 } = require("../controllers/chat.controller");
 
 router.get("/:groupID", getChatHistory);

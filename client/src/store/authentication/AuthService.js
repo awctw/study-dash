@@ -103,6 +103,15 @@ const getUser = (userID) => {
   });
 };
 
+const leaveChat = async (userInfo) => {
+  return await axios
+    .patch(API_URL + "leaveChat", userInfo)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
+
 const AuthService = {
   login,
   logout,
@@ -111,6 +120,7 @@ const AuthService = {
   groupChat,
   inviteUser,
   getUser,
+  leaveChat,
 };
 
 export default AuthService;

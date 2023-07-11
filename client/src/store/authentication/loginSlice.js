@@ -8,6 +8,7 @@ import {
   userEditAsync,
   groupChatAsync,
   inviteUserAsync,
+  leaveChatAsync,
 } from "./thunks";
 import { REQUEST_STATE } from "../utils";
 
@@ -128,6 +129,18 @@ const loginSlice = createSlice({
       })
       .addCase(getUserAsync.rejected, (state, action) => {
         state.getUser = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(leaveChatAsync.pending, (state) => {
+        state.leaveChat = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(leaveChatAsync.fulfilled, (state, action) => {
+        state.leaveChat = REQUEST_STATE.FULFILLED;
+        state.user = action.payload;
+      })
+      .addCase(leaveChatAsync.rejected, (state, action) => {
+        state.leaveChat = REQUEST_STATE.REJECTED;
         state.error = action.error;
       });
   },

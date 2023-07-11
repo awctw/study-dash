@@ -147,6 +147,15 @@ exports.inviteUser = async (req, res) => {
 
   const foundUser = await User.findOne({ username });
 
+  if (foundUser === null) {
+    return res.status(400).send("Username not found!");
+  }
+
+  // if invitation already exists then no need to invite again
+  if (foundUser.groupID.indexOf(groupID) !== -1) {
+    return res.status(200);
+  }
+
   foundUser.groupID.push(groupID);
 
   await User.findOneAndUpdate(
@@ -164,6 +173,27 @@ exports.getUser = async (req, res, next) => {
   await User.findOne({ userID: req.params.userID })
     .then((result) => {
       res.status(200).send(result);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
+exports.leaveChat = async (req, res, next) => {
+  const { username, groupID } = req.body;
+
+  const foundUser = await User.findOne({ username });
+
+  const groupIndex = foundUser.groupID.indexOf(groupID);
+
+  // if chat exists remove it
+  if (groupIndex > -1) {
+    foundUser.groupID.splice(groupIndex, 1);
+  }
+
+  await foundUser.save()
+    .then((user) => {
+      res.status(200).send(user);
     })
     .catch((err) => {
       res.status(500).send(err);

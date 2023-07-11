@@ -64,3 +64,10 @@ export const getUserAsync = createAsyncThunk(
     return await AuthService.getUser(user);
   }
 );
+
+export const leaveChatAsync = createAsyncThunk(
+  actionTypes.PATCH_LEAVECHAT,
+  async (userInfo) => {
+    return await AuthService.leaveChat(userInfo);
+  }
+);
