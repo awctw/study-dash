@@ -13,18 +13,22 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
+import { TimePicker } from "@mui/x-date-pickers";
 import { ListBulletIcon } from "@heroicons/react/24/solid";
 
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getHabitsAsync, addHabitAsync } from "../../store/habits/thunks";
+import dayjs from "dayjs";
 
 const HabitsView = () => {
   /* Adapted From Material UI Docs */
   const user = useSelector((state) => state.loginReducer);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
-  const [days, setDays] = useState(new Array(7).fill(true))
+  const [days, setDays] = useState(new Array(7).fill(true));
+  const [startTime, setStartTime] = useState(dayjs())
+  const [endTime, setEndTime] = useState(dayjs())
 
   const { habits } = useSelector((state) => state.habitReducer);
   const dispatch = useDispatch();
@@ -40,6 +44,8 @@ const HabitsView = () => {
       userID: user.user.userID,
       name: name,
       days: days,
+      startTime: startTime,
+      endTime: endTime,
     }
     dispatch(addHabitAsync(habit));
     handleOpen();
@@ -106,6 +112,9 @@ const HabitsView = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+          <TimePicker label="start-time" disableOpenPicker onChange={(newStart) => setStartTime(newStart)}/>
+          <TimePicker label="end-time" disableOpenPicker onChange={(newEnd) => setEndTime(newEnd)}/>
+          <br></br>
           <label htmlFor="sunday">
             <Checkbox
               id="sunday" 
