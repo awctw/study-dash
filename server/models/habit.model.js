@@ -5,6 +5,7 @@ const Habit = mongoose.model(
     new mongoose.Schema({
         userID: String,
         name: String,
+        days: [Boolean],
     })
 )
 

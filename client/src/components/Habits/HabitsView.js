@@ -24,11 +24,10 @@ const HabitsView = () => {
   const user = useSelector((state) => state.loginReducer);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
+  const [days, setDays] = useState(new Array(7).fill(true))
 
   const { habits } = useSelector((state) => state.habitReducer);
   const dispatch = useDispatch();
-
-  const [habitsToggle, setHabitsToggle] = useState(false);
 
   const handleOpen = () => setOpen(!open);
 
@@ -40,36 +39,17 @@ const HabitsView = () => {
     const habit = {
       userID: user.user.userID,
       name: name,
+      days: days,
     }
     dispatch(addHabitAsync(habit));
+    handleOpen();
   };
 
-  // const [habits, setHabits] = useState([]);
-
-  // const getHabits = async () => {
-  //   let res = await fetch("http://localhost:8080/habits", {
-  //     method: "GET",
-  //   });
-  //   return res.json()
-  // }
-  
-  // useEffect(() => {
-  //   getHabits().then((newHabits) => setHabits(newHabits));
-  // }, [habitsToggle])
-
-  // const addNewHabit = async () => {
-  //   console.log(name);
-  //   let res = { "name": name }
-  //   await fetch("http://localhost:8080/habits", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     },
-  //     body: JSON.stringify(res)
-  //   })
-  //   setHabitsToggle(!habitsToggle);
-  //   handleOpen();
-  // }
+  const handleDays = (i) => {
+    let newDays = [...days]
+    newDays[i] = !newDays[i]
+    setDays(newDays)
+  }
 
   return (
     <>
@@ -126,6 +106,69 @@ const HabitsView = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+          <label htmlFor="sunday">
+            <Checkbox
+              id="sunday" 
+              defaultChecked
+              icon={"S"}
+              ripple={false}
+              className="w-8 h-8"
+              onChange={() => handleDays(0)}/>
+          </label>
+          <label htmlFor="monday">
+            <Checkbox
+              id="monday" 
+              defaultChecked
+              icon={"M"}
+              ripple={false}
+              className="w-8 h-8"
+              onChange={() => handleDays(1)}/>
+            </label>
+          <label htmlFor="tuesday">
+            <Checkbox
+              id="tuesday" 
+              defaultChecked
+              icon={"T"}
+              ripple={false}
+              className="w-8 h-8"
+              onChange={() => handleDays(2)}/>
+          </label>
+          <label htmlFor="wednesday">
+            <Checkbox
+              id="wednesday" 
+              defaultChecked
+              icon={"W"}
+              ripple={false}
+              className="w-8 h-8"
+              onChange={() => handleDays(3)}/>
+          </label>
+          <label htmlFor="thursday">
+            <Checkbox
+              id="thursday" 
+              defaultChecked
+              icon={"T"}
+              ripple={false}
+              className="w-8 h-8"
+              onChange={() => handleDays(4)}/>
+          </label>
+          <label htmlFor="friday">
+            <Checkbox
+              id="friday" 
+              defaultChecked
+              icon={"F"}
+              ripple={false}
+              className="w-8 h-8"
+              onChange={() => handleDays(5)}/>
+          </label>
+          <label htmlFor="saturday">
+            <Checkbox
+              id="saturday" 
+              defaultChecked
+              icon={"S"}
+              ripple={false}
+              className="w-8 h-8"
+              onChange={() => handleDays(6)}/>
+          </label>
         </DialogBody>
         <DialogFooter>
           <Button

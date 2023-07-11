@@ -8,7 +8,8 @@ const getHabits = async (req, res) => {
 const addHabit = async (req, res) => {
     const module = new Module({
         userID: req.body.userID,
-        name: req.body.name
+        name: req.body.name,
+        days: req.body.days
     })
 
     console.log(module)
