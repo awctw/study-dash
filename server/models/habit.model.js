@@ -6,6 +6,8 @@ const Habit = mongoose.model(
         userID: String,
         name: String,
         days: [Boolean],
+        startTime: Date,
+        endTime: Date,
     })
 )
 

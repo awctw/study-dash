@@ -44,8 +44,8 @@ const HabitsView = () => {
       userID: user.user.userID,
       name: name,
       days: days,
-      startTime: startTime,
-      endTime: endTime,
+      startTime: startTime.toISOString(),
+      endTime: endTime.toISOString(),
     }
     dispatch(addHabitAsync(habit));
     handleOpen();

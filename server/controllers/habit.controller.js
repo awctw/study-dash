@@ -9,10 +9,11 @@ const addHabit = async (req, res) => {
     const module = new Module({
         userID: req.body.userID,
         name: req.body.name,
-        days: req.body.days
+        days: req.body.days,
+        startTime: req.body.startTime,
+        endTime: req.body.endTime,
     })
 
-    console.log(module)
     await module.save()
     res.json(module)
 }
