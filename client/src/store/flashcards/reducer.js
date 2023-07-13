@@ -3,6 +3,8 @@ import { REQUEST_STATE } from "../utils";
 import {
   addFlashcardAsync,
   addModuleAsync,
+  deleteFlashcardAsync,
+  deleteModuleAsync,
   editFlashcardAsync,
   getModulesAsync,
 } from "./thunks";
@@ -13,6 +15,8 @@ const INIT_STATE = {
   addModule: REQUEST_STATE.IDLE,
   addFlashcard: REQUEST_STATE.IDLE,
   editFlashcard: REQUEST_STATE.IDLE,
+  deleteFlashcard: REQUEST_STATE.IDLE,
+  deleteModule: REQUEST_STATE.IDLE,
   error: null,
 };
 
@@ -80,6 +84,43 @@ const flashcardSlice = createSlice({
       })
       .addCase(editFlashcardAsync.rejected, (state, action) => {
         state.editFlashcard = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(deleteFlashcardAsync.pending, (state) => {
+        state.deleteFlashcard = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(deleteFlashcardAsync.fulfilled, (state, action) => {
+        state.deleteFlashcard = REQUEST_STATE.FULFILLED;
+
+        const { moduleId, index } = action.payload;
+
+        const modIdx = state.modules.findIndex(
+          (module) => module._id === moduleId
+        );
+
+        state.modules[modIdx].questions.splice(index, 1);
+        state.modules[modIdx].answers.splice(index, 1);
+      })
+      .addCase(deleteFlashcardAsync.rejected, (state, action) => {
+        state.deleteFlashcard = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(deleteModuleAsync.pending, (state) => {
+        state.deleteModule = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(deleteModuleAsync.fulfilled, (state, action) => {
+        state.deleteModule = REQUEST_STATE.FULFILLED;
+
+        const moduleId = action.payload;
+
+        state.modules = state.modules.filter(
+          (module) => module._id !== moduleId
+        );
+      })
+      .addCase(deleteModuleAsync.rejected, (state, action) => {
+        state.deleteModule = REQUEST_STATE.REJECTED;
         state.error = action.error;
       });
   },

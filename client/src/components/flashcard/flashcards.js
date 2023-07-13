@@ -16,7 +16,7 @@ const Cards = (props) => {
     state.flashcards.modules.find((module) => module._id === props.moduleId)
   );
 
-  const numCards = module.questions.length;
+  const numCards = module ? module.questions.length : 0;
   const [flip, setFlip] = useState(false);
   const [answered, setAnswered] = useState([]);
   const [numCorrect, setNumCorrect] = useState(0);

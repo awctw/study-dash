@@ -2,9 +2,9 @@ import axios from "axios";
 
 const URL = "http://localhost:8080/";
 
-const getModules = async () => {
+const getModules = async (userID) => {
   const response = await axios
-    .get(URL + "flashcards")
+    .get(URL + `flashcards/${userID}`)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);
@@ -75,9 +75,33 @@ const editFlashcard = async (cardData) => {
   return response;
 };
 
+const deleteFlashcard = async (cardData) => {
+  const response = await axios
+    .delete(URL + `flashcards/${cardData.moduleId}/${cardData.index}`)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  return cardData;
+};
+
+const deleteModule = async (moduleId) => {
+  const response = await axios
+    .delete(URL + `flashcards/${moduleId}`)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+
+  return moduleId;
+};
+
 export default {
   addModule,
   getModules,
   addFlashcard,
   editFlashcard,
+  deleteFlashcard,
+  deleteModule,
 };

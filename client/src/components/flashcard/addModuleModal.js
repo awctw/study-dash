@@ -13,16 +13,17 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addModuleAsync } from "../../store/flashcards/thunks";
 
 const AddModuleModal = (props) => {
+  const user = useSelector((state) => state.loginReducer);
   const [name, setName] = useState("");
 
   const dispatch = useDispatch();
 
   const handleAdd = () => {
-    dispatch(addModuleAsync({ moduleName: name }));
+    dispatch(addModuleAsync({ moduleName: name, userID: user.user.userID }));
   };
 
   return (
