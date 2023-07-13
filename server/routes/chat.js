@@ -4,7 +4,7 @@ const {
   getChatHistory,
   putChatHistory,
   postChatHistory,
-  leaveChat,
+  renameChat,
 } = require("../controllers/chat.controller");
 
 router.get("/:groupID", getChatHistory);
@@ -12,5 +12,7 @@ router.get("/:groupID", getChatHistory);
 router.post("/", postChatHistory);
 
 router.put("/", putChatHistory);
+
+router.patch("/:groupID", renameChat);
 
 module.exports = router;

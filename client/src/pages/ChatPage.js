@@ -24,7 +24,11 @@ import {
   PencilSquareIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/solid";
-import { getChatHistoryAsync, putChatHistoryAsync } from "../store/chat/thunks";
+import {
+  getChatHistoryAsync,
+  putChatHistoryAsync,
+  renameChatAsync,
+} from "../store/chat/thunks";
 import {
   inviteUserAsync,
   getUserAsync,
@@ -104,7 +108,13 @@ const ChatPage = () => {
   };
 
   const onChangeName = (event) => {
-    setName(event.target.value);
+    dispatch(
+      renameChatAsync({
+        groupID: groupID,
+        name: name,
+      })
+    );
+    changeNameHandler();
   };
 
   const onInviteUser = (event) => {
@@ -145,7 +155,7 @@ const ChatPage = () => {
       <div className="p-5 !pl-[300px]">
         <div className="flex justify-center">
           <Chip
-            value={"Group Chat"}
+            value={chat.name}
             variant="outlined"
             className="text-center text-indigo-300 w-3/5"
           />
@@ -260,15 +270,11 @@ const ChatPage = () => {
               label="Name"
               size="lg"
               value={name}
-              onChange={onChangeName}
+              onChange={(e) => setName(e.target.value)}
             />
           </CardBody>
           <CardFooter className="pt-0">
-            <Button
-              className="bg-indigo-300"
-              onClick={changeNameHandler}
-              fullWidth
-            >
+            <Button className="bg-indigo-300" onClick={onChangeName} fullWidth>
               Change
             </Button>
           </CardFooter>

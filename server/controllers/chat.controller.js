@@ -21,6 +21,7 @@ const postChatHistory = async (req, res, next) => {
   const chat = new Chat({
     groupID: req.body.groupID,
     history: [],
+    name: req.body.name,
   });
 
   await chat
@@ -56,8 +57,25 @@ const putChatHistory = async (req, res, next) => {
     });
 };
 
+const renameChat = async (req, res, next) => {
+  const groupID = req.params.groupID;
+
+  const chat = await Chat.findOne({ groupID });
+
+  chat.name = req.body.name;
+
+  await chat.save()
+    .then((result) => {
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+}
+
 module.exports = {
   getChatHistory,
   putChatHistory,
   postChatHistory,
+  renameChat,
 };

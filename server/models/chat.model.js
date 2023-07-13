@@ -10,6 +10,7 @@ const Chat = mongoose.model(
       },
     ],
     groupID: String,
+    name: String,
   })
 );
 

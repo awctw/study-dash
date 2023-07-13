@@ -23,4 +23,16 @@ const putChatHistoryAsync = createAsyncThunk(
   }
 );
 
-export { getChatHistoryAsync, putChatHistoryAsync, postChatHistoryAsync };
+const renameChatAsync = createAsyncThunk(
+  actionTypes.PATCH_RENAMECHAT,
+  async (chatInfo) => {
+    return await chatService.renameChat(chatInfo);
+  }
+);
+
+export {
+  getChatHistoryAsync,
+  putChatHistoryAsync,
+  postChatHistoryAsync,
+  renameChatAsync,
+};

@@ -29,10 +29,22 @@ const putChatHistory = async (newChat) => {
     });
 };
 
+const renameChat = async (chatInfo) => {
+  return await axios
+    .patch(URL + `chat/${chatInfo.groupID}`, {
+      name: chatInfo.name,
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
+
 const exports = {
   getChatHistory,
   postChatHistory,
   putChatHistory,
+  renameChat,
 };
 
 export default exports;

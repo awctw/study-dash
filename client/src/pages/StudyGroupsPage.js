@@ -4,6 +4,8 @@ import {
   Card,
   CardBody,
   CardFooter,
+  Dialog,
+  Input,
   Typography,
 } from "@material-tailwind/react";
 import {
@@ -14,13 +16,15 @@ import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { postChatHistoryAsync } from "../store/chat/thunks";
 import { getUserAsync, groupChatAsync } from "../store/authentication/thunks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const StudyGroupPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.loginReducer.user);
+  const [chatName, setChatName] = useState("");
+  const [openCreateChat, setOpenCreateChat] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -28,12 +32,20 @@ const StudyGroupPage = () => {
     }
   }, [dispatch]);
 
+  const createChatHandler = () => {
+    setOpenCreateChat(!openCreateChat);
+  };
+
   const onClickHandler = (event) => {
+    if (chatName.length < 1) return;
+
     event.preventDefault();
+    setOpenCreateChat(!openCreateChat);
     const id = uuidv4();
 
     const initChat = {
       groupID: id,
+      name: chatName,
     };
 
     const updatedUser = {
@@ -57,7 +69,7 @@ const StudyGroupPage = () => {
       </div>
       <div className="p-5 !pl-[300px]">
         <div className="mx-5">
-          <Button onClick={onClickHandler} className="bg-indigo-300 m-2">
+          <Button onClick={createChatHandler} className="bg-indigo-300 m-2">
             Create Chat
           </Button>
           <div className="flex flex-wrap justify-center">
@@ -95,6 +107,40 @@ const StudyGroupPage = () => {
               : null}
           </div>
         </div>
+        <Dialog
+          open={openCreateChat}
+          handler={setOpenCreateChat}
+          size="md"
+          className="flex flex-row bg-transparent shadow-none items-center justify-center"
+        >
+          <Card className="relative flex w-2/4 rounded-lg overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100">
+            <CardBody className="mb-2">
+              <Typography variant="h5" color="blue-gray" className="mb-2">
+                Create a group chat!
+              </Typography>
+              <Typography className="mb-3">
+                We'll need a concise name for it first! what would you like to
+                call this chat?
+              </Typography>
+              <Input
+                variant="outlined"
+                label="Chat Name"
+                color="blue-gray"
+                value={chatName}
+                onChange={(e) => setChatName(e.target.value)}
+              />
+              <Button
+                size="sm"
+                variant="text"
+                color="blue-gray"
+                className="flex items-center mt-3 border border-gray-400/70"
+                onClick={onClickHandler}
+              >
+                Confirm
+              </Button>
+            </CardBody>
+          </Card>
+        </Dialog>
       </div>
     </div>
   );
