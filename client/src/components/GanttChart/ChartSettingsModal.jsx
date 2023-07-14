@@ -54,6 +54,7 @@ const ChartSettingsModal = (props) => {
                         {modalChartSettings.categoryColors.map((item, index) =>
                             <div key={index} className="sm:col-span-1">
                                 <Input
+                                    type="color"
                                     className="mb-5"
                                     variant="outlined"
                                     label={item.category + " TODO Color"}
