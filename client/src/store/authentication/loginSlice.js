@@ -9,14 +9,15 @@ import {
   groupChatAsync,
   inviteUserAsync,
   leaveChatAsync,
+  getGroupMembersAsync,
 } from "./thunks";
 import { REQUEST_STATE } from "../utils";
 
 const user = JSON.parse(sessionStorage.getItem("user"));
 
 const initialUserState = user
-  ? { isLoggedIn: true, user, error: null }
-  : { isLoggedIn: false, user: null, error: null };
+  ? { isLoggedIn: true, user, error: null, members: [] }
+  : { isLoggedIn: false, user: null, error: null, members: [] };
 
 const loginSlice = createSlice({
   name: "user",
@@ -141,6 +142,18 @@ const loginSlice = createSlice({
       })
       .addCase(leaveChatAsync.rejected, (state, action) => {
         state.leaveChat = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(getGroupMembersAsync.pending, (state) => {
+        state.getMembers = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(getGroupMembersAsync.fulfilled, (state, action) => {
+        state.getMembers = REQUEST_STATE.FULFILLED;
+        state.members = action.payload;
+      })
+      .addCase(getGroupMembersAsync.rejected, (state, action) => {
+        state.getMembers = REQUEST_STATE.REJECTED;
         state.error = action.error;
       });
   },

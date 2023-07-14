@@ -199,3 +199,17 @@ exports.leaveChat = async (req, res, next) => {
       res.status(500).send(err);
     });
 };
+
+exports.getChatMembers = async (req, res, next) => {
+  const groupID = req.params.groupID;
+
+  await User.find({ 
+    groupID: { $in: [groupID] }
+  })
+    .then((users) => {
+      res.status(200).send(users);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+}

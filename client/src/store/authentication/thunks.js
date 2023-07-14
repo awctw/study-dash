@@ -71,3 +71,10 @@ export const leaveChatAsync = createAsyncThunk(
     return await AuthService.leaveChat(userInfo);
   }
 );
+
+export const getGroupMembersAsync = createAsyncThunk(
+  actionTypes.GET_MEMBERS,
+  async (groupID) => {
+    return await AuthService.getGroupMembers(groupID);
+  }
+);

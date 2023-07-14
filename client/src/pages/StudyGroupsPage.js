@@ -18,6 +18,7 @@ import { postChatHistoryAsync } from "../store/chat/thunks";
 import { getUserAsync, groupChatAsync } from "../store/authentication/thunks";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ChatMembers from "../components/chat/chatMembers";
 
 const StudyGroupPage = () => {
   const dispatch = useDispatch();
@@ -76,7 +77,7 @@ const StudyGroupPage = () => {
             {user && user.groupID
               ? user.groupID.map((group, index) => (
                   <Card className="mt-6 w-80 m-5" key={index}>
-                    <CardBody>
+                    <CardBody className="pb-2">
                       <ChatBubbleLeftRightIcon className="text-indigo-300 w-12 h-12 mb-4" />
                       <Typography
                         variant="h5"
@@ -85,15 +86,11 @@ const StudyGroupPage = () => {
                       >
                         Group Chat: {group}
                       </Typography>
-                      <Typography>Members:</Typography>
+                      <ChatMembers groupID={group} />
                     </CardBody>
                     <CardFooter className="pt-0">
                       <a href={`/chat/${group}`} className="inline-block">
-                        <Button
-                          size="sm"
-                          variant="text"
-                          className="flex items-center gap-2 text-indigo-300"
-                        >
+                        <Button className="flex gap-2 items-center bg-indigo-50 text-indigo-300 py-1 px-2 shadow-none hover:shadow-none normal-case font-sans font-medium text-sm border">
                           Enter Chat
                           <ArrowLongRightIcon
                             strokeWidth={2}

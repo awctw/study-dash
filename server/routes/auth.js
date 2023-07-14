@@ -32,4 +32,6 @@ router.get("/getUser/:userID", controller.getUser);
 
 router.patch("/leaveChat", controller.leaveChat);
 
+router.get("/members/:groupID", controller.getChatMembers);
+
 module.exports = router;

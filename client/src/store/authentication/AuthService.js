@@ -112,6 +112,15 @@ const leaveChat = async (userInfo) => {
     });
 };
 
+const getGroupMembers = async (groupID) => {
+  return await axios
+    .get(API_URL + `members/${groupID}`)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
+
 const AuthService = {
   login,
   logout,
@@ -121,6 +130,7 @@ const AuthService = {
   inviteUser,
   getUser,
   leaveChat,
+  getGroupMembers,
 };
 
 export default AuthService;
