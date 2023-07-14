@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Button, Option, Select, Spinner } from "@material-tailwind/react";
+import { Option, Select, Spinner } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import thunk from "../../store/TODOList/thunk";
+import CategoryDelete from "./CategoryDelete";
 
 // CategoryToggle provides a dropdown menu for selecting a specific category to filter
 // TODOItems by category. handleCategoryChange() handles the
 // change event of the dropdown and performs the filtering logic.
-function CategoryToggle({ handleCategoryChange }) {
+function CategoryToggle({ setSelectedCategoryID, setErrMessage }) {
   const { categories, fetchCategoryList } = useSelector(
     (state) => state.todoReducer
   );
+
+  const user = useSelector((state) => state.loginReducer);
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -18,36 +21,36 @@ function CategoryToggle({ handleCategoryChange }) {
   // updated
   useEffect(() => {
     setLoading(true);
-    dispatch(thunk.getCategoryListAsync()).then(() => {
+    dispatch(thunk.getCategoryListAsync(user.user.userID)).then(() => {
       setLoading(false);
     });
-  }, [dispatch, fetchCategoryList]);
+  }, [dispatch, fetchCategoryList, user.user.userID]);
 
-  const handleDelete = (category) => {
-    dispatch(thunk.deleteCategoryAsync(category));
+  const handleCategorySelection = (selectedID) => {
+    setSelectedCategoryID(selectedID);
+    setErrMessage("");
   };
 
   return (
-    <div className="m-2 w-60">
+    <div className="mt-4 w-[13rem]">
       {loading && <Spinner className="h-10 w-10" />}
       <Select
         id="categoryFilter"
         label="Search by Category"
-        onChange={handleCategoryChange}
+        onChange={handleCategorySelection}
       >
         <Option value="">All Categories</Option>
         {categories.map((category) => (
-          <Option key={category} value={category}>
-            <div className="categoryOption flex flex-row justify-around">
-              {category}
-              <Button
-                color="red"
-                size="sm"
-                onClick={() => handleDelete(category)}
-              >
-                Delete
-              </Button>
-            </div>
+          <Option
+            key={category._id}
+            value={category._id}
+            className="flex flex-row justify-between flex-wrap"
+          >
+            {category.category}
+            <CategoryDelete
+              category={category}
+              setSelectedCategoryID={setSelectedCategoryID}
+            />
           </Option>
         ))}
       </Select>
