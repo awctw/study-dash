@@ -108,6 +108,8 @@ const ChatPage = () => {
   };
 
   const onChangeName = (event) => {
+    if (name.length < 1) return;
+
     dispatch(
       renameChatAsync({
         groupID: groupID,
@@ -155,9 +157,9 @@ const ChatPage = () => {
       <div className="p-5 !pl-[300px]">
         <div className="flex justify-center">
           <Chip
-            value={chat.name}
+            value={chat.name ? chat.name : ""}
             variant="outlined"
-            className="text-center text-indigo-300 w-3/5"
+            className="text-center text-indigo-300 w-3/5 text-ellipsis overflow-hidden"
           />
         </div>
 
@@ -269,7 +271,7 @@ const ChatPage = () => {
             <Input
               label="Name"
               size="lg"
-              value={name}
+              placeholder={chat.name ? chat.name : ""}
               onChange={(e) => setName(e.target.value)}
             />
           </CardBody>
@@ -284,7 +286,7 @@ const ChatPage = () => {
       <Dialog open={openExit} handler={exitUserHandler} size="sm">
         <DialogHeader>Are you sure you want to leave this chat?</DialogHeader>
         <DialogBody divider>
-          Please note that you'll only be able to join this chat agian through
+          Please note that you'll only be able to join this chat again through
           an invitation.
         </DialogBody>
         <DialogFooter>
