@@ -1,8 +1,10 @@
-import {useState, useEffect, useCallback, useRef} from "react";
+import React, {useState, useEffect, useCallback, useRef} from "react";
 import * as d3 from "d3";
 import "../../Styles/GanttChart.css"
 import {useDispatch, useSelector} from "react-redux";
 import {getChartSettingsAsync} from "../../store/chartSettings/thunks";
+import {Typography} from "@material-tailwind/react";
+import {Player} from "@lottiefiles/react-lottie-player";
 
 const Days = {
     Sunday: Symbol("Sunday"),
@@ -215,6 +217,21 @@ const GanttChart = (props) => {
     const Y_AXIS_G_ID = 'gantt-y-axis-g'
     const CIRCLE_RADIUS = 5;
     const renderChart = useCallback(() => {
+        // Filter data to see if the chart needs to be rendered
+        const xDomainStart = Date.now() - upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
+        const xDomainEnd = Date.now() + upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
+        const filteredData = upToDateData.current.filter(d => xDomainStart <= d.endTime && d.startTime <= xDomainEnd);
+        if (filteredData.length === 0) {
+            d3.select('#empty-chart-div').style('display', 'inline-block');
+            d3.select('.gantt-chart').style('overflow-y', 'visible');
+            d3.select('.gantt-chart').style('overflow-x', 'visible');
+            return;
+        } else {
+            d3.select('#empty-chart-div').style('display', 'none');
+            d3.select('.gantt-chart').style('overflow-y', 'auto');
+            d3.select('.gantt-chart').style('overflow-x', 'hidden');
+        }
+
         // Chart dimension calculation
         let containerWidth, containerHeight, margin, tooltipPadding;
         if (props.containerWidth === undefined) {
@@ -304,10 +321,7 @@ const GanttChart = (props) => {
         const xValue = d => d.startTime;
         const yValue = d => d.name;
 
-        // Set domains and filter/format data
-        const xDomainStart = Date.now() - upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
-        const xDomainEnd = Date.now() + upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
-        const filteredData = upToDateData.current.filter(d => xDomainStart <= d.endTime && d.startTime <= xDomainEnd);
+        // Set domains and format data
         const formattedData = filteredData.map((d, i) => {
             d.name = d.name +  '-' + i; // This allows for duplicate habit/to do names
             return d;
@@ -444,7 +458,26 @@ const GanttChart = (props) => {
         }, timeToNextTick);
     }
 
-    return <div id="gantt-chart-tooltip"></div>
+    return(
+        <div>
+            <div id="empty-chart-div">
+                <Typography className="pt-2 px-5">
+                    Nothing to display for the current time range.
+                </Typography>
+                <div className="flex items-center justify-center">
+                    <Player
+                        src={
+                            "https://assets8.lottiefiles.com/datafiles/wqxpXEEPRQf1JnQ/data.json"
+                        }
+                        style={{ height: "100px", width: "200px", padding: 0 }}
+                        autoplay
+                        loop
+                    />
+                </div>
+            </div>
+            <div id="gantt-chart-tooltip"></div>
+        </div>
+    );
 }
 
 export default GanttChart;

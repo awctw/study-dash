@@ -14,7 +14,7 @@ const GanttChartContainer = () => {
     <div className="bg-clip-border rounded-xl bg-white shadow-lg">
         <Typography
             variant="h5"
-            className="ml-10 mt-3 mb-3 leading-none tracking-tight dark:text-white">
+            className="ml-5 mt-3 mb-2 leading-none tracking-tight dark:text-white">
             Gantt Chart
             {user.isLoggedIn && chartSettings !== null ? <Cog6ToothIcon className="h-5 w-5 float-right mr-5 cursor-pointer" onClick={() => {
                 setVisible(true)}}/> : null
