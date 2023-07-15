@@ -75,15 +75,21 @@ const GanttChart = (props) => {
             currDate.setDate(currDate.getDate() + 1);
         }
 
+        // Switch between chart and empty display
+        const ganttChart = d3.select('.gantt-chart');
         if (filteredData.length === 0) {
             d3.select('#empty-chart-div').style('display', 'inline-block');
-            d3.select('.gantt-chart').style('overflow-y', 'visible');
-            d3.select('.gantt-chart').style('overflow-x', 'visible');
+            ganttChart.style('overflow-y', 'visible');
+            ganttChart.style('overflow-x', 'visible');
+            d3.select('#gantt-chart-x-axis-svg').style('display', 'none');
+            d3.select('#gantt-chart-svg').style('display', 'none');
             return;
         } else {
             d3.select('#empty-chart-div').style('display', 'none');
-            d3.select('.gantt-chart').style('overflow-y', 'auto');
-            d3.select('.gantt-chart').style('overflow-x', 'hidden');
+            ganttChart.style('overflow-y', 'auto');
+            ganttChart.style('overflow-x', 'hidden');
+            d3.select('#gantt-chart-x-axis-svg').style('display', 'block');
+            d3.select('#gantt-chart-svg').style('display', 'block');
         }
 
         // Chart dimension calculation
@@ -328,8 +334,8 @@ const GanttChart = (props) => {
         const now = new Date();
         const timeToNextTick = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
         setTimeout(() => {
-           renderChart();
-           runClock();
+            renderChart();
+            runClock();
         }, timeToNextTick);
     }
 
