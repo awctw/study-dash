@@ -18,15 +18,17 @@ const TODOListViewer = ({ selectedCategoryID }) => {
   // updated
   useEffect(() => {
     setLoading(true);
-    dispatch(
-      thunk.getTODOListAsync({
-        userID: user.user.userID,
-        categoryID: selectedCategoryID,
-      })
-    ).then(() => {
-      setLoading(false);
-    });
-  }, [dispatch, fetchTODOList, selectedCategoryID, user.user.userID]);
+    if (user.isLoggedIn) {
+      dispatch(
+        thunk.getTODOListAsync({
+          userID: user.user.userID,
+          categoryID: selectedCategoryID,
+        })
+      ).then(() => {
+        setLoading(false);
+      });
+    }
+  }, [dispatch, fetchTODOList, selectedCategoryID, user]);
 
   // Only render the ListView if the isVisibleTODOListEmpty function returns false,
   // indicating that there are visible TODOItems to display.
