@@ -19,6 +19,14 @@ const GanttChart = (props) => {
     let upToDateTodos = useRef(todos);
     let upToDateHabits = useRef(habits);
 
+    // Function for string to Date handling
+    const parseDate = function(date) {
+        if (typeof date === 'string') {
+            return Date.parse(date);
+        }
+        return date;
+    };
+
     // Chart consts
     const SVG_ID = 'gantt-chart-svg';
     const X_AXIS_SVG_ID = 'gantt-chart-x-axis-svg';
@@ -30,7 +38,10 @@ const GanttChart = (props) => {
         // Filter data to see if the chart needs to be rendered
         const xDomainStart = Date.now() - upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
         const xDomainEnd = Date.now() + upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
-        const filteredData = upToDateTodos.current.filter(d => xDomainStart <= d.endDate && d.startDate <= xDomainEnd);
+        // 'Clone' upToDateTodos.current to bypass read-only for scaleBand duplicate title handling
+        let filteredData = JSON.parse(JSON.stringify(upToDateTodos.current));
+        filteredData = filteredData.filter(d => xDomainStart <= Date.parse(d.endDate) &&
+            Date.parse(d.startDate) <= xDomainEnd);
 
         // Habit day of the week handling
         let currDate = new Date(xDomainStart);
@@ -162,7 +173,7 @@ const GanttChart = (props) => {
         }
 
         // UpdateVis()
-        const xValue = d => d.startDate;
+        const xValue = d => parseDate(d.startDate);
         const yValue = d => d.title;
 
         // Set domains and format data
@@ -215,7 +226,7 @@ const GanttChart = (props) => {
                 return x;
             })
             .attr('width', d => {
-                const scaledWidth = xScale(d.endDate - d.startDate + xDomainStart);
+                const scaledWidth = xScale(parseDate(d.endDate) - parseDate(d.startDate) + xDomainStart);
                 let x = xScale(xValue(d));
                 if (x < 0) {
                     x = 0
@@ -239,7 +250,7 @@ const GanttChart = (props) => {
 
         // Tooltip event listeners
         bars.on('mouseover', (event,d) => {
-                d3.select('#gantt-chart-tooltip')
+            d3.select('#gantt-chart-tooltip')
                     .style('display', 'block')
                     .style('left', (event.pageX + tooltipPadding) + 'px')
                     .style('top', (event.pageY + tooltipPadding) + 'px')
@@ -255,7 +266,7 @@ const GanttChart = (props) => {
                     }()}</i></div>
               <div>${function() {
                   if (d.description !== undefined) {
-                      return d.description
+                      return d.description;
                   }
                   return "";
                     }()}</div>
