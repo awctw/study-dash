@@ -239,7 +239,7 @@ const GanttChart = (props) => {
             .attr('height', yScale.bandwidth())
             .attr('y', d => yScale(yValue(d)))
             .attr('fill', (d) => {
-                const categoryColor = upToDateChartSettings.current.categoryColors.find(c => c.category === d.category);
+                const categoryColor = upToDateChartSettings.current.categoryColors.find(c => c.categoryID === d.category);
                 if (categoryColor !== undefined) {
                     return categoryColor.color;
                 }
@@ -260,7 +260,12 @@ const GanttChart = (props) => {
               <div><i>End Time: ${new Date(d.endDate).toLocaleTimeString()}</i></div>
               <div><i>${function() {
                         if (d.category !== undefined) {
-                            return "Category: " + d.category;
+                            const category = upToDateChartSettings.current.categoryColors
+                                .find(c => c.categoryID === d.category);
+                            if (category !== undefined) {
+                                return "Category: " + upToDateChartSettings.current.categoryColors
+                                    .find(c => c.categoryID === d.category).category;
+                            }
                         }
                         return "";
                     }()}</i></div>

@@ -5,7 +5,7 @@ const ChartSettings = mongoose.model(
     new mongoose.Schema({
         userID: String,
         axisScale: Number,
-        categoryColors: [{ category: String, color: String}]
+        categoryColors: [{ categoryID: String, category: String, color: String}]
     })
 );
 
