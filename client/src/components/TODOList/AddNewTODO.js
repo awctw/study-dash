@@ -19,6 +19,10 @@ const AddTODOItem = () => {
     (state) => state.todoReducer
   );
 
+  // The current logged-in user of the application.
+  // This is where we obtain the userID attribute
+  const user = useSelector((state) => state.loginReducer);
+
   // openAddTODO is used to control the visibility of the addTODO dialog popup.
   const [openAddTODO, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,7 +30,8 @@ const AddTODOItem = () => {
   // formData state variable is used to store the values entered in the form.
   const [formData, setFormData] = useState({
     title: "",
-    dueDate: null,
+    startDate: null,
+    endDate: null,
     description: "",
     category: "",
   });
@@ -47,12 +52,21 @@ const AddTODOItem = () => {
     }));
   };
 
-  // handleDueDateInput function is responsible for updating the dueDate field
+  // handleStartDateInput function is responsible for updating the startDate field
   // in the formData state when the value of the DatePicker component changes.
-  const handleDueDateInput = (date) => {
+  const handleStartDateInput = (date) => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      dueDate: date,
+      startDate: date,
+    }));
+  };
+
+  // handleEndDateInput function is responsible for updating the endDate field
+  // in the formData state when the value of the DatePicker component changes.
+  const handleEndDateInput = (date) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      endDate: date,
     }));
   };
 
@@ -63,18 +77,21 @@ const AddTODOItem = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { title, dueDate, description, category } = formData;
+    const { title, startDate, endDate, description, category } = formData;
 
-    if (!title || !dueDate || !description || !category) {
+    if (!title || !startDate || !endDate || !description || !category) {
       setErrMessage("Please provide all required fields.");
       return;
     }
 
     const newTodo = {
-      title,
-      dueDate: dueDate.toDateString(),
-      description,
-      category,
+      title: title,
+      startDate: startDate.toString(),
+      endDate: endDate.toString(),
+      description: description,
+      category: category,
+      isFinished: false,
+      userID: user.user.userID,
     };
 
     setLoading(true);
@@ -89,7 +106,8 @@ const AddTODOItem = () => {
   const resetFormHandler = () => {
     setFormData({
       title: "",
-      dueDate: null,
+      startDate: null,
+      endDate: null,
       description: "",
       category: "",
     });
@@ -110,7 +128,7 @@ const AddTODOItem = () => {
     <>
       <Button
         id="AddNewTODOButton"
-        className="bg-indigo-300 text-white m-2"
+        className="bg-indigo-300 text-white mt-4 m-4"
         size="sm"
         onClick={handleOpen}
       >
@@ -120,65 +138,90 @@ const AddTODOItem = () => {
         size="lg"
         open={openAddTODO}
         handler={handleOpen}
-        className="addTODODialog shadow-none"
+        className="shadow-none"
       >
-        <Card className="addTODOForm">
-          <h2>Add TODO Item</h2>
-          <form onSubmit={handleSubmit}>
+        <Card className="m-4">
+          <h2 className="flex flex-row justify-center">Add TODO Item</h2>
+          <form
+            className="flex flex-col justify-evenly h-[30rem] overflow-y-auto"
+            onSubmit={handleSubmit}
+          >
             <div className="inputField">
-              <label htmlFor="add-title">TODO:</label>
               <Input
-                id="add-title"
                 name="title"
                 value={formData.title}
-                label="title"
+                label="Title"
                 onChange={handleInputChange}
               />
             </div>
-            <div className="inputField">
-              <label htmlFor="add-dueDate">Due Date:</label>
-              <DatePicker
-                id="add-dueDate"
-                className="bg-orange-200"
-                selected={formData.dueDate}
-                onChange={handleDueDateInput}
-              />
+            <div className="flex flex-row justify-between flex-wrap">
+              <div className="inputField mr-4">
+                <label htmlFor="add-startDate">Start Date:</label>
+                <DatePicker
+                  id="add-startDate"
+                  className="bg-orange-200 w-[12rem]"
+                  dateFormat="MMM-dd-yyyy, h:mm aa"
+                  showTimeInput
+                  timeInputLabel="Time (hh:mm:AM/PM):"
+                  selected={formData.startDate}
+                  onChange={handleStartDateInput}
+                />
+              </div>
+              <div className="inputField">
+                <label htmlFor="add-endDate">End Date:</label>
+                <DatePicker
+                  id="add-endDate"
+                  className="bg-orange-200 w-[12rem]"
+                  dateFormat="MMM-dd-yyyy, h:mm aa"
+                  showTimeInput
+                  timeInputLabel="Time (hh:mm:AM/PM):"
+                  selected={formData.endDate}
+                  onChange={handleEndDateInput}
+                />
+              </div>
             </div>
             <div className="inputField">
-              <label htmlFor="add-description">Description:</label>
               <Textarea
-                id="add-description"
                 name="description"
-                label="description"
+                label="Description"
                 value={formData.description}
                 onChange={handleInputChange}
               />
             </div>
             <div className="inputField">
-              <label htmlFor="add-category">Category:</label>
               <Input
-                id="add-category"
                 name="category"
-                label="category"
+                label="Category"
+                autoComplete="off"
                 value={formData.category}
                 list="categoryOptions"
                 onChange={handleInputChange}
               />
               <datalist id="categoryOptions">
                 {categories.map((category) => (
-                  <option key={category} value={category}></option>
+                  <option key={category._id} value={category.category}></option>
                 ))}
               </datalist>
             </div>
 
             {loading && <Spinner className="h-10 w-10" />}
-            {errMessage && <p className="error-msg">{errMessage}</p>}
+            {errMessage && (
+              <p className="error-msg flex flex-row justify-center">
+                {errMessage}
+              </p>
+            )}
 
-            <div className="AddTODOButtons">
-              <Button color="light-blue" size="sm" type="submit">
+            <div className="flex flex-row justify-evenly flex-wrap">
+              <Button
+                className="mb-4"
+                color="light-blue"
+                size="sm"
+                type="submit"
+              >
                 Confirm
               </Button>
               <Button
+                className="mb-4"
                 color="gray"
                 size="sm"
                 type="reset"
@@ -186,7 +229,13 @@ const AddTODOItem = () => {
               >
                 Clear
               </Button>
-              <Button color="red" size="sm" type="button" onClick={handleOpen}>
+              <Button
+                className="mb-4"
+                color="red"
+                size="sm"
+                type="button"
+                onClick={handleOpen}
+              >
                 Close
               </Button>
             </div>

@@ -4,78 +4,51 @@ import services from "./services";
 
 const getCategoryListAsync = createAsyncThunk(
   actionTypes.GET_CATEGORY_LIST,
-  async () => {
-    try {
-      return await services.getCategories();
-    } catch (error) {
-      throw new Error(error.message);
-    }
+  async (userID) => {
+    return await services.getCategories(userID);
   }
 );
 
 const deleteCategoryAsync = createAsyncThunk(
   actionTypes.DELETE_CATEGORY,
-  async (category) => {
-    try {
-      return await services.deleteCategory(category);
-    } catch (error) {
-      throw new Error(error.message);
-    }
+  async (categoryID) => {
+    return await services.deleteCategory(categoryID);
   }
 );
 
 const getTODOListAsync = createAsyncThunk(
   actionTypes.GET_TODO_LIST,
-  async () => {
-    try {
-      return await services.getTODOList();
-    } catch (error) {
-      throw new Error(error.message);
-    }
+  async ({ userID, categoryID }) => {
+    return await services.getTODOList(userID, categoryID);
   }
 );
 
 const getTODOItemAsync = createAsyncThunk(
   actionTypes.GET_TODO_ITEM,
   async (itemID) => {
-    try {
-      return await services.getTODOItem(itemID);
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    return await services.getTODOItem(itemID);
   }
 );
 
 const addTODOItemAsync = createAsyncThunk(
   actionTypes.ADD_TODO_ITEM,
   async (item) => {
-    try {
-      return await services.addTODOItem(item);
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    return await services.addTODOItem(item);
   }
 );
 
 const editTODOItemAsync = createAsyncThunk(
   actionTypes.EDIT_TODO_ITEM,
   async ({ itemID, item }) => {
-    try {
-      return await services.editTODOItem(itemID, item); // Set the response as the payload of the fulfilled action
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    // Set the response as the payload of the fulfilled action
+    return await services.editTODOItem(itemID, item);
   }
 );
 
 const deleteTODOItemAsync = createAsyncThunk(
   actionTypes.DEL_TODO_ITEM,
   async (itemID) => {
-    try {
-      return await services.deleteTODOItem(itemID);
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    return await services.deleteTODOItem(itemID);
   }
 );
 
