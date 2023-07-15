@@ -180,7 +180,7 @@ const GanttChart = (props) => {
         const formattedData = filteredData.map((d, i) => {
             d.title = d.title +  '-' + i; // This allows for duplicate habit/to do names
             return d;
-        }).sort((a, b) => a.startDate - b.startDate);
+        }).sort((a, b) => parseDate(a.startDate) - parseDate(b.startDate));
         xScale.domain([xDomainStart, xDomainEnd])
         yScale.domain(formattedData.map(yValue));
 
