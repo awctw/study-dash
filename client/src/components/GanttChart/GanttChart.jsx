@@ -250,7 +250,8 @@ const GanttChart = (props) => {
                 return "#000000";
             })
             .attr('stroke-width', 1)
-            .attr('stroke', 'black');
+            .attr('stroke', 'black')
+            .attr('rx', 3);
 
         // Tooltip event listeners
         bars.on('mouseover', (event,d) => {
