@@ -348,7 +348,7 @@ const GanttChart = (props) => {
                 <div className="flex items-center justify-center">
                     <Player
                         src={
-                            "https://assets8.lottiefiles.com/datafiles/wqxpXEEPRQf1JnQ/data.json"
+                            "https://lottie.host/13926b54-ea64-4465-bbe6-2fc45507cb74/jiSPjnMiBV.json"
                         }
                         style={{ height: "100px", width: "200px", padding: 0 }}
                         autoplay
