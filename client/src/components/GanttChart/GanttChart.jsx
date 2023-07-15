@@ -96,7 +96,7 @@ const GanttChart = (props) => {
                 top: 35,
                 right: 20,
                 bottom: 25,
-                left: 110
+                left: 70
             };
         }
         // Increasing containerHeight affects inner chart height
@@ -123,7 +123,11 @@ const GanttChart = (props) => {
             .tickSizeOuter(0);
         const yAxis = d3.axisLeft(yScale)
             .tickFormat(function(d) {
-                return d.substring(0, d.lastIndexOf("-"))
+                let retString = d.substring(0, d.lastIndexOf("-"));
+                if (retString.length > 8) {
+                    return retString.slice(0, 8) + '...';
+                }
+                return retString;
             })
             .tickSize(0);
 
