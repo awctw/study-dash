@@ -2,9 +2,12 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { actionTypes } from "./actionTypes";
 import flashcardService from "./service";
 
-const getModulesAsync = createAsyncThunk(actionTypes.GET_MODULES, async () => {
-  return await flashcardService.getModules();
-});
+const getModulesAsync = createAsyncThunk(
+  actionTypes.GET_MODULES,
+  async (userID) => {
+    return await flashcardService.getModules(userID);
+  }
+);
 
 const addModuleAsync = createAsyncThunk(
   actionTypes.ADD_MODULE,
@@ -27,9 +30,41 @@ const editFlashcardAsync = createAsyncThunk(
   }
 );
 
+const deleteFlashcardAsync = createAsyncThunk(
+  actionTypes.DEL_FLASHCARD,
+  async (cardData) => {
+    return await flashcardService.deleteFlashcard(cardData);
+  }
+);
+
+const deleteModuleAsync = createAsyncThunk(
+  actionTypes.DEL_MODULE,
+  async (moduleId) => {
+    return await flashcardService.deleteModule(moduleId);
+  }
+);
+
+const getScheduledCardsAsync = createAsyncThunk(
+  actionTypes.GET_SCHEDULED_CARDS,
+  async (userID) => {
+    return await flashcardService.getScheduledCards(userID);
+  }
+);
+
+const refreshFlashCardAsync = createAsyncThunk(
+  actionTypes.REFRESH_FLASHCARD,
+  async (cardData) => {
+    return await flashcardService.refreshFlashcard(cardData);
+  }
+);
+
 export {
   getModulesAsync,
+  getScheduledCardsAsync,
   addModuleAsync,
   addFlashcardAsync,
   editFlashcardAsync,
+  deleteFlashcardAsync,
+  deleteModuleAsync,
+  refreshFlashCardAsync,
 };

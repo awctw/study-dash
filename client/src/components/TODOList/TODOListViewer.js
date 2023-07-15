@@ -4,11 +4,12 @@ import ListView from "./ListView";
 import { useDispatch, useSelector } from "react-redux";
 import thunk from "../../store/TODOList/thunk";
 
-const TODOListViewer = ({ selectedCategory }) => {
+const TODOListViewer = ({ selectedCategoryID }) => {
   // The useSelector hook extracts the TODOList array from the todoListSlice
   // slice in the rootReducer. TODOList is already sorted by due-date in
   // the server
   const { TODOList, fetchTODOList } = useSelector((state) => state.todoReducer);
+  const user = useSelector((state) => state.loginReducer);
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -17,38 +18,30 @@ const TODOListViewer = ({ selectedCategory }) => {
   // updated
   useEffect(() => {
     setLoading(true);
-    dispatch(thunk.getTODOListAsync()).then(() => {
-      setLoading(false);
-    });
-  }, [dispatch, fetchTODOList]);
-
-  // isVisibleTODOListEmpty checks if the todos array is empty.
-  const isVisibleTODOListEmpty = () => {
-    return getVisibleTODOs().length === 0;
-  };
-
-  // The getVisibleTODOs function is defined to filter the TODOList based on the selected category.
-  const getVisibleTODOs = () => {
-    if (!selectedCategory) {
-      return TODOList;
+    if (user.isLoggedIn) {
+      dispatch(
+        thunk.getTODOListAsync({
+          userID: user.user.userID,
+          categoryID: selectedCategoryID,
+        })
+      ).then(() => {
+        setLoading(false);
+      });
     }
-    return TODOList.filter((todo) => todo.category === selectedCategory);
-  };
+  }, [dispatch, fetchTODOList, selectedCategoryID, user]);
 
   // Only render the ListView if the isVisibleTODOListEmpty function returns false,
   // indicating that there are visible TODOItems to display.
   return (
     <div>
-      <header className="flex justify-between">
+      <header className="flex justify-between flex-wrap">
         <Typography variant="h5">TODO List</Typography>
-        <Typography variant="small">
-          Total Todos: {getVisibleTODOs().length}
+        <Typography variant="small" className="">
+          Total Todos: {TODOList.length}
         </Typography>
       </header>
       {loading && <Spinner className="h-10 w-10" />}
-      {!isVisibleTODOListEmpty() && (
-        <ListView visibleTODOs={getVisibleTODOs()} />
-      )}
+      <ListView />
     </div>
   );
 };

@@ -3,6 +3,7 @@ const router = express.Router()
 
 const { getHabits, addHabit } = require('../controllers/habit.controller')
 
-router.route('/').get(getHabits).post(addHabit)
+router.route('/').post(addHabit)
+router.route('/:userID').get(getHabits)
 
 module.exports = router

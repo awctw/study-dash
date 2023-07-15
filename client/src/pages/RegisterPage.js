@@ -50,6 +50,7 @@ const RegisterPage = () => {
   const registerHandler = () => {
     const newUser = {
       userID: uuidv4(),
+      groupID: [],
       username: username,
       firstName: firstName,
       lastName: lastName,

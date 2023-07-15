@@ -1,21 +1,26 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var cookieSession = require("cookie-session");
-var logger = require("morgan");
-var cors = require("cors");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
+const logger = require("morgan");
+const cors = require("cors");
 
-var indexRouter = require("./routes/index");
-var userRouter = require("./routes/user");
-var authRouter = require("./routes/auth");
-var dbConfig = require("./config/db.config");
-var TODOListRouter = require('./routes/TODOList');
-var flashcardRouter = require('./routes/flashcards');
-var habitRouter = require('./routes/habits');
-var chartSettingsRouter = require('./routes/chartSettings');
+const dbConfig = require("./config/db.config");
+const db = require("./models");
+const indexRouter = require("./routes/index");
+const userRouter = require("./routes/user");
+const authRouter = require("./routes/auth");
+var chatRouter = require("./routes/chat");
+const categoryRouter = require("./routes/Categories");
+const TODOListRouter = require("./routes/TODOItems");
+const flashcardRouter = require("./routes/flashcards");
+const habitRouter = require("./routes/habits");
+const chartSettingsRouter = require("./routes/chartSettings");
+const timerSettingsRouter = require("./routes/timerSettings");
 
-var app = express();
+const app = express();
 
+// Middleware
 app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
@@ -31,27 +36,30 @@ app.use(
   })
 );
 
+// Routes
 app.use("/", indexRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
-app.use('/api/TODOList', TODOListRouter);
+app.use("/api/categories", categoryRouter);
+app.use("/api/TODOList", TODOListRouter);
 app.use("/flashcards", flashcardRouter);
 app.use("/habits", habitRouter);
 app.use("/chartSettings", chartSettingsRouter);
+app.use("/timerSettings", timerSettingsRouter);
+app.use("/chat", chatRouter);
 
-const db = require("./models");
-
+// Connect to MongoDB
 db.mongoose
   .connect(dbConfig.url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Successfully connect to MongoDB.");
+    console.log("Successfully connected to MongoDB.");
   })
   .catch((err) => {
-    console.error("Connection error", err);
-    process.exit();
+    console.error("Connection error:", err);
+    throw new Error("Failed to connect to MongoDB. " + err.message);
   });
 
 module.exports = app;
