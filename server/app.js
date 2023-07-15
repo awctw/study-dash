@@ -10,6 +10,7 @@ const db = require("./models");
 const indexRouter = require("./routes/index");
 const userRouter = require("./routes/user");
 const authRouter = require("./routes/auth");
+var chatRouter = require("./routes/chat");
 const categoryRouter = require("./routes/Categories");
 const TODOListRouter = require("./routes/TODOItems");
 const flashcardRouter = require("./routes/flashcards");
@@ -45,6 +46,7 @@ app.use("/flashcards", flashcardRouter);
 app.use("/habits", habitRouter);
 app.use("/chartSettings", chartSettingsRouter);
 app.use("/timerSettings", timerSettingsRouter);
+app.use("/chat", chatRouter);
 
 // Connect to MongoDB
 db.mongoose

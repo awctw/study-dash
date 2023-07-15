@@ -6,14 +6,18 @@ import {
   userLogoutAsync,
   userRegisterAsync,
   userEditAsync,
+  groupChatAsync,
+  inviteUserAsync,
+  leaveChatAsync,
+  getGroupMembersAsync,
 } from "./thunks";
 import { REQUEST_STATE } from "../utils";
 
-const user = JSON.parse(localStorage.getItem("user"));
+const user = JSON.parse(sessionStorage.getItem("user"));
 
 const initialUserState = user
-  ? { isLoggedIn: true, user, error: null }
-  : { isLoggedIn: false, user: null, error: null };
+  ? { isLoggedIn: true, user, error: null, members: [] }
+  : { isLoggedIn: false, user: null, error: null, members: [] };
 
 const loginSlice = createSlice({
   name: "user",
@@ -21,18 +25,6 @@ const loginSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getUserAsync.pending, (state) => {
-        state.getUserBoard = REQUEST_STATE.PENDING;
-        state.error = null;
-      })
-      .addCase(getUserAsync.fulfilled, (state, action) => {
-        state.getUserBoard = REQUEST_STATE.FULFILLED;
-        state.user = action.payload.user;
-      })
-      .addCase(getUserAsync.rejected, (state, action) => {
-        state.getUserBoard = REQUEST_STATE.REJECTED;
-        state.error = action.error;
-      })
       .addCase(userLoginAsync.pending, (state) => {
         state.login = REQUEST_STATE.PENDING;
         state.error = null;
@@ -92,17 +84,76 @@ const loginSlice = createSlice({
       })
       .addCase(userEditAsync.fulfilled, (state, action) => {
         if (action.payload.message !== undefined) {
-          state.register = REQUEST_STATE.REJECTED;
+          state.edit = REQUEST_STATE.REJECTED;
           state.isLoggedIn = true;
           state.error = action.payload.message;
         } else {
-          state.register = REQUEST_STATE.FULFILLED;
+          state.edit = REQUEST_STATE.FULFILLED;
           state.isLoggedIn = true;
           state.user = action.payload;
         }
       })
       .addCase(userEditAsync.rejected, (state, action) => {
         state.edit = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(groupChatAsync.pending, (state) => {
+        state.groupChat = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(groupChatAsync.fulfilled, (state, action) => {
+        state.groupChat = REQUEST_STATE.FULFILLED;
+        state.user = action.payload;
+      })
+      .addCase(groupChatAsync.rejected, (state, action) => {
+        state.groupChat = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(inviteUserAsync.pending, (state) => {
+        state.invite = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(inviteUserAsync.fulfilled, (state, action) => {
+        state.invite = REQUEST_STATE.FULFILLED;
+      })
+      .addCase(inviteUserAsync.rejected, (state, action) => {
+        state.invite = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(getUserAsync.pending, (state) => {
+        state.getUser = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(getUserAsync.fulfilled, (state, action) => {
+        state.getUser = REQUEST_STATE.FULFILLED;
+        state.user = action.payload;
+      })
+      .addCase(getUserAsync.rejected, (state, action) => {
+        state.getUser = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(leaveChatAsync.pending, (state) => {
+        state.leaveChat = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(leaveChatAsync.fulfilled, (state, action) => {
+        state.leaveChat = REQUEST_STATE.FULFILLED;
+        state.user = action.payload;
+      })
+      .addCase(leaveChatAsync.rejected, (state, action) => {
+        state.leaveChat = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(getGroupMembersAsync.pending, (state) => {
+        state.getMembers = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(getGroupMembersAsync.fulfilled, (state, action) => {
+        state.getMembers = REQUEST_STATE.FULFILLED;
+        state.members = action.payload;
+      })
+      .addCase(getGroupMembersAsync.rejected, (state, action) => {
+        state.getMembers = REQUEST_STATE.REJECTED;
         state.error = action.error;
       });
   },

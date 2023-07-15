@@ -1,11 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { actionTypes } from "./actionTypes";
 import AuthService from "./AuthService";
-import UserService from "./UserService";
-
-export const getUserAsync = createAsyncThunk(actionTypes.GET_USER, async () => {
-  return await UserService.getUserBoard();
-});
 
 export const userLogoutAsync = createAsyncThunk(
   actionTypes.POST_USER_SIGNOUT,
@@ -26,6 +21,7 @@ export const userRegisterAsync = createAsyncThunk(
   async (user) => {
     return await AuthService.register(
       user.userID,
+      user.groupID,
       user.username,
       user.firstName,
       user.lastName,
@@ -45,5 +41,40 @@ export const userEditAsync = createAsyncThunk(
       user.lastName,
       user.email
     );
+  }
+);
+
+export const groupChatAsync = createAsyncThunk(
+  actionTypes.PUT_GROUP_CHAT,
+  async (user) => {
+    return await AuthService.groupChat(user.username, user.groupID);
+  }
+);
+
+export const inviteUserAsync = createAsyncThunk(
+  actionTypes.PUT_INVITE_USER,
+  async (user) => {
+    return await AuthService.inviteUser(user.username, user.groupID);
+  }
+);
+
+export const getUserAsync = createAsyncThunk(
+  actionTypes.GET_USER,
+  async (user) => {
+    return await AuthService.getUser(user);
+  }
+);
+
+export const leaveChatAsync = createAsyncThunk(
+  actionTypes.PATCH_LEAVECHAT,
+  async (userInfo) => {
+    return await AuthService.leaveChat(userInfo);
+  }
+);
+
+export const getGroupMembersAsync = createAsyncThunk(
+  actionTypes.GET_MEMBERS,
+  async (groupID) => {
+    return await AuthService.getGroupMembers(groupID);
   }
 );

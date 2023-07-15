@@ -7,10 +7,11 @@ import DashboardPage from "./pages/DashboardPage";
 import StatisticsPage from "./pages/StatisticsPage";
 import StudyGroupPage from "./pages/StudyGroupsPage";
 import RegisterPage from "./pages/RegisterPage";
-import { LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import LoginPage from "./pages/LoginPage";
+import ChatPage from "./pages/ChatPage";
 
 // Referenced Tailwind Elements Example for styling: https://tailwind-elements.com/docs/standard/navigation/sidenav/
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path={"/statistics"} element={<StatisticsPage />} />
           <Route path={"/studyGroups"} element={<StudyGroupPage />} />
           <Route path={"/register"} element={<RegisterPage />} />
+          <Route path={"/chat/:id"} element={<ChatPage />} />
         </Routes>
       </Router>
     </LocalizationProvider>
