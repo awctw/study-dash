@@ -40,7 +40,7 @@ const ChatMembers = (props) => {
                   color="gray"
                   className="font-normal"
                 >
-                  {member.firstName} {member.lastName}
+                  {member.username}
                 </Typography>
               </ListItem>
             ))}
