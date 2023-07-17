@@ -23,7 +23,7 @@ app.set("view engine', 'ejs");
 // Middleware
 app.use(
   cors({
-    origin: "https://study-dash.vercel.app/",
+    origin: "https://studydash.onrender.com",
   })
 );
 app.use(logger("dev"));
