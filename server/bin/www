@@ -20,13 +20,12 @@ app.set("port", port);
  */
 
 var server = http.createServer(app);
-const URL =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8080"
-    : "https://studydash.onrender.com";
 var io = require("socket.io")(server, {
   cors: {
-    origin: URL, // Replace with the URL of your client application
+    origin:
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000"
+        : "https://studydash.onrender.com", // Replace with the URL of your client application
     methods: ["GET", "POST"],
     credentials: true,
   },

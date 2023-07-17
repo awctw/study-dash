@@ -23,13 +23,12 @@ app.set("view engine", ejs);
 dotenv.config();
 
 // Middleware
-const URL =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8080"
-    : "https://studydash.onrender.com";
 app.use(
   cors({
-    origin: URL,
+    origin:
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000"
+        : "https://studydash.onrender.com",
   })
 );
 app.use(logger("dev"));
