@@ -1,9 +1,6 @@
 import axios from "axios";
 
-const URL =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8080/"
-    : "https://studyDash-server.onrender.com/";
+const URL = process.env.BASE_SERVER_URL + "/";
 
 const getChartSettings = async (userID) => {
   return await axios

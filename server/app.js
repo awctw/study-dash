@@ -25,10 +25,7 @@ dotenv.config();
 // Middleware
 app.use(
   cors({
-    origin:
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:3000"
-        : "https://studydash.onrender.com",
+    origin: process.env.BASE_CLIENT_URL,
   })
 );
 app.use(logger("dev"));

@@ -1,9 +1,6 @@
 import axios from "axios";
 
-const API_URL =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8080/auth/"
-    : "https://studyDash-server.onrender.com/auth/";
+const API_URL = process.env.BASE_SERVER_URL + "/auth/";
 
 const login = (userID, username, password) => {
   return axios

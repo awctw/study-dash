@@ -39,10 +39,7 @@ import { useNavigate } from "react-router-dom";
 // Credits: Setting up socket io for chat
 // https://dev.to/bhavik786/building-a-real-time-chat-application-using-mern-stack-and-socketio-1obn
 const ChatPage = () => {
-  const URL =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:8080"
-      : "https://studyDash-server.onrender.com";
+  const URL = process.env.BASE_SERVER_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const chat = useSelector((state) => state.chatReducer.chat);

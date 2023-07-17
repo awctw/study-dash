@@ -1,13 +1,8 @@
 import axios from "axios";
 
-const API_TODO_ITEMS_URL =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8080/api/TODOList"
-    : "https://studyDash-server.onrender.com/api/TODOList";
-const API_CATEGORIES_URL =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8080/api/TODOList"
-    : "https://studyDash-server.onrender.com/api/categories";
+const API_TODO_ITEMS_URL = process.env.BASE_SERVER_URL + "/api/TODOList";
+
+const API_CATEGORIES_URL = process.env.BASE_SERVER_URL + "/api/TODOList";
 
 const getCategories = async (userID) => {
   try {
