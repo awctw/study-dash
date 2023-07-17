@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const URL = process.env.BASE_SERVER_URL + "/";
+const URL = process.env.BASE_SERVER_URL;
 
 const getModules = async (userID) => {
   const response = await axios
-    .get(URL + `flashcards/${userID}`)
+    .get(URL + `/flashcards/${userID}`)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);

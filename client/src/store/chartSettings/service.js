@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const URL = process.env.BASE_SERVER_URL + "/";
+const URL = process.env.BASE_SERVER_URL;
 
 const getChartSettings = async (userID) => {
   return await axios
-    .get(URL + `chartSettings/${userID}`)
+    .get(URL + `/chartSettings/${userID}`)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);

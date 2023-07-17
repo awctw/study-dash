@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const URL = process.env.BASE_SERVER_URL + "/";
+const URL = process.env.BASE_SERVER_URL;
 
 const getHabits = async (userID) => {
   const response = await axios
-    .get(URL + `habits/${userID}`)
+    .get(URL + `/habits/${userID}`)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);

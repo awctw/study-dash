@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const URL = process.env.BASE_SERVER_URL + "/";
+const URL = process.env.BASE_SERVER_URL;
 
 const getChatHistory = async (groupID) => {
   return await axios
-    .get(URL + `chat/${groupID}`)
+    .get(URL + `/chat/${groupID}`)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);

@@ -1,12 +1,10 @@
 import axios from "axios";
 
-const API_TODO_ITEMS_URL = process.env.BASE_SERVER_URL + "/api/TODOList";
-
-const API_CATEGORIES_URL = process.env.BASE_SERVER_URL + "/api/TODOList";
+const API_URL = process.env.BASE_SERVER_URL;
 
 const getCategories = async (userID) => {
   try {
-    const response = await axios.get(`${API_CATEGORIES_URL}/${userID}`);
+    const response = await axios.get(`${API_URL}/api/TODOList/${userID}`);
     return response.data;
   } catch (error) {
     handleRequestError(error);
@@ -15,7 +13,9 @@ const getCategories = async (userID) => {
 
 const deleteCategory = async (categoryID) => {
   try {
-    const response = await axios.delete(`${API_CATEGORIES_URL}/${categoryID}`);
+    const response = await axios.delete(
+      `${API_URL}/api/TODOList/${categoryID}`
+    );
     return response.data;
   } catch (error) {
     handleRequestError(error);
@@ -25,7 +25,7 @@ const deleteCategory = async (categoryID) => {
 const getTODOList = async (userID, categoryID) => {
   try {
     const response = await axios.get(
-      `${API_TODO_ITEMS_URL}/fetchAllItems/${userID}/${categoryID}`
+      `${API_URL}/api/TODOList/fetchAllItems/${userID}/${categoryID}`
     );
     return response.data;
   } catch (error) {
@@ -35,7 +35,7 @@ const getTODOList = async (userID, categoryID) => {
 
 const getTODOItem = async (itemID) => {
   try {
-    const response = await axios.get(`${API_TODO_ITEMS_URL}/${itemID}`);
+    const response = await axios.get(`${API_URL}/api/TODOList/${itemID}`);
     return response.data;
   } catch (error) {
     handleRequestError(error);
@@ -44,7 +44,7 @@ const getTODOItem = async (itemID) => {
 
 const addTODOItem = async (item) => {
   try {
-    const response = await axios.post(API_TODO_ITEMS_URL, item);
+    const response = await axios.post(`${API_URL}/api/TODOList`, item);
     return response.data;
   } catch (error) {
     handleRequestError(error);
@@ -53,7 +53,7 @@ const addTODOItem = async (item) => {
 
 const editTODOItem = async (itemID, item) => {
   try {
-    const response = await axios.put(`${API_TODO_ITEMS_URL}/${itemID}`, item);
+    const response = await axios.put(`${API_URL}/api/TODOList/${itemID}`, item);
     return response.data;
   } catch (error) {
     handleRequestError(error);
@@ -62,7 +62,7 @@ const editTODOItem = async (itemID, item) => {
 
 const deleteTODOItem = async (itemID) => {
   try {
-    const response = await axios.delete(`${API_TODO_ITEMS_URL}/${itemID}`);
+    const response = await axios.delete(`${API_URL}/api/TODOList/${itemID}`);
     return response.data;
   } catch (error) {
     handleRequestError(error);
