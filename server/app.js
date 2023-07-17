@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 const logger = require("morgan");
@@ -21,12 +20,15 @@ const timerSettingsRouter = require("./routes/timerSettings");
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://study-dash.vercel.app/",
+  })
+);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   cookieSession({
@@ -50,7 +52,7 @@ app.use("/chat", chatRouter);
 
 // Connect to MongoDB
 db.mongoose
-  .connect(dbConfig.url, {
+  .connect(dbConfig.url || process.env.MONGO_ATLAS_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

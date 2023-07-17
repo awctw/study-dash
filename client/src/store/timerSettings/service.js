@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://localhost:8080/";
+const URL = "https://studyDash-server.onrender.com/";
 
 const getTimerSettings = async (userID) => {
   return await axios

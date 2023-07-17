@@ -22,7 +22,7 @@ app.set("port", port);
 var server = http.createServer(app);
 var io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000", // Replace with the URL of your client application
+    origin: "https://study-dash.vercel.app", // Replace with the URL of your client application
     methods: ["GET", "POST"],
     credentials: true,
   },

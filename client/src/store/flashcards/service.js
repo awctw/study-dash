@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = "http://localhost:8080/";
+const URL = "https://studyDash-server.onrender.com/";
 
 const getModules = async (userID) => {
   const response = await axios

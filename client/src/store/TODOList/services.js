@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const API_TODO_ITEMS_URL = "http://localhost:8080/api/TODOList";
-const API_CATEGORIES_URL = "http://localhost:8080/api/categories";
+const API_TODO_ITEMS_URL = "https://studyDash-server.onrender.com/api/TODOList";
+const API_CATEGORIES_URL =
+  "https://studyDash-server.onrender.com/api/categories";
 
 const getCategories = async (userID) => {
   try {

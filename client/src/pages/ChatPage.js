@@ -62,7 +62,7 @@ const ChatPage = () => {
   }, [dispatch, groupID]);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:8080");
+    const newSocket = io("https://studyDash-server.onrender.com");
     setSocket(newSocket);
 
     return () => {
