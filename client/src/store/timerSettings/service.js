@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = process.env.NBASE_SERVER_URL;
+const URL = process.env.BASE_SERVER_URL;
 
 const getTimerSettings = async (userID) => {
   return await axios
@@ -13,7 +13,7 @@ const getTimerSettings = async (userID) => {
 
 const putTimerSettings = async (settings) => {
   return await axios
-    .put(URL + `timerSettings`, settings)
+    .put(URL + `/timerSettings`, settings)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);

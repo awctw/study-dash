@@ -15,7 +15,7 @@ const getModules = async (userID) => {
 
 const addModule = async (module) => {
   const response = await axios
-    .post(URL + "flashcards", module, {
+    .post(URL + "/flashcards", module, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -31,7 +31,7 @@ const addModule = async (module) => {
 const addFlashcard = async (cardData) => {
   const response = await axios
     .patch(
-      URL + `flashcards/${cardData.moduleId}`,
+      URL + `/flashcards/${cardData.moduleId}`,
       {
         question: cardData.question,
         answer: cardData.answer,
@@ -53,7 +53,7 @@ const addFlashcard = async (cardData) => {
 const editFlashcard = async (cardData) => {
   const response = await axios
     .patch(
-      URL + `flashcards/edit/${cardData.moduleId}`,
+      URL + `/flashcards/edit/${cardData.moduleId}`,
       {
         question: cardData.question,
         answer: cardData.answer,
@@ -77,7 +77,7 @@ const editFlashcard = async (cardData) => {
 
 const deleteFlashcard = async (cardData) => {
   const response = await axios
-    .delete(URL + `flashcards/${cardData.moduleId}/${cardData.index}`)
+    .delete(URL + `/flashcards/${cardData.moduleId}/${cardData.index}`)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);
@@ -88,7 +88,7 @@ const deleteFlashcard = async (cardData) => {
 
 const deleteModule = async (moduleId) => {
   const response = await axios
-    .delete(URL + `flashcards/${moduleId}`)
+    .delete(URL + `/flashcards/${moduleId}`)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);
@@ -99,7 +99,7 @@ const deleteModule = async (moduleId) => {
 
 const getScheduledCards = async (userID) => {
   const response = await axios
-    .get(URL + `flashcards/sra/${userID}`)
+    .get(URL + `/flashcards/sra/${userID}`)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);
@@ -111,7 +111,7 @@ const getScheduledCards = async (userID) => {
 const refreshFlashcard = async (cardData) => {
   const response = await axios
     .patch(
-      URL + `flashcards/refresh/${cardData.cardId}`,
+      URL + `/flashcards/refresh/${cardData.cardId}`,
       {
         quality: cardData.quality,
       },

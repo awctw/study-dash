@@ -13,7 +13,7 @@ const getChatHistory = async (groupID) => {
 
 const postChatHistory = async (history) => {
   return await axios
-    .post(URL + `chat`, history)
+    .post(URL + `/chat`, history)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);
@@ -22,7 +22,7 @@ const postChatHistory = async (history) => {
 
 const putChatHistory = async (newChat) => {
   return await axios
-    .put(URL + `chat`, newChat)
+    .put(URL + `/chat`, newChat)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);
@@ -31,7 +31,7 @@ const putChatHistory = async (newChat) => {
 
 const renameChat = async (chatInfo) => {
   return await axios
-    .patch(URL + `chat/${chatInfo.groupID}`, {
+    .patch(URL + `/chat/${chatInfo.groupID}`, {
       name: chatInfo.name,
     })
     .then((res) => res.data)

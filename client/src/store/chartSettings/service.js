@@ -13,7 +13,7 @@ const getChartSettings = async (userID) => {
 
 const putChartSettings = async (update) => {
   return await axios
-    .put(URL + `chartSettings/${update[0]}`, update[1])
+    .put(URL + `/chartSettings/${update[0]}`, update[1])
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);

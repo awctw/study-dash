@@ -14,7 +14,7 @@ const getHabits = async (userID) => {
 
 const addHabit = async (habit) => {
   const response = await axios
-    .post(URL + "habits", habit, {
+    .post(URL + "/habits", habit, {
       headers: {
         "Content-Type": "application/json",
       },
