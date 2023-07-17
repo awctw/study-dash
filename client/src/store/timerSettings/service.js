@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = process.env.BASE_SERVER_URL;
+const URL = process.env.REACT_APP_BASE_SERVER_URL;
 
 const getTimerSettings = async (userID) => {
   return await axios

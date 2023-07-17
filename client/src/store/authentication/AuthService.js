@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const API_URL = process.env.BASE_SERVER_URL;
+const API_URL = process.env.REACT_APP_BASE_SERVER_URL;
 
 const login = (userID, username, password) => {
   return axios
-    .post(API_URL + "auth/signin", { userID, username, password })
+    .post(API_URL + "/auth/signin", { userID, username, password })
     .then((response) => {
       if (response.data.accessToken) {
         sessionStorage.setItem("user", JSON.stringify(response.data));
