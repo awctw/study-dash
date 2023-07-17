@@ -3,6 +3,7 @@ const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 const logger = require("morgan");
 const cors = require("cors");
+const ejs = require("ejs");
 
 const db = require("./models");
 const indexRouter = require("./routes/index");
@@ -17,6 +18,7 @@ const chartSettingsRouter = require("./routes/chartSettings");
 const timerSettingsRouter = require("./routes/timerSettings");
 
 const app = express();
+app.set("view engine', 'ejs");
 
 // Middleware
 app.use(
