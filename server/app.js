@@ -4,7 +4,6 @@ const cookieSession = require("cookie-session");
 const logger = require("morgan");
 const cors = require("cors");
 
-const dbConfig = require("./config/db.config");
 const db = require("./models");
 const indexRouter = require("./routes/index");
 const userRouter = require("./routes/user");
@@ -52,7 +51,7 @@ app.use("/chat", chatRouter);
 
 // Connect to MongoDB
 db.mongoose
-  .connect(dbConfig.url || process.env.MONGO_ATLAS_URL, {
+  .connect(process.env.MONGO_ATLAS_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
