@@ -4,6 +4,7 @@ const cookieSession = require("cookie-session");
 const logger = require("morgan");
 const cors = require("cors");
 const ejs = require("ejs");
+const dotenv = require("dotenv");
 
 const db = require("./models");
 const indexRouter = require("./routes/index");
@@ -18,12 +19,17 @@ const chartSettingsRouter = require("./routes/chartSettings");
 const timerSettingsRouter = require("./routes/timerSettings");
 
 const app = express();
-app.set("view engine', 'ejs");
+app.set("view engine", ejs);
+dotenv.config();
 
 // Middleware
+const URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:8080"
+    : "https://studydash.onrender.com";
 app.use(
   cors({
-    origin: "https://studydash.onrender.com",
+    origin: URL,
   })
 );
 app.use(logger("dev"));
