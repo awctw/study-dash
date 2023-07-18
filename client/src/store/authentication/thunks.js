@@ -44,37 +44,9 @@ export const userEditAsync = createAsyncThunk(
   }
 );
 
-export const groupChatAsync = createAsyncThunk(
-  actionTypes.PUT_GROUP_CHAT,
-  async (user) => {
-    return await AuthService.groupChat(user.username, user.groupID);
-  }
-);
-
-export const inviteUserAsync = createAsyncThunk(
-  actionTypes.PUT_INVITE_USER,
-  async (user) => {
-    return await AuthService.inviteUser(user.username, user.groupID);
-  }
-);
-
 export const getUserAsync = createAsyncThunk(
   actionTypes.GET_USER,
   async (user) => {
     return await AuthService.getUser(user);
-  }
-);
-
-export const leaveChatAsync = createAsyncThunk(
-  actionTypes.PATCH_LEAVECHAT,
-  async (userInfo) => {
-    return await AuthService.leaveChat(userInfo);
-  }
-);
-
-export const getGroupMembersAsync = createAsyncThunk(
-  actionTypes.GET_MEMBERS,
-  async (groupID) => {
-    return await AuthService.getGroupMembers(groupID);
   }
 );

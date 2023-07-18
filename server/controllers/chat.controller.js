@@ -1,4 +1,6 @@
 const Chat = require("../models/chat.model");
+const db = require("../models");
+const User = db.user;
 
 const getChatHistory = async (req, res, next) => {
   await Chat.findOne({ groupID: req.params.groupID })
@@ -17,22 +19,22 @@ const getChatHistory = async (req, res, next) => {
     });
 };
 
-const postChatHistory = async (req, res, next) => {
-  const chat = new Chat({
-    groupID: req.body.groupID,
-    history: [],
-    name: req.body.name,
-  });
+// const postChatHistory = async (req, res, next) => {
+//   const chat = new Chat({
+//     groupID: req.body.groupID,
+//     history: [],
+//     name: req.body.name,
+//   });
 
-  await chat
-    .save()
-    .then(() => {
-      res.status(200).send(chat);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-};
+//   await chat
+//     .save()
+//     .then(() => {
+//       res.status(200).send(chat);
+//     })
+//     .catch((err) => {
+//       res.status(500).send(err);
+//     });
+// };
 
 const putChatHistory = async (req, res, next) => {
   const { groupID, newMessage } = req.body;
@@ -47,10 +49,7 @@ const putChatHistory = async (req, res, next) => {
     { new: true }
   )
     .then((result) => {
-      res.status(200).send({
-        groupID: req.body.groupID,
-        history: result.history,
-      });
+      res.status(200).send(result);
     })
     .catch((err) => {
       res.status(500).send(err);
@@ -73,9 +72,90 @@ const renameChat = async (req, res, next) => {
     });
 }
 
+const groupChat = async (req, res) => {
+  const { username, groupID, chatName } = req.body;
+
+  const chat = new Chat({
+    history: [],
+    groupID: groupID,
+    name: chatName,
+    users: [username]
+  });
+
+  await chat.save()
+    .then((result) => {
+      res.status(200).send(result);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+
+};
+
+const inviteUser = async (req, res) => {
+  const { username, groupID } = req.body;
+
+  const foundUser = await User.findOne({ username });
+
+  if (foundUser === null) {
+    return res.status(400).send("Username not found!");
+  }
+
+  await Chat.findOne({ groupID })
+    .then((chat) => {
+      chat.users.push(foundUser.username);
+      chat.save();
+
+      res.status(200).send(chat);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+
+};
+
+const leaveChat = async (req, res, next) => {
+  const { username, groupID } = req.body;
+
+  const foundChat = await Chat.findOne({ groupID });
+
+  const userIndex = foundChat.users.indexOf(username);
+
+  // if chat exists remove it
+  if (userIndex > -1) {
+    foundChat.users.splice(userIndex, 1);
+  }
+
+  await foundChat.save()
+    .then((chat) => {
+      res.status(200).send(chat);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
+const getUserChats = async (req, res, next) => {
+  const username = req.params.username;
+
+  await Chat.find({
+    users: { $in: [username] }
+  })
+    .then((chats) => {
+      res.status(200).send(chats);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+
+}
+
 module.exports = {
   getChatHistory,
   putChatHistory,
-  postChatHistory,
+  groupChat,
   renameChat,
+  inviteUser,
+  leaveChat,
+  getUserChats,
 };

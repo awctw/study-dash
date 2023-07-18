@@ -14,24 +14,24 @@ import {
 } from "@heroicons/react/24/solid";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
-import { postChatHistoryAsync } from "../store/chat/thunks";
-import { getUserAsync, groupChatAsync } from "../store/authentication/thunks";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ChatMembers from "../components/chat/chatMembers";
+import { getUserChatsAsync, groupChatAsync } from "../store/chat/thunks";
 
 const StudyGroupPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.loginReducer.user);
+  const chats = useSelector((state) => state.chatReducer.chats);
   const [chatName, setChatName] = useState("");
   const [openCreateChat, setOpenCreateChat] = useState(false);
 
   useEffect(() => {
     if (user) {
-      dispatch(getUserAsync(user.userID));
+      dispatch(getUserChatsAsync(user.username));
     }
-  }, [dispatch]);
+  }, [user]);
 
   const createChatHandler = () => {
     setOpenCreateChat(!openCreateChat);
@@ -46,16 +46,11 @@ const StudyGroupPage = () => {
 
     const initChat = {
       groupID: id,
-      name: chatName,
-    };
-
-    const updatedUser = {
+      chatName: chatName,
       username: user.username,
-      groupID: id,
     };
 
-    dispatch(groupChatAsync(updatedUser));
-    dispatch(postChatHistoryAsync(initChat));
+    dispatch(groupChatAsync(initChat));
     navigate(`/chat/${id}`);
   };
 
@@ -74,34 +69,29 @@ const StudyGroupPage = () => {
             Create Chat
           </Button>
           <div className="flex flex-wrap justify-center">
-            {user && user.groupID
-              ? user.groupID.map((group, index) => (
-                  <Card className="mt-6 w-80 m-5" key={index}>
-                    <CardBody className="pb-2">
-                      <ChatBubbleLeftRightIcon className="text-indigo-300 w-12 h-12 mb-4" />
-                      <Typography
-                        variant="h5"
-                        color="blue-gray"
-                        className="mb-2"
-                      >
-                        Group Chat: {group}
-                      </Typography>
-                      <ChatMembers groupID={group} />
-                    </CardBody>
-                    <CardFooter className="pt-0">
-                      <a href={`/chat/${group}`} className="inline-block">
-                        <Button className="flex gap-2 items-center bg-indigo-50 text-indigo-300 py-1 px-2 shadow-none hover:shadow-none normal-case font-sans font-medium text-sm border">
-                          Enter Chat
-                          <ArrowLongRightIcon
-                            strokeWidth={2}
-                            className="w-4 h-4"
-                          />
-                        </Button>
-                      </a>
-                    </CardFooter>
-                  </Card>
-                ))
-              : null}
+            {chats &&
+              chats.map((chat, index) => (
+                <Card className="mt-6 w-80 m-5" key={index}>
+                  <CardBody className="pb-2">
+                    <ChatBubbleLeftRightIcon className="text-indigo-300 w-12 h-12 mb-4" />
+                    <Typography variant="h5" color="blue-gray" className="mb-2">
+                      Group Chat: {chat.name}
+                    </Typography>
+                    <ChatMembers users={chat.users} />
+                  </CardBody>
+                  <CardFooter className="pt-0">
+                    <a href={`/chat/${chat.groupID}`} className="inline-block">
+                      <Button className="flex gap-2 items-center bg-indigo-50 text-indigo-300 py-1 px-2 shadow-none hover:shadow-none normal-case font-sans font-medium text-sm border">
+                        Enter Chat
+                        <ArrowLongRightIcon
+                          strokeWidth={2}
+                          className="w-4 h-4"
+                        />
+                      </Button>
+                    </a>
+                  </CardFooter>
+                </Card>
+              ))}
           </div>
         </div>
         <Dialog

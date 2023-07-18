@@ -26,14 +26,11 @@ import {
 } from "@heroicons/react/24/solid";
 import {
   getChatHistoryAsync,
+  inviteUserAsync,
+  leaveChatAsync,
   putChatHistoryAsync,
   renameChatAsync,
 } from "../store/chat/thunks";
-import {
-  inviteUserAsync,
-  getUserAsync,
-  leaveChatAsync,
-} from "../store/authentication/thunks";
 import { useNavigate } from "react-router-dom";
 
 // Credits: Setting up socket io for chat
@@ -41,7 +38,7 @@ import { useNavigate } from "react-router-dom";
 const ChatPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const chat = useSelector((state) => state.chatReducer.chat);
+  const currChat = useSelector((state) => state.chatReducer.currentChat);
   const user = useSelector((state) => state.loginReducer);
   const groupID = window.location.pathname.split("/").pop();
 
@@ -157,7 +154,7 @@ const ChatPage = () => {
       <div className="p-5 !pl-[300px]">
         <div className="flex justify-center">
           <Chip
-            value={chat.name ? chat.name : ""}
+            value={currChat.name ? currChat.name : ""}
             variant="outlined"
             className="text-center text-indigo-300 w-3/5 text-ellipsis overflow-hidden"
           />
@@ -193,14 +190,13 @@ const ChatPage = () => {
           <div className="mb-5 absolute bottom-0 w-3/5">
             <Card className="flex mb-5">
               <ul className="p-5 max-h-[30rem] overflow-y-auto scrollbar-width:none">
-                {chat.history
-                  ? chat.history.map((message, index) => (
-                      <li key={index}>
-                        <span className="font-bold">{message.username}: </span>
-                        {message.message}
-                      </li>
-                    ))
-                  : null}
+                {currChat.history &&
+                  currChat.history.map((message, index) => (
+                    <li key={index}>
+                      <span className="font-bold">{message.username}: </span>
+                      {message.message}
+                    </li>
+                  ))}
               </ul>
             </Card>
             <Card className="flex">
@@ -271,7 +267,7 @@ const ChatPage = () => {
             <Input
               label="Name"
               size="lg"
-              placeholder={chat.name ? chat.name : ""}
+              placeholder={currChat.name ? currChat.name : ""}
               onChange={(e) => setName(e.target.value)}
             />
           </CardBody>
