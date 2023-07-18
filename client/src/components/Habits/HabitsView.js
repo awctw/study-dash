@@ -36,7 +36,9 @@ const HabitsView = () => {
   const handleOpen = () => setOpen(!open);
 
   useEffect(() => {
-    dispatch(getHabitsAsync(user.user.userID));
+    if (user.isLoggedIn) {
+      dispatch(getHabitsAsync(user.user.userID));
+    }
   }, [dispatch, user]);
 
   const addNewHabit = () => {

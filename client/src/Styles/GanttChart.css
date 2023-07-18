@@ -19,7 +19,5 @@
 }
 
 .gantt-chart {
-  overflow-y: auto;
-  overflow-x: hidden;
   max-height: 300px;
 }
