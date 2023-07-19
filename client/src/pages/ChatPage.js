@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SideBar from "../components/SideBar";
 import {
   Card,
@@ -41,6 +41,7 @@ const ChatPage = () => {
   const currChat = useSelector((state) => state.chatReducer.currentChat);
   const user = useSelector((state) => state.loginReducer);
   const groupID = window.location.pathname.split("/").pop();
+  const msgList = useRef(null);
 
   const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState("");
@@ -81,6 +82,7 @@ const ChatPage = () => {
 
   const handleMessage = (message) => {
     dispatch(putChatHistoryAsync({ groupID, newMessage: message }));
+    msgList.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleSubmit = async (event) => {
@@ -189,7 +191,7 @@ const ChatPage = () => {
         <div className="flex justify-center">
           <div className="mb-5 absolute bottom-0 w-3/5">
             <Card className="flex mb-5">
-              <ul className="p-5 max-h-[30rem] overflow-y-auto scrollbar-width:none">
+              <ul className="p-5 max-h-[30rem] overflow-y-auto scrollbar scrollbar-none">
                 {currChat.history &&
                   currChat.history.map((message, index) => (
                     <li key={index}>
@@ -197,13 +199,18 @@ const ChatPage = () => {
                       {message.message}
                     </li>
                   ))}
+                <div ref={msgList} />
               </ul>
             </Card>
-            <Card className="flex">
+            <Card className="flex shadow-none">
               <form onSubmit={handleSubmit} className="flex p-5">
-                <Textarea
-                  label="Message"
+                <Input
+                  placeholder="Type your message..."
                   value={message}
+                  className="focus:!border-t-indigo-300 focus:!border-indigo-300 ring-4 ring-transparent focus:ring-indigo-50 !border !border-blue-gray-100 bg-white shadow-lg shadow-blue-gray-900/5 placeholder:text-blue-gray-200 text-blue-gray-500"
+                  labelProps={{
+                    className: "hidden",
+                  }}
                   onChange={(event) => setMessage(event.target.value)}
                 />
 

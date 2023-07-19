@@ -19,23 +19,6 @@ const getChatHistory = async (req, res, next) => {
     });
 };
 
-// const postChatHistory = async (req, res, next) => {
-//   const chat = new Chat({
-//     groupID: req.body.groupID,
-//     history: [],
-//     name: req.body.name,
-//   });
-
-//   await chat
-//     .save()
-//     .then(() => {
-//       res.status(200).send(chat);
-//     })
-//     .catch((err) => {
-//       res.status(500).send(err);
-//     });
-// };
-
 const putChatHistory = async (req, res, next) => {
   const { groupID, newMessage } = req.body;
 
