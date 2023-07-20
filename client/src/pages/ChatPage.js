@@ -55,9 +55,15 @@ const ChatPage = () => {
   );
   const username = user.user ? user.user.username : "";
 
+  const scrollToBottom = () => {
+    msgList.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
     dispatch(getChatHistoryAsync(groupID));
   }, [dispatch, groupID]);
+
+  useEffect(scrollToBottom, [currChat]);
 
   useEffect(() => {
     const newSocket = io("http://localhost:8080");
@@ -82,7 +88,7 @@ const ChatPage = () => {
 
   const handleMessage = (message) => {
     dispatch(putChatHistoryAsync({ groupID, newMessage: message }));
-    msgList.current?.scrollIntoView({ behavior: "smooth" });
+    // scrollToBottom();
   };
 
   const handleSubmit = async (event) => {
@@ -190,17 +196,32 @@ const ChatPage = () => {
 
         <div className="flex justify-center">
           <div className="mb-5 absolute bottom-0 w-3/5">
-            <Card className="flex mb-5">
-              <ul className="p-5 max-h-[30rem] overflow-y-auto scrollbar scrollbar-none">
-                {currChat.history &&
-                  currChat.history.map((message, index) => (
-                    <li key={index}>
-                      <span className="font-bold">{message.username}: </span>
+            <Card className="flex mb-5 px-5 py-0 max-h-[30rem] overflow-y-auto scrollbar scrollbar-none shadow-none">
+              {currChat.history &&
+                currChat.history.map((message, index) => (
+                  <div
+                    key={index}
+                    className={`flex flex-col mt-1 ${
+                      username === message.username ? "items-end" : ""
+                    }`}
+                  >
+                    {!isSameSender(currChat.history, index) ? (
+                      <span
+                        className={`font-bold ${
+                          username === message.username ? "pr-2" : "pl-1"
+                        }`}
+                      >
+                        {message.username}
+                      </span>
+                    ) : (
+                      <></>
+                    )}
+                    <span className="px-3 py-1 w-fit max-w-lg break-all rounded-full bg-indigo-50 text-indigo-300">
                       {message.message}
-                    </li>
-                  ))}
-                <div ref={msgList} />
-              </ul>
+                    </span>
+                  </div>
+                ))}
+              <hr className="w-0" ref={msgList} />
             </Card>
             <Card className="flex shadow-none">
               <form onSubmit={handleSubmit} className="flex p-5">
@@ -314,6 +335,12 @@ const ChatPage = () => {
         </DialogFooter>
       </Dialog>
     </div>
+  );
+};
+
+const isSameSender = (messages, msgIdx) => {
+  return (
+    msgIdx >= 1 && messages[msgIdx - 1].username === messages[msgIdx].username
   );
 };
 

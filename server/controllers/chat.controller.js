@@ -86,6 +86,11 @@ const inviteUser = async (req, res) => {
 
   await Chat.findOne({ groupID })
     .then((chat) => {
+      // no need to update, user already exists
+      if (chat.users.indexOf(foundUser.username) !== -1) {
+        return res.status(200).send(chat);
+      }
+
       chat.users.push(foundUser.username);
       chat.save();
 

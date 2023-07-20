@@ -28,9 +28,7 @@ const StudyGroupPage = () => {
   const [openCreateChat, setOpenCreateChat] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      dispatch(getUserChatsAsync(user.username));
-    }
+    dispatch(getUserChatsAsync(user.username));
   }, [user]);
 
   const createChatHandler = () => {
