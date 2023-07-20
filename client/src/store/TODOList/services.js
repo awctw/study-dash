@@ -4,7 +4,7 @@ const API_URL = process.env.REACT_APP_BASE_SERVER_URL;
 
 const getCategories = async (userID) => {
   try {
-    const response = await axios.get(`${API_URL}/api/TODOList/${userID}`);
+    const response = await axios.get(`${API_URL}/api/categories/${userID}`);
     return response.data;
   } catch (error) {
     handleRequestError(error);
@@ -14,7 +14,7 @@ const getCategories = async (userID) => {
 const deleteCategory = async (categoryID) => {
   try {
     const response = await axios.delete(
-      `${API_URL}/api/TODOList/${categoryID}`
+      `${API_URL}/api/categories/${categoryID}`
     );
     return response.data;
   } catch (error) {
