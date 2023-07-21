@@ -161,11 +161,15 @@ const ChatPage = () => {
       </div>
       <div className="p-5 !pl-[300px]">
         <div className="flex justify-center">
-          <Chip
-            value={currChat.name ? currChat.name : ""}
-            variant="outlined"
-            className="text-center text-indigo-300 w-3/5 text-ellipsis overflow-hidden"
-          />
+          <div className="w-4/5 text-ellipsis overflow-hidden">
+            <Typography className="font-sans text-black/80 font-semibold text-4xl">
+              {currChat && currChat.name}
+            </Typography>
+            <Typography className="text-blue-gray-400 font-sans text-md ml-1">
+              {currChat.users && currChat.users.length} members
+            </Typography>
+            <hr className="mt-3 border-blue-gray-300/40 w-[95%]" />
+          </div>
         </div>
 
         <div className="absolute top-0 right-0 m-5">
@@ -207,7 +211,7 @@ const ChatPage = () => {
                   >
                     {!isSameSender(currChat.history, index) ? (
                       <span
-                        className={`font-bold ${
+                        className={`font-semibold mt-3 text-gray-900/60 ${
                           username === message.username ? "pr-2" : "pl-1"
                         }`}
                       >

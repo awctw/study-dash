@@ -73,7 +73,7 @@ const StudyGroupPage = () => {
                   <CardBody className="pb-2">
                     <ChatBubbleLeftRightIcon className="text-indigo-300 w-12 h-12 mb-4" />
                     <Typography variant="h5" color="blue-gray" className="mb-2">
-                      Group Chat: {chat.name}
+                      {chat.name}
                     </Typography>
                     <ChatMembers users={chat.users} />
                   </CardBody>
