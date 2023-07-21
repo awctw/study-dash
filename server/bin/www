@@ -12,7 +12,7 @@ var http = require("http");
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || "8080");
+var port = normalizePort(process.env.PORT);
 app.set("port", port);
 
 /**
@@ -22,7 +22,7 @@ app.set("port", port);
 var server = http.createServer(app);
 var io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:3000", // Replace with the URL of your client application
+    origin: process.env.BASE_CLIENT_URL, // Replace with the URL of your client application
     methods: ["GET", "POST"],
     credentials: true,
   },

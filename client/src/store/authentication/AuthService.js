@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/auth/";
+const API_URL = process.env.REACT_APP_BASE_SERVER_URL;
 
 const login = (userID, username, password) => {
   return axios
-    .post(API_URL + "signin", { userID, username, password })
+    .post(API_URL + "/auth/signin", { userID, username, password })
     .then((response) => {
       if (response.data.accessToken) {
         sessionStorage.setItem("user", JSON.stringify(response.data));
@@ -17,9 +17,11 @@ const login = (userID, username, password) => {
 };
 
 const logout = (username, password) => {
-  return axios.post(API_URL + "signout", { username, password }).then(() => {
-    sessionStorage.removeItem("user");
-  });
+  return axios
+    .post(API_URL + "/auth/signout", { username, password })
+    .then(() => {
+      sessionStorage.removeItem("user");
+    });
 };
 
 const register = (
@@ -32,7 +34,7 @@ const register = (
   password
 ) => {
   return axios
-    .post(API_URL + "signup", {
+    .post(API_URL + "/auth/signup", {
       userID,
       groupID,
       username,
@@ -52,7 +54,7 @@ const register = (
 
 const edit = (userID, username, firstName, lastName, email) => {
   return axios
-    .put(API_URL + "edit", {
+    .put(API_URL + "/auth/edit", {
       userID,
       username,
       firstName,
@@ -70,7 +72,7 @@ const edit = (userID, username, firstName, lastName, email) => {
 
 const groupChat = (username, groupID) => {
   return axios
-    .put(API_URL + "groupChat", {
+    .put(API_URL + "/auth/groupChat", {
       username,
       groupID,
     })
@@ -85,7 +87,7 @@ const groupChat = (username, groupID) => {
 
 const inviteUser = (username, groupID) => {
   return axios
-    .put(API_URL + "inviteUser", {
+    .put(API_URL + "/auth/inviteUser", {
       username,
       groupID,
     })
@@ -95,7 +97,7 @@ const inviteUser = (username, groupID) => {
 };
 
 const getUser = (userID) => {
-  return axios.get(API_URL + `getUser/${userID}`).then((response) => {
+  return axios.get(API_URL + `/auth/getUser/${userID}`).then((response) => {
     if (response.data.accessToken) {
       sessionStorage.setItem("user", JSON.stringify(response.data));
     }
@@ -105,7 +107,7 @@ const getUser = (userID) => {
 
 const leaveChat = async (userInfo) => {
   return await axios
-    .patch(API_URL + "leaveChat", userInfo)
+    .patch(API_URL + "/auth/leaveChat", userInfo)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);
@@ -114,7 +116,7 @@ const leaveChat = async (userInfo) => {
 
 const getGroupMembers = async (groupID) => {
   return await axios
-    .get(API_URL + `members/${groupID}`)
+    .get(API_URL + `/auth/members/${groupID}`)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);

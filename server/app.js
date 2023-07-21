@@ -1,11 +1,11 @@
 const express = require("express");
-const path = require("path");
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 const logger = require("morgan");
 const cors = require("cors");
+const ejs = require("ejs");
+const dotenv = require("dotenv");
 
-const dbConfig = require("./config/db.config");
 const db = require("./models");
 const indexRouter = require("./routes/index");
 const userRouter = require("./routes/user");
@@ -19,14 +19,19 @@ const chartSettingsRouter = require("./routes/chartSettings");
 const timerSettingsRouter = require("./routes/timerSettings");
 
 const app = express();
+app.set("view engine", ejs);
+dotenv.config();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.BASE_CLIENT_URL,
+  })
+);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   cookieSession({
@@ -50,7 +55,7 @@ app.use("/chat", chatRouter);
 
 // Connect to MongoDB
 db.mongoose
-  .connect(dbConfig.url, {
+  .connect(process.env.MONGO_ATLAS_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
