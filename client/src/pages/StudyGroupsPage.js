@@ -18,6 +18,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ChatMembers from "../components/chat/chatMembers";
 import { getUserChatsAsync, groupChatAsync } from "../store/chat/thunks";
+import { fetchToken } from "../firebaseInit";
+import Notification from "../components/notifs/notification";
+import Notif from "../components/notifs/notification";
 
 const StudyGroupPage = () => {
   const dispatch = useDispatch();
@@ -62,6 +65,7 @@ const StudyGroupPage = () => {
         <SideBar />
       </div>
       <div className="p-5 !pl-[300px]">
+        <Notif />
         <div className="mx-5">
           <Button onClick={createChatHandler} className="bg-indigo-300 m-2">
             Create Chat
