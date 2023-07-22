@@ -65,7 +65,6 @@ const StudyGroupPage = () => {
         <SideBar />
       </div>
       <div className="p-5 !pl-[300px]">
-        <Notif />
         <div className="mx-5">
           <Button onClick={createChatHandler} className="bg-indigo-300 m-2">
             Create Chat
