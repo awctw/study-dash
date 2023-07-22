@@ -26,4 +26,18 @@ const addHabit = async (habit) => {
   return response;
 };
 
-export default { getHabits, addHabit };
+const toggleHabbitDate = async (habitID) => {
+    const response = await axios
+        .patch(URL + `/habits/${habitID}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then((res) => res.data)
+        .catch((err) => {
+            throw new Error(err);
+        });
+    return response;
+};
+
+export default { getHabits, addHabit, toggleHabbitDate };

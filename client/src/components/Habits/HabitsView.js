@@ -18,7 +18,7 @@ import { ListBulletIcon } from "@heroicons/react/24/solid";
 
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getHabitsAsync, addHabitAsync } from "../../store/habits/thunks";
+import { getHabitsAsync, addHabitAsync, toggleHabbitDateAsync } from "../../store/habits/thunks";
 import dayjs from "dayjs";
 
 const HabitsView = () => {
@@ -29,6 +29,12 @@ const HabitsView = () => {
   const [days, setDays] = useState(new Array(7).fill(true));
   const [startTime, setStartTime] = useState(dayjs());
   const [endTime, setEndTime] = useState(dayjs());
+
+  // create a set of checked habits (use set instead of array because O(1) lookup and order doesn't matter)
+  // when you mark a habit done, it updates the state by adding the habit id to the set and calls the backend to add today's date to habit.dates (toggleHabit) 
+  // when you unmark a habit, it updates the state by removing the habit id to the set and calls the backend to remove today's date to habit.dates (toggleHabit)
+  // at midnight (tomorrow), all checked checkboxes are automatically unchecked
+  const [checkedHabits, setCheckedHabits] = useState(new Set());
 
   const { habits } = useSelector((state) => state.habitReducer);
   const dispatch = useDispatch();
@@ -48,6 +54,7 @@ const HabitsView = () => {
       days: days,
       startTime: startTime.toISOString(),
       endTime: endTime.toISOString(),
+      dates: [],
     };
     dispatch(addHabitAsync(habit));
     handleOpen();
@@ -58,6 +65,18 @@ const HabitsView = () => {
     newDays[i] = !newDays[i];
     setDays(newDays);
   };
+
+  const toggleHabit = (habitID) => {
+    dispatch(toggleHabbitDateAsync(habitID))
+
+    let prevSet = new Set([...checkedHabits])
+    if (prevSet.has(habitID)) {
+      prevSet.delete(habitID)
+    } else {
+      prevSet.add(habitID)
+    }
+    setCheckedHabits(prevSet)
+  }
 
   return (
     <>
@@ -85,6 +104,7 @@ const HabitsView = () => {
                         containerProps={{
                           className: "p-0",
                         }}
+                        onClick={() => toggleHabit(habit._id)}
                       />
                     </ListItemPrefix>
                     <Typography color="blue-gray" className="font-medium">

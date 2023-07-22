@@ -13,4 +13,11 @@ const addHabitAsync = createAsyncThunk(actionTypes.ADD_HABIT, async (habit) => {
   return await habitService.addHabit(habit);
 });
 
-export { getHabitsAsync, addHabitAsync };
+const toggleHabbitDateAsync = createAsyncThunk(
+    actionTypes.TOGGLE_HABIT_DATE,
+    async (habitID) => {
+        return await habitService.toggleHabbitDate(habitID);
+    }
+)
+
+export { getHabitsAsync, addHabitAsync, toggleHabbitDateAsync };
