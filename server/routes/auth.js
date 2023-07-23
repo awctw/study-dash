@@ -24,6 +24,8 @@ router.put(
   controller.edit
 );
 
+router.put("/fbToken", controller.updateFirebaseToken);
+
 router.get("/getUser/:userID", controller.getUser);
 
 module.exports = router;

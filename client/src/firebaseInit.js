@@ -1,5 +1,6 @@
 import firebase from "firebase/compat/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { toast } from "react-hot-toast";
 
 const config = {
   apiKey: "AIzaSyAgUY5d0kc556sShMaMogBmfcLRNZ_ClDU",
@@ -15,8 +16,8 @@ const app = firebase.initializeApp(config);
 const messaging = getMessaging(app);
 
 // next block of code goes here
-export const fetchToken = () => {
-  Notification.requestPermission().then((permission) => {
+export const fetchToken = async (setToken) => {
+  await Notification.requestPermission().then((permission) => {
     if (permission === "granted") {
       console.log("Notif permission granted");
 
@@ -26,12 +27,16 @@ export const fetchToken = () => {
       }).then((currToken) => {
         if (currToken) {
           console.log(`Got token! currtoken: ${currToken}`);
+          setToken(currToken);
+          return true;
         } else {
           console.log("Can't get token!");
+          return false;
         }
       });
     } else {
       console.log("Notif permission not granted!");
+      return false;
     }
   });
 };

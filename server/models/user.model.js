@@ -9,6 +9,7 @@ const User = mongoose.model(
     lastName: String,
     email: String,
     password: String,
+    firebaseToken: String,
   })
 );
 

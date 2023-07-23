@@ -13,17 +13,27 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import { NavLink, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userLoginAsync } from "../store/authentication/thunks";
+import {
+  updateFbTokenAsync,
+  userLoginAsync,
+} from "../store/authentication/thunks";
+import { fetchToken } from "../firebaseInit";
+import { toast } from "react-hot-toast";
 
 const LoginPage = () => {
   const [openLogin, setOpenLogin] = useState(false);
 
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [fbToken, setFbToken] = useState("");
   const [alert, setAlert] = useState(false);
 
   const user = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetchToken(setFbToken);
+  }, []);
 
   const handleOpenLogin = () => {
     setOpenLogin(!openLogin);
@@ -42,6 +52,15 @@ const LoginPage = () => {
       setAlert(true);
     } else {
       setAlert(false);
+    }
+
+    if (user.isLoggedIn) {
+      dispatch(
+        updateFbTokenAsync({
+          username: user.user.username,
+          firebaseToken: fbToken,
+        })
+      );
     }
   }, [user]);
 

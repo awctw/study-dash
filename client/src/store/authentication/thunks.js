@@ -26,7 +26,8 @@ export const userRegisterAsync = createAsyncThunk(
       user.firstName,
       user.lastName,
       user.email,
-      user.password
+      user.password,
+      user.firebaseToken
     );
   }
 );
@@ -48,5 +49,12 @@ export const getUserAsync = createAsyncThunk(
   actionTypes.GET_USER,
   async (user) => {
     return await AuthService.getUser(user);
+  }
+);
+
+export const updateFbTokenAsync = createAsyncThunk(
+  actionTypes.PUT_USER_FBTOKEN,
+  async (user) => {
+    return await AuthService.updateFbToken(user.username, user.firebaseToken);
   }
 );

@@ -13,6 +13,7 @@ exports.signup = (req, res) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
+    firebaseToken: req.body.firebaseToken,
     password: bcrypt.hashSync(req.body.password, 8),
   });
 
@@ -77,7 +78,17 @@ exports.signin = (req, res) => {
 exports.signout = async (req, res) => {
   try {
     req.session = null;
-    return res.status(200).send({ message: "You've been signed out!" });
+    
+    // clear firebase token
+    const founduser = await User.findOne({ username: req.body.username });
+
+    founduser.firebaseToken = "";
+
+    await founduser.save()
+      .then(() => {
+        return res.status(200).send({ message: "You've been signed out!" });
+      });
+
   } catch (err) {
     this.next(err);
   }
@@ -117,6 +128,26 @@ exports.getUser = async (req, res, next) => {
   await User.findOne({ userID: req.params.userID })
     .then((result) => {
       res.status(200).send(result);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+};
+
+exports.updateFirebaseToken = async (req, res, next) => {
+  const { username, fbToken } = req.body;
+
+  const founduser = await User.findOne({ username: username });
+
+  if (!founduser) {
+    return res.status(200).send({ message: "Username Not found." });
+  }
+
+  founduser.firebaseToken = fbToken;
+
+  founduser.save()
+    .then((user) => {
+      res.status(200).send(user);
     })
     .catch((err) => {
       res.status(500).send(err);

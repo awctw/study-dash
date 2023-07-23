@@ -6,6 +6,7 @@ import {
   userLogoutAsync,
   userRegisterAsync,
   userEditAsync,
+  updateFbTokenAsync,
 } from "./thunks";
 import { REQUEST_STATE } from "../utils";
 
@@ -103,6 +104,18 @@ const loginSlice = createSlice({
       })
       .addCase(getUserAsync.rejected, (state, action) => {
         state.getUser = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(updateFbTokenAsync.pending, (state) => {
+        state.updateFbToken = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(updateFbTokenAsync.fulfilled, (state, action) => {
+        state.updateFbToken = REQUEST_STATE.FULFILLED;
+        state.user = action.payload;
+      })
+      .addCase(updateFbTokenAsync.rejected, (state, action) => {
+        state.updateFbToken = REQUEST_STATE.REJECTED;
         state.error = action.error;
       });
   },

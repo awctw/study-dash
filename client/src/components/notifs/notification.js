@@ -14,7 +14,8 @@ const Notif = () => {
         />
       ),
       {
-        duration: 5000,
+        duration: 4000,
+        position: "top-right",
       }
     );
 
@@ -23,8 +24,6 @@ const Notif = () => {
       notify();
     }
   }, [notification]);
-
-  fetchToken();
 
   onMessageListener()
     .then((payload) => {

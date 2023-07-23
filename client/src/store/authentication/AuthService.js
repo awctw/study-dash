@@ -29,7 +29,8 @@ const register = (
   firstName,
   lastName,
   email,
-  password
+  password,
+  firebaseToken
 ) => {
   return axios
     .post(API_URL + "signup", {
@@ -40,6 +41,7 @@ const register = (
       lastName,
       email,
       password,
+      firebaseToken,
     })
     .then((response) => {
       if (response.data.accessToken) {
@@ -77,12 +79,25 @@ const getUser = (userID) => {
   });
 };
 
+const updateFbToken = (username, fbToken) => {
+  return axios
+    .put(API_URL + `fbToken`, {
+      username,
+      fbToken,
+    })
+    .then((response) => response.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
+
 const AuthService = {
   login,
   logout,
   register,
   edit,
   getUser,
+  updateFbToken,
 };
 
 export default AuthService;
