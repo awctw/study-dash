@@ -10,6 +10,12 @@ const User = mongoose.model(
     email: String,
     password: String,
     firebaseToken: String,
+    invites: [
+      {
+        groupID: String,
+        chatName: String,
+      }
+    ]
   })
 );
 

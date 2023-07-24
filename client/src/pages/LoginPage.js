@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userLoginAsync } from "../store/authentication/thunks";
 import { fetchToken } from "../firebaseInit";
+import { toast } from "react-hot-toast";
 
 const LoginPage = () => {
   const [openLogin, setOpenLogin] = useState(false);
@@ -36,6 +37,11 @@ const LoginPage = () => {
   };
 
   const handleLogin = () => {
+    if (!fbToken) {
+      toast.error("Please grant notification permissions before continuing");
+      return;
+    }
+
     const newUser = {
       username: username,
       password: password,

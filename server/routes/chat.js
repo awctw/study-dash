@@ -5,9 +5,10 @@ const {
   putChatHistory,
   renameChat,
   groupChat,
-  inviteUser,
+  sendUserInvite,
   leaveChat,
   getUserChats,
+  inviteResponse,
 } = require("../controllers/chat.controller");
 
 router.get("/:groupID", getChatHistory);
@@ -18,7 +19,9 @@ router.post("/", groupChat);
 
 router.put("/", putChatHistory);
 
-router.patch("/inviteUser", inviteUser);
+router.patch("/inviteUser", sendUserInvite);
+
+router.patch("/respondToInvite", inviteResponse);
 
 router.patch("/leaveChat", leaveChat);
 

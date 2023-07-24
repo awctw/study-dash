@@ -103,7 +103,8 @@ const groupChat = async (req, res) => {
 
 };
 
-const inviteUser = async (req, res) => {
+const sendUserInvite = async (req, res) => {
+
   const { username, groupID } = req.body;
 
   const foundUser = await User.findOne({ username });
@@ -112,18 +113,63 @@ const inviteUser = async (req, res) => {
     return res.status(400).send("Username not found!");
   }
 
+  // we'll now actually return the user, since that's what we're updating
   await Chat.findOne({ groupID })
-    .then((chat) => {
-      // no need to update, user already exists
-      if (chat.users.indexOf(foundUser.username) !== -1) {
-        return res.status(200).send(chat);
+    .then(async (chat) => {
+      
+      const foundInvite = foundUser.invites.findIndex((invite) => invite.groupID === groupID);
+
+      // no need to send invite, if invitation already exists or user already exists in chat
+      if (foundInvite !== -1 || chat.users.indexOf(foundUser.username) !== -1) {
+        return res.status(200).send(foundUser);
       }
+
+      foundUser.invites.push({
+        groupID: chat.groupID,
+        chatName: chat.name,
+      });
 
       if (foundUser.firebaseToken) {
         sendNotification([foundUser.firebaseToken], {
           title: "You have an invitation",
           body: `You have been invited to group chat, ${chat.name}` 
         });
+      }
+
+      await foundUser.save();
+
+      res.status(200).send(foundUser);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+
+};
+
+const inviteResponse = async (req, res, next) => {
+
+  const { username, groupID, decision } = req.body;
+
+  // First delete the invite
+  const foundUser = await User.findOne({ username });
+
+  const inviteIndex = foundUser.invites.findIndex((invite) => invite.groupID === groupID);
+
+  if (inviteIndex === -1) {
+    return res.status(400).send("Invite not found!");
+  }
+
+  foundUser.invites.splice(inviteIndex, 1);
+
+  await foundUser.save();
+
+  // then push user to chat
+  await Chat.findOne({ groupID })
+    .then((chat) => {
+
+      // if user declined the invite, no need to proceed..
+      if (decision === 'declined') {
+        return res.status(200).send(chat);
       }
 
       chat.users.push(foundUser.username);
@@ -134,7 +180,6 @@ const inviteUser = async (req, res) => {
     .catch((err) => {
       res.status(500).send(err);
     });
-
 };
 
 const leaveChat = async (req, res, next) => {
@@ -178,7 +223,8 @@ module.exports = {
   putChatHistory,
   groupChat,
   renameChat,
-  inviteUser,
+  sendUserInvite,
+  inviteResponse,
   leaveChat,
   getUserChats,
 };
