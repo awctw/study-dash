@@ -87,8 +87,9 @@ const ChatPage = () => {
   }, [socket]);
 
   const handleMessage = (message) => {
-    dispatch(putChatHistoryAsync({ groupID, newMessage: message }));
-    // scrollToBottom();
+    dispatch(
+      putChatHistoryAsync({ groupID, newMessage: message, username: username })
+    );
   };
 
   const handleSubmit = async (event) => {

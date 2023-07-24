@@ -2,9 +2,9 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/auth/";
 
-const login = (userID, username, password) => {
+const login = (userID, username, password, fbToken) => {
   return axios
-    .post(API_URL + "signin", { userID, username, password })
+    .post(API_URL + "signin", { userID, username, password, fbToken })
     .then((response) => {
       if (response.data.accessToken) {
         sessionStorage.setItem("user", JSON.stringify(response.data));
@@ -79,25 +79,12 @@ const getUser = (userID) => {
   });
 };
 
-const updateFbToken = (username, fbToken) => {
-  return axios
-    .put(API_URL + `fbToken`, {
-      username,
-      fbToken,
-    })
-    .then((response) => response.data)
-    .catch((err) => {
-      throw new Error(err);
-    });
-};
-
 const AuthService = {
   login,
   logout,
   register,
   edit,
   getUser,
-  updateFbToken,
 };
 
 export default AuthService;

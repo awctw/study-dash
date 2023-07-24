@@ -13,12 +13,8 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import { NavLink, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  updateFbTokenAsync,
-  userLoginAsync,
-} from "../store/authentication/thunks";
+import { userLoginAsync } from "../store/authentication/thunks";
 import { fetchToken } from "../firebaseInit";
-import { toast } from "react-hot-toast";
 
 const LoginPage = () => {
   const [openLogin, setOpenLogin] = useState(false);
@@ -43,6 +39,7 @@ const LoginPage = () => {
     const newUser = {
       username: username,
       password: password,
+      fbToken: fbToken,
     };
     dispatch(userLoginAsync(newUser));
   };
@@ -52,15 +49,6 @@ const LoginPage = () => {
       setAlert(true);
     } else {
       setAlert(false);
-    }
-
-    if (user.isLoggedIn) {
-      dispatch(
-        updateFbTokenAsync({
-          username: user.user.username,
-          firebaseToken: fbToken,
-        })
-      );
     }
   }, [user]);
 

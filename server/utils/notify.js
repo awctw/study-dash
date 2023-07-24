@@ -1,17 +1,15 @@
 const { response } = require('../app');
 const { messaging } = require('../config/firebaseInit');
 
-const sendNotification = (tokens, data) => {
+const sendNotification = (tokens, notification) => {
     
     messaging
-        .sendEachForMulticast({ tokens, data })
+        .sendEachForMulticast({ tokens, notification })
         .then(response => {
-            const successes = response.responses.filter(Boolean).length;
-            const failures = response.responses.length - successes;
 
             console.log(
                 "notification sent:",
-                `${successes} successful, ${failures} failed`
+                `${response.successCount} successful, ${response.failureCount} failed`
             );
         })
         .catch((err) => {

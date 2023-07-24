@@ -40,10 +40,10 @@ exports.signup = (req, res) => {
   });
 };
 
-exports.signin = (req, res) => {
+exports.signin = async (req, res) => {
   User.findOne({
     username: req.body.username,
-  }).exec((err, user) => {
+  }).exec(async (err, user) => {
     if (err) {
       res.status(500).send({ message: err });
       return;
@@ -64,6 +64,11 @@ exports.signin = (req, res) => {
     });
     req.session.token = token;
 
+    // update firebase token on sign up
+    user.firebaseToken = req.body.fbToken;
+
+    await user.save();
+
     res.status(200).send({
       userID: user.userID,
       username: user.username,
@@ -71,6 +76,7 @@ exports.signin = (req, res) => {
       lastName: user.lastName,
       email: user.email,
       accessToken: token,
+      firebaseToken: user.firebaseToken
     });
   });
 };
@@ -79,7 +85,7 @@ exports.signout = async (req, res) => {
   try {
     req.session = null;
     
-    // clear firebase token
+    // clear firebase token to ensure users only receive notifs if they're logged in
     const founduser = await User.findOne({ username: req.body.username });
 
     founduser.firebaseToken = "";
@@ -128,26 +134,6 @@ exports.getUser = async (req, res, next) => {
   await User.findOne({ userID: req.params.userID })
     .then((result) => {
       res.status(200).send(result);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-};
-
-exports.updateFirebaseToken = async (req, res, next) => {
-  const { username, fbToken } = req.body;
-
-  const founduser = await User.findOne({ username: username });
-
-  if (!founduser) {
-    return res.status(200).send({ message: "Username Not found." });
-  }
-
-  founduser.firebaseToken = fbToken;
-
-  founduser.save()
-    .then((user) => {
-      res.status(200).send(user);
     })
     .catch((err) => {
       res.status(500).send(err);

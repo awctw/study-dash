@@ -1,5 +1,6 @@
 const Chat = require("../models/chat.model");
 const db = require("../models");
+const { sendNotification } = require("../utils/notify");
 const User = db.user;
 
 const getChatHistory = async (req, res, next) => {
@@ -20,11 +21,38 @@ const getChatHistory = async (req, res, next) => {
 };
 
 const putChatHistory = async (req, res, next) => {
-  const { groupID, newMessage } = req.body;
+  const { groupID, newMessage, username } = req.body;
 
   const chat = await Chat.findOne({ groupID });
 
   chat.history.push(newMessage);
+
+  // retrieve all target user tokens for this notif (a join b/w chat & users)
+  await User.find({
+    username: { $in: chat.users }
+  })
+    .then((users) => {
+      const tokenList = users.reduce((list, user) => {
+
+        // can't send notif to the sender of this message
+        if (user.firebaseToken && user.username !== username) {
+          list.push(user.firebaseToken);
+        }
+
+        return list;
+      }, []);
+
+      if (tokenList.length > 0) {
+        sendNotification(tokenList, {
+          title: newMessage.username,
+          body: newMessage.message,
+        });
+      }
+
+    })
+    .catch((err) => {
+      console.log("unable to send notifs: ", err);
+    });
 
   await Chat.findOneAndUpdate(
     { groupID },
@@ -89,6 +117,13 @@ const inviteUser = async (req, res) => {
       // no need to update, user already exists
       if (chat.users.indexOf(foundUser.username) !== -1) {
         return res.status(200).send(chat);
+      }
+
+      if (foundUser.firebaseToken) {
+        sendNotification([foundUser.firebaseToken], {
+          title: "You have an invitation",
+          body: `You have been invited to group chat, ${chat.name}` 
+        });
       }
 
       chat.users.push(foundUser.username);

@@ -23,9 +23,9 @@ import {
   PowerIcon,
 } from "@heroicons/react/24/solid";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateFbTokenAsync, userLogoutAsync } from "../store/authentication/thunks";
+import { userLogoutAsync } from "../store/authentication/thunks";
 
 // Credits: Material Tailwind doc example
 const SideBar = () => {
@@ -35,12 +35,6 @@ const SideBar = () => {
   const { TODOList } = useSelector((state) => state.todoReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user.isLoggedIn) {
-      navigate("/");
-    }
-  }, [user]);
 
   const handleOpenLogout = () => {
     setOpenLogout(!openLogout);
@@ -54,6 +48,7 @@ const SideBar = () => {
     };
 
     dispatch(userLogoutAsync(logoutUser));
+    navigate("/");
   };
 
   return (

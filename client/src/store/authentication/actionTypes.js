@@ -4,5 +4,4 @@ export const actionTypes = {
   POST_USER_SIGNIN: "auth/signin",
   POST_USER_SIGNOUT: "auth/signout",
   PUT_USER_EDIT: "auth/edit",
-  PUT_USER_FBTOKEN: "auth/updateFbToken",
 };

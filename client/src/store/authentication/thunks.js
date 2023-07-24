@@ -12,7 +12,12 @@ export const userLogoutAsync = createAsyncThunk(
 export const userLoginAsync = createAsyncThunk(
   actionTypes.POST_USER_SIGNIN,
   async (user) => {
-    return await AuthService.login(user.userID, user.username, user.password);
+    return await AuthService.login(
+      user.userID,
+      user.username,
+      user.password,
+      user.fbToken
+    );
   }
 );
 
@@ -49,12 +54,5 @@ export const getUserAsync = createAsyncThunk(
   actionTypes.GET_USER,
   async (user) => {
     return await AuthService.getUser(user);
-  }
-);
-
-export const updateFbTokenAsync = createAsyncThunk(
-  actionTypes.PUT_USER_FBTOKEN,
-  async (user) => {
-    return await AuthService.updateFbToken(user.username, user.firebaseToken);
   }
 );
