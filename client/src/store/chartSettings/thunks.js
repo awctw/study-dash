@@ -4,8 +4,8 @@ import chartSettingsService from "./service";
 
 const getChartSettingsAsync = createAsyncThunk(
   actionTypes.GET_CHARTSETTINGS,
-  async (userEmail) => {
-    return await chartSettingsService.getChartSettings(userEmail);
+  async (userID) => {
+    return await chartSettingsService.getChartSettings(userID);
   }
 );
 

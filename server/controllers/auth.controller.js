@@ -113,62 +113,6 @@ exports.edit = async (req, res) => {
   });
 };
 
-exports.groupChat = async (req, res) => {
-  const { username, groupID } = req.body;
-
-  const foundUser = await User.findOne({ username });
-
-  await User.findOneAndUpdate(
-    { username: username },
-    {
-      groupID: [...foundUser.groupID, groupID],
-    },
-    { new: true, upsert: false }
-  );
-
-  var token = jwt.sign({ id: foundUser.userID }, config.secret, {
-    expiresIn: 86400, // 24 hours
-  });
-  req.session.token = token;
-
-  res.status(200).send({
-    userID: foundUser.userID,
-    groupID: foundUser.groupID,
-    username: foundUser.username,
-    firstName: foundUser.firstName,
-    lastName: foundUser.lastName,
-    email: foundUser.email,
-    accessToken: token,
-  });
-};
-
-exports.inviteUser = async (req, res) => {
-  const { username, groupID } = req.body;
-
-  const foundUser = await User.findOne({ username });
-
-  if (foundUser === null) {
-    return res.status(400).send("Username not found!");
-  }
-
-  // if invitation already exists then no need to invite again
-  if (foundUser.groupID.indexOf(groupID) !== -1) {
-    return res.status(200);
-  }
-
-  foundUser.groupID.push(groupID);
-
-  await User.findOneAndUpdate(
-    { username: username },
-    {
-      groupID: foundUser.groupID,
-    },
-    { new: true, upsert: false }
-  );
-
-  res.status(200);
-};
-
 exports.getUser = async (req, res, next) => {
   await User.findOne({ userID: req.params.userID })
     .then((result) => {
@@ -178,38 +122,3 @@ exports.getUser = async (req, res, next) => {
       res.status(500).send(err);
     });
 };
-
-exports.leaveChat = async (req, res, next) => {
-  const { username, groupID } = req.body;
-
-  const foundUser = await User.findOne({ username });
-
-  const groupIndex = foundUser.groupID.indexOf(groupID);
-
-  // if chat exists remove it
-  if (groupIndex > -1) {
-    foundUser.groupID.splice(groupIndex, 1);
-  }
-
-  await foundUser.save()
-    .then((user) => {
-      res.status(200).send(user);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-};
-
-exports.getChatMembers = async (req, res, next) => {
-  const groupID = req.params.groupID;
-
-  await User.find({ 
-    groupID: { $in: [groupID] }
-  })
-    .then((users) => {
-      res.status(200).send(users);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
-}

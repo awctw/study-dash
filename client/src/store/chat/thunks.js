@@ -9,6 +9,13 @@ const getChatHistoryAsync = createAsyncThunk(
   }
 );
 
+const getUserChatsAsync = createAsyncThunk(
+  actionTypes.GET_USERCHATS,
+  async (username) => {
+    return await chatService.getUserChats(username);
+  }
+);
+
 const postChatHistoryAsync = createAsyncThunk(
   actionTypes.POST_CHATHISTORY,
   async (history) => {
@@ -30,9 +37,34 @@ const renameChatAsync = createAsyncThunk(
   }
 );
 
+const groupChatAsync = createAsyncThunk(
+  actionTypes.POST_GROUP_CHAT,
+  async (chatInfo) => {
+    return await chatService.groupChat(chatInfo);
+  }
+);
+
+const inviteUserAsync = createAsyncThunk(
+  actionTypes.PATCH_INVITE_USER,
+  async (userInfo) => {
+    return await chatService.inviteUser(userInfo.username, userInfo.groupID);
+  }
+);
+
+const leaveChatAsync = createAsyncThunk(
+  actionTypes.PATCH_LEAVECHAT,
+  async (userInfo) => {
+    return await chatService.leaveChat(userInfo);
+  }
+);
+
 export {
   getChatHistoryAsync,
+  getUserChatsAsync,
   putChatHistoryAsync,
   postChatHistoryAsync,
   renameChatAsync,
+  groupChatAsync,
+  inviteUserAsync,
+  leaveChatAsync,
 };

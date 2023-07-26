@@ -11,6 +11,15 @@ const getChatHistory = async (groupID) => {
     });
 };
 
+const getUserChats = async (username) => {
+  return await axios
+    .get(URL + `chat/userChats/${username}`)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
+
 const postChatHistory = async (history) => {
   return await axios
     .post(URL + `chat`, history)
@@ -23,6 +32,36 @@ const postChatHistory = async (history) => {
 const putChatHistory = async (newChat) => {
   return await axios
     .put(URL + `chat`, newChat)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
+
+const groupChat = async (chatInfo) => {
+  return await axios
+    .post(URL + `chat`, chatInfo)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
+
+const inviteUser = async (username, groupID) => {
+  return await axios
+    .patch(URL + "chat/inviteUser", {
+      username,
+      groupID,
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
+
+const leaveChat = async (userInfo) => {
+  return await axios
+    .patch(URL + "chat/leaveChat", userInfo)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);
@@ -42,9 +81,13 @@ const renameChat = async (chatInfo) => {
 
 const exports = {
   getChatHistory,
+  getUserChats,
   postChatHistory,
   putChatHistory,
   renameChat,
+  groupChat,
+  inviteUser,
+  leaveChat,
 };
 
 export default exports;

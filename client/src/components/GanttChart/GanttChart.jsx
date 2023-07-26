@@ -1,214 +1,31 @@
-import { useState, useEffect, useCallback } from "react";
+import React, {useEffect, useCallback, useRef} from "react";
 import * as d3 from "d3";
 import "../../Styles/GanttChart.css"
 import {useDispatch, useSelector} from "react-redux";
 import {getChartSettingsAsync} from "../../store/chartSettings/thunks";
-
-const Days = {
-    Sunday: Symbol("Sunday"),
-    Monday: Symbol("Monday"),
-    Tuesday: Symbol("Tuesday"),
-    Wednesday: Symbol("Wednesday"),
-    Thursday: Symbol("Thursday"),
-    Friday: Symbol("Friday"),
-    Saturday: Symbol("Saturday")
-}
+import {Typography} from "@material-tailwind/react";
+import {Player} from "@lottiefiles/react-lottie-player";
 
 const GanttChart = (props) => {
-    const [data] = useState([
-        {
-            id: 1,
-            userId: 1,
-            name: "Current Habit",
-            isRepeating: true,
-            daysOfTheWeek: new Set([Days.Monday, Days.Wednesday, Days.Friday]),
-            startTime: new Date(Date.now()),
-            endTime: new Date(Date.now() + 60 * 60000),
-            description: "Habit taking place right now for 1 hour; repeats MWF.",
-            percentCompletion: 75,
-            category: "Biology"
-        },
-        {
-            id: 2,
-            userId: 1,
-            name: "Past Todo",
-            isRepeating: false,
-            daysOfTheWeek: null,
-            startTime: new Date(Date.now() - 180 * 60000),
-            endTime: new Date(Date.now() + 240 * 60000),
-            description: "One-time todo which started 3 hours ago.",
-            percentCompletion: 75,
-            category: "Chemistry"
-        },
-        {
-            id: 3,
-            userId: 1,
-            name: "Future Todo",
-            isRepeating: true,
-            daysOfTheWeek: new Set([Days.Monday, Days.Wednesday, Days.Friday]),
-            startTime: new Date(Date.now() + 120 * 60000),
-            endTime: new Date(Date.now() + 180 * 60000),
-            description: "Todo taking place in 2 hours; repeats MWF.",
-            percentCompletion: 75,
-            category: "Computer Science"
-        },
-        {
-            id: 4,
-            userId: 1,
-            name: "Past Habit",
-            isRepeating: false,
-            daysOfTheWeek: null,
-            startTime: (function() {
-                const date = new Date();
-                date.setDate(date.getDate() - 1);
-                date.setHours(date.getHours() + 2);
-                return date;
-            })(),
-            endTime: (function() {
-                const date = new Date();
-                date.setDate(date.getDate() - 1);
-                date.setHours(date.getHours() + 5);
-                return date;
-            })(),
-            description: "Habit that took place 1 day in the past.",
-            percentCompletion: 100,
-            category: "Language Arts"
-        },
-        {
-            id: 5,
-            userId: 1,
-            name: "Far Future Habit",
-            isRepeating: false,
-            daysOfTheWeek: null,
-            startTime: (function() {
-                const date = new Date();
-                date.setDate(date.getDate() + 1);
-                date.setHours(date.getHours() - 5);
-                return date;
-            })(),
-            endTime: (function() {
-                const date = new Date();
-                date.setDate(date.getDate() + 1);
-                date.setHours(date.getHours() - 3);
-                return date;
-            })(),
-            description: "Habit taking place 1 day in the future.",
-            percentCompletion: 0,
-            category: "Math"
-        },
-        {
-            id: 6,
-            userId: 1,
-            name: "Past Todo",
-            isRepeating: false,
-            daysOfTheWeek: null,
-            startTime: new Date(Date.now() - 180 * 60000),
-            endTime: new Date(Date.now() + 240 * 60000),
-            description: "One-time todo which started 3 hours ago.",
-            percentCompletion: 75,
-            category: "Musical Art"
-        },
-        {
-            id: 7,
-            userId: 1,
-            name: "Past Todo",
-            isRepeating: false,
-            daysOfTheWeek: null,
-            startTime: new Date(Date.now() - 180 * 60000),
-            endTime: new Date(Date.now() + 240 * 60000),
-            description: "One-time todo which started 3 hours ago.",
-            percentCompletion: 75,
-            category: "Physics"
-        },
-        {
-            id: 8,
-            userId: 1,
-            name: "Past Todo",
-            isRepeating: false,
-            daysOfTheWeek: null,
-            startTime: new Date(Date.now() - 180 * 60000),
-            endTime: new Date(Date.now() + 240 * 60000),
-            description: "One-time todo which started 3 hours ago.",
-            percentCompletion: 75,
-            category: "Sports"
-        },
-        {
-            id: 9,
-            userId: 1,
-            name: "Far Future Habit",
-            isRepeating: false,
-            daysOfTheWeek: null,
-            startTime: (function() {
-                const date = new Date();
-                date.setDate(date.getDate() + 1);
-                date.setHours(date.getHours() - 5);
-                return date;
-            })(),
-            endTime: (function() {
-                const date = new Date();
-                date.setDate(date.getDate() + 1);
-                date.setHours(date.getHours() - 3);
-                return date;
-            })(),
-            description: "Habit taking place 1 day in the future.",
-            percentCompletion: 0,
-            category: "Visual Arts"
-        },
-        {
-            id: 10,
-            userId: 1,
-            name: "Far Future Habit",
-            isRepeating: false,
-            daysOfTheWeek: null,
-            startTime: (function() {
-                const date = new Date();
-                date.setDate(date.getDate() + 1);
-                date.setHours(date.getHours() - 5);
-                return date;
-            })(),
-            endTime: (function() {
-                const date = new Date();
-                date.setDate(date.getDate() + 1);
-                date.setHours(date.getHours() - 3);
-                return date;
-            })(),
-            description: "Habit taking place 1 day in the future.",
-            percentCompletion: 0,
-            category: "Work"
-        },
-        {
-            id: 11,
-            userId: 1,
-            name: "Far Future Habit",
-            isRepeating: false,
-            daysOfTheWeek: null,
-            startTime: (function() {
-                const date = new Date();
-                date.setDate(date.getDate() + 1);
-                date.setHours(date.getHours() - 5);
-                return date;
-            })(),
-            endTime: (function() {
-                const date = new Date();
-                date.setDate(date.getDate() + 1);
-                date.setHours(date.getHours() - 3);
-                return date;
-            })(),
-            description: "Habit taking place 1 day in the future.",
-            percentCompletion: 0,
-            category: "Biology"
-        }
-    ]);
-
+    // Redux selectors and dispatch
     const user = useSelector((state) => state.loginReducer);
     const chartSettings = useSelector((state) => state.chartSettingsReducer.chartSettings);
+    const todos = useSelector((state) => state.todoReducer.TODOList);
+    const habits = useSelector((state) => state.habitReducer.habits);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (user.isLoggedIn) {
-            dispatch(getChartSettingsAsync(user.user.email));
+    // useRef needed for accessing up-to-date store in SetTimeout
+    let upToDateChartSettings = useRef(chartSettings);
+    let upToDateTodos = useRef(todos);
+    let upToDateHabits = useRef(habits);
+
+    // Function for string to Date handling
+    const parseDate = function(date) {
+        if (typeof date === 'string') {
+            return Date.parse(date);
         }
-    }, [dispatch, user]);
+        return date;
+    };
 
     // Chart consts
     const SVG_ID = 'gantt-chart-svg';
@@ -218,23 +35,80 @@ const GanttChart = (props) => {
     const Y_AXIS_G_ID = 'gantt-y-axis-g'
     const CIRCLE_RADIUS = 5;
     const renderChart = useCallback(() => {
+        // Filter data to see if the chart needs to be rendered
+        const xDomainStart = Date.now() - upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
+        const xDomainEnd = Date.now() + upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
+        // 'Clone' upToDateTodos.current to bypass read-only for scaleBand duplicate title handling
+        let filteredData = JSON.parse(JSON.stringify(upToDateTodos.current));
+        filteredData = filteredData.filter(d => xDomainStart <= Date.parse(d.endDate) &&
+            Date.parse(d.startDate) <= xDomainEnd);
+
+        // Habit day of the week handling
+        let currDate = new Date(xDomainStart);
+        while (currDate <= xDomainEnd) {
+            upToDateHabits.current.forEach((habit) => {
+                if (!(habit.startTime.toString() === habit.endTime.toString())) {
+                    if (habit.days[currDate.getDay()]) {
+                        const startDate = function() {
+                            let retDate = new Date(habit.startTime).setMonth(currDate.getMonth());
+                            retDate = new Date(retDate).setDate(currDate.getDate());
+                            retDate = new Date(retDate).setFullYear(currDate.getFullYear());
+                            return retDate;
+                        }();
+                        const endDate = function() {
+                            let retDate = new Date(habit.endTime).setMonth(currDate.getMonth())
+                            retDate = new Date(retDate).setDate(currDate.getDate())
+                            retDate = new Date(retDate).setFullYear(currDate.getFullYear());
+                            return retDate;
+                        }();
+                        if (xDomainStart <= endDate && startDate <= xDomainEnd) {
+                            filteredData.push({
+                                _id: habit["_id"],
+                                title: habit.name,
+                                startDate: startDate,
+                                endDate: endDate
+                            });
+                        }
+                    }
+                }
+            });
+            currDate.setDate(currDate.getDate() + 1);
+        }
+
+        // Switch between chart and empty display
+        const ganttChart = d3.select('.gantt-chart');
+        if (filteredData.length === 0) {
+            d3.select('#empty-chart-div').style('display', 'inline-block');
+            ganttChart.style('overflow-y', 'visible');
+            ganttChart.style('overflow-x', 'visible');
+            d3.select('#gantt-chart-x-axis-svg').style('display', 'none');
+            d3.select('#gantt-chart-svg').style('display', 'none');
+            return;
+        } else {
+            d3.select('#empty-chart-div').style('display', 'none');
+            ganttChart.style('overflow-y', 'auto');
+            ganttChart.style('overflow-x', 'hidden');
+            d3.select('#gantt-chart-x-axis-svg').style('display', 'block');
+            d3.select('#gantt-chart-svg').style('display', 'block');
+        }
+
         // Chart dimension calculation
         let containerWidth, containerHeight, margin, tooltipPadding;
         if (props.containerWidth === undefined) {
             containerWidth = 720;
-        }
-        // Increasing containerHeight affects inner chart height
-        if (props.containerHeight === undefined) {
-            // 40 px per item
-            containerHeight = 40 * data.length;
         }
         if (props.margin === undefined) {
             margin = {
                 top: 35,
                 right: 20,
                 bottom: 25,
-                left: 110
+                left: 70
             };
+        }
+        // Increasing containerHeight affects inner chart height
+        if (props.containerHeight === undefined) {
+            // 40 px per item
+            containerHeight = margin.top + margin.bottom + 30 * filteredData.length;
         }
         if (props.tooltipPadding === undefined) {
             tooltipPadding = 15;
@@ -255,7 +129,11 @@ const GanttChart = (props) => {
             .tickSizeOuter(0);
         const yAxis = d3.axisLeft(yScale)
             .tickFormat(function(d) {
-                return d.substring(0, d.lastIndexOf("-"))
+                let retString = d.substring(0, d.lastIndexOf("-"));
+                if (retString.length > 8) {
+                    return retString.slice(0, 8) + '...';
+                }
+                return retString;
             })
             .tickSize(0);
 
@@ -301,20 +179,18 @@ const GanttChart = (props) => {
             xAxisSVG = d3.select('#' + X_AXIS_SVG_ID);
             xAxisG = d3.select('#' + X_AXIS_G_ID);
             yAxisG = d3.select('#' + Y_AXIS_G_ID);
+            svg.attr('height', containerHeight);
         }
 
         // UpdateVis()
-        const xValue = d => d.startTime;
-        const yValue = d => d.name;
+        const xValue = d => parseDate(d.startDate);
+        const yValue = d => d.title;
 
-        // Set domains and filter/format data
-        const xDomainStart = Date.now() - chartSettings.axisScale * 60 * 60 * 1000;
-        const xDomainEnd = Date.now() + chartSettings.axisScale * 60 * 60 * 1000;
-        const filteredData = data.filter(d => xDomainStart <= d.endTime && d.startTime <= xDomainEnd);
+        // Set domains and format data
         const formattedData = filteredData.map((d, i) => {
-            d.name = d.name +  '-' + i; // This allows for duplicate habit/to do names
+            d.title = d.title +  '-' + i; // This allows for duplicate habit/to do names
             return d;
-        }).sort((a, b) => a.startTime - b.startTime);
+        }).sort((a, b) => parseDate(a.startDate) - parseDate(b.startDate));
         xScale.domain([xDomainStart, xDomainEnd])
         yScale.domain(formattedData.map(yValue));
 
@@ -360,7 +236,7 @@ const GanttChart = (props) => {
                 return x;
             })
             .attr('width', d => {
-                const scaledWidth = xScale(d.endTime - d.startTime + xDomainStart);
+                const scaledWidth = xScale(parseDate(d.endDate) - parseDate(d.startDate) + xDomainStart);
                 let x = xScale(xValue(d));
                 if (x < 0) {
                     x = 0
@@ -373,28 +249,43 @@ const GanttChart = (props) => {
             .attr('height', yScale.bandwidth())
             .attr('y', d => yScale(yValue(d)))
             .attr('fill', (d) => {
-                const categoryColor = chartSettings.categoryColors.find(c => c.category === d.category);
+                const categoryColor = upToDateChartSettings.current.categoryColors.find(c => c.categoryID === d.category);
                 if (categoryColor !== undefined) {
                     return categoryColor.color;
                 }
                 return "#000000";
             })
             .attr('stroke-width', 1)
-            .attr('stroke', 'black');
+            .attr('stroke', 'black')
+            .attr('rx', 3);
 
         // Tooltip event listeners
         bars.on('mouseover', (event,d) => {
-                d3.select('#gantt-chart-tooltip')
+            d3.select('#gantt-chart-tooltip')
                     .style('display', 'block')
                     .style('left', (event.pageX + tooltipPadding) + 'px')
                     .style('top', (event.pageY + tooltipPadding) + 'px')
                     .html(`
-              <div class="tooltip-title">${d.name}</div>
-              <div><i>Completion: ${d.percentCompletion}%</i></div>
-              <div><i>Start Time: ${d.startTime.toLocaleTimeString()}</i></div>
-              <div><i>End Time: ${d.endTime.toLocaleTimeString()}</i></div>
-              <div><i>Category: ${d.category}</i></div>
-              <div>${d.description}</div>
+              <div class="tooltip-title">${d.title}</div>
+              <div><i>Start Time: ${new Date(d.startDate).toLocaleTimeString()}</i></div>
+              <div><i>End Time: ${new Date(d.endDate).toLocaleTimeString()}</i></div>
+              <div><i>${function() {
+                        if (d.category !== undefined) {
+                            const category = upToDateChartSettings.current.categoryColors
+                                .find(c => c.categoryID === d.category);
+                            if (category !== undefined) {
+                                return "Category: " + upToDateChartSettings.current.categoryColors
+                                    .find(c => c.categoryID === d.category).category;
+                            }
+                        }
+                        return "";
+                    }()}</i></div>
+              <div>${function() {
+                  if (d.description !== undefined) {
+                      return d.description;
+                  }
+                  return "";
+                    }()}</div>
             `);
             })
             .on('mousemove', (event) => {
@@ -412,15 +303,30 @@ const GanttChart = (props) => {
 
         // Reset data formatting
         formattedData.map(d => {
-            d.name = d.name.substring(0, d.name.lastIndexOf("-"));
+            d.title = d.title.substring(0, d.title.lastIndexOf("-"));
             return d;
         })
-    }, [chartSettings, data, props]);
+    }, [props]);
 
-    // Update the chart if data changes
+    // Get chart settings on first render
     useEffect(() => {
-        renderChart();
-    }, [data, props, renderChart]);
+        if (user.isLoggedIn) {
+            dispatch(getChartSettingsAsync(user.user.userID));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // Sync ref variables and re-render chart whenever data or chartSettings changes
+    useEffect(() => {
+        if (todos !== null && habits !== null && chartSettings !== null) {
+            upToDateTodos.current = todos;
+            upToDateHabits.current = habits;
+            upToDateChartSettings.current = chartSettings;
+            renderChart();
+            runClock();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [todos, habits, chartSettings]);
 
     // Update the chart on every minute change (to keep 'now' line accurate)
     // New instance of setTimeOut() every runClock() so no memory build-up due to garbage collector
@@ -428,15 +334,31 @@ const GanttChart = (props) => {
         const now = new Date();
         const timeToNextTick = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
         setTimeout(() => {
-           renderChart();
-           runClock();
+            renderChart();
+            runClock();
         }, timeToNextTick);
     }
 
-    // Clock start
-    runClock();
-
-    return <div id="gantt-chart-tooltip"></div>
+    return(
+        <div>
+            <div id="empty-chart-div">
+                <Typography className="pt-2 px-5">
+                    Nothing to display for the current time range.
+                </Typography>
+                <div className="flex items-center justify-center">
+                    <Player
+                        src={
+                            "https://lottie.host/13926b54-ea64-4465-bbe6-2fc45507cb74/jiSPjnMiBV.json"
+                        }
+                        style={{ height: "100px", width: "200px", padding: 0 }}
+                        autoplay
+                        loop
+                    />
+                </div>
+            </div>
+            <div id="gantt-chart-tooltip"></div>
+        </div>
+    );
 }
 
 export default GanttChart;
