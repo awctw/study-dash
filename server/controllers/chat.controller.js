@@ -35,7 +35,7 @@ const putChatHistory = async (req, res, next) => {
       const tokenList = users.reduce((list, user) => {
 
         // can't send notif to the sender of this message
-        if (user.firebaseToken) { // && user.username !== username
+        if (user.firebaseToken && user.username !== username) {
           list.push(user.firebaseToken);
         }
 
