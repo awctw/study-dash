@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { fetchToken, onMessageListener } from "../../firebaseInit";
+import { useLocation } from "react-router-dom";
 
 const Notif = () => {
   const [notification, setNotification] = useState({ title: "", body: "" });
@@ -41,29 +42,42 @@ const Notif = () => {
 
 const DisplayToast = (props) => {
   // console.log("window:", window.location.pathname.split("/"));
+  // const location = useLocation();
+  const path = window.location.pathname.split("/");
+  const showNotif =
+    path[1] !== "chat" || props.title === "You have an invitation";
+
   return (
-    <div
-      className={`${
-        props.t.visible ? "animate-enter" : "animate-leave"
-      } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-    >
-      <div className="flex-1 w-0 p-4">
-        <div className="flex items-start">
-          <div className="ml-3 flex-1">
-            <p className="text-sm font-medium text-gray-900">{props.title}</p>
-            <p className="mt-1 text-sm text-gray-500">{props.body}</p>
+    <>
+      {showNotif ? (
+        <div
+          className={`${
+            props.t.visible ? "animate-enter" : "animate-leave"
+          } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        >
+          <div className="flex-1 w-0 p-4">
+            <div className="flex items-start">
+              <div className="ml-3 flex-1">
+                <p className="text-sm font-medium text-gray-900">
+                  {props.title}
+                </p>
+                <p className="mt-1 text-sm text-gray-500">{props.body}</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex border-l border-gray-200">
+            <button
+              onClick={() => toast.dismiss(props.t.id)}
+              className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              Close
+            </button>
           </div>
         </div>
-      </div>
-      <div className="flex border-l border-gray-200">
-        <button
-          onClick={() => toast.dismiss(props.t.id)}
-          className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        >
-          Close
-        </button>
-      </div>
-    </div>
+      ) : (
+        <></>
+      )}
+    </>
   );
 };
 
