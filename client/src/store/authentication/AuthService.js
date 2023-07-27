@@ -79,12 +79,22 @@ const getUser = (userID) => {
   });
 };
 
+const getUserInvites = (userID) => {
+  return axios
+    .get(API_URL + `invites/${userID}`)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
+
 const AuthService = {
   login,
   logout,
   register,
   edit,
   getUser,
+  getUserInvites,
 };
 
 export default AuthService;

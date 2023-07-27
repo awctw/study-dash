@@ -26,4 +26,6 @@ router.put(
 
 router.get("/getUser/:userID", controller.getUser);
 
+router.get("/invites/:userID", controller.getUserInvites);
+
 module.exports = router;

@@ -56,3 +56,10 @@ export const getUserAsync = createAsyncThunk(
     return await AuthService.getUser(user);
   }
 );
+
+export const getUserInvitesAsync = createAsyncThunk(
+  actionTypes.GET_USER_INVITES,
+  async (userID) => {
+    return await AuthService.getUserInvites(userID);
+  }
+);

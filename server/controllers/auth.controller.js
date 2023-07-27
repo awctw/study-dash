@@ -139,3 +139,13 @@ exports.getUser = async (req, res, next) => {
       res.status(500).send(err);
     });
 };
+
+exports.getUserInvites = async (req, res, next) => {
+  await User.findOne({ userID: req.params.userID })
+    .then((user) => {
+      res.status(200).send(user.invites);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+}

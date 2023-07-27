@@ -1,16 +1,21 @@
 import SideBar from "../components/SideBar";
 import {
+  Badge,
   Button,
   Card,
   CardBody,
   CardFooter,
   Dialog,
+  IconButton,
   Input,
+  Tooltip,
   Typography,
 } from "@material-tailwind/react";
 import {
   ArrowLongRightIcon,
+  BellIcon,
   ChatBubbleLeftRightIcon,
+  EnvelopeIcon,
 } from "@heroicons/react/24/solid";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +26,7 @@ import { getUserChatsAsync, groupChatAsync } from "../store/chat/thunks";
 import { fetchToken } from "../firebaseInit";
 import Notification from "../components/notifs/notification";
 import Notif from "../components/notifs/notification";
+import InvitesDrawer from "../components/notifs/invitesDrawer";
 
 const StudyGroupPage = () => {
   const dispatch = useDispatch();
@@ -68,9 +74,12 @@ const StudyGroupPage = () => {
       </div>
       <div className="p-5 !pl-[300px]">
         <div className="mx-5">
-          <Button onClick={createChatHandler} className="bg-indigo-300 m-2">
-            Create Chat
-          </Button>
+          <div className="flex flex-row w-full items-center justify-between">
+            <Button onClick={createChatHandler} className="bg-indigo-300 m-2">
+              Create Chat
+            </Button>
+            <InvitesDrawer />
+          </div>
           <div className="flex flex-wrap justify-center">
             {chats &&
               chats.map((chat, index) => (

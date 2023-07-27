@@ -40,6 +40,7 @@ const Notif = () => {
 };
 
 const DisplayToast = (props) => {
+  // console.log("window:", window.location.pathname.split("/"));
   return (
     <div
       className={`${

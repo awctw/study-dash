@@ -6,14 +6,15 @@ import {
   userLogoutAsync,
   userRegisterAsync,
   userEditAsync,
+  getUserInvitesAsync,
 } from "./thunks";
 import { REQUEST_STATE } from "../utils";
 
 const user = JSON.parse(sessionStorage.getItem("user"));
 
 const initialUserState = user
-  ? { isLoggedIn: true, user, error: null, members: [] }
-  : { isLoggedIn: false, user: null, error: null, members: [] };
+  ? { isLoggedIn: true, user, error: null, invites: [] }
+  : { isLoggedIn: false, user: null, error: null, invites: [] };
 
 const loginSlice = createSlice({
   name: "user",
@@ -103,6 +104,19 @@ const loginSlice = createSlice({
       })
       .addCase(getUserAsync.rejected, (state, action) => {
         state.getUser = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(getUserInvitesAsync.pending, (state) => {
+        state.getUserInvites = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(getUserInvitesAsync.fulfilled, (state, action) => {
+        state.getUserInvites = REQUEST_STATE.FULFILLED;
+        console.log("Invites: ", action.payload);
+        state.invites = action.payload;
+      })
+      .addCase(getUserInvitesAsync.rejected, (state, action) => {
+        state.getUserInvites = REQUEST_STATE.REJECTED;
         state.error = action.error;
       });
   },
