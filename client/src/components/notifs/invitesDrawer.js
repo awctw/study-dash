@@ -89,24 +89,12 @@ const Invite = (props) => {
 
   const dispatch = useDispatch();
 
-  const acceptInvite = () => {
+  const handleResponse = (response) => {
     dispatch(
       respondToInviteAsync({
         username: user.username,
         groupID: props.groupID,
-        decision: "accepted",
-      })
-    );
-
-    dispatch(loginActions.popInvite(props.groupID));
-  };
-
-  const declineInvite = () => {
-    dispatch(
-      respondToInviteAsync({
-        username: user.username,
-        groupID: props.groupID,
-        decision: "declined",
+        decision: response,
       })
     );
 
@@ -130,13 +118,13 @@ const Invite = (props) => {
         </div>
         <div className="flex flex-row ml-2 mt-3 items-center">
           <Button
-            onClick={acceptInvite}
+            onClick={() => handleResponse("accepted")}
             className="flex items-center bg-indigo-50 text-indigo-300 py-1 px-2 shadow-none hover:shadow-none normal-case font-sans font-medium text-sm border"
           >
             Accept
           </Button>
           <Button
-            onClick={declineInvite}
+            onClick={() => handleResponse("declined")}
             className="ml-2 flex items-center bg-transparent text-indigo-300 py-1 px-2 shadow-none hover:shadow-none normal-case font-sans font-medium text-sm"
           >
             Decline
