@@ -121,7 +121,7 @@ const sendUserInvite = async (req, res) => {
 
       // no need to send invite, if invitation already exists or user already exists in chat
       if (foundInvite !== -1 || chat.users.indexOf(foundUser.username) !== -1) {
-        return res.status(200).send(foundUser);
+        return res.status(200).send("Either the user is already in the chat or the invite has been already sent out");
       }
 
       foundUser.invites.push({
@@ -138,7 +138,7 @@ const sendUserInvite = async (req, res) => {
 
       await foundUser.save();
 
-      res.status(200).send(foundUser);
+      res.status(200).send("Invite sent");
     })
     .catch((err) => {
       res.status(500).send(err);
@@ -168,14 +168,14 @@ const inviteResponse = async (req, res, next) => {
 
   await foundUser.save();
 
+  // if user declined the invite, no need to proceed..
+  if (decision === 'declined') {
+    return res.status(200).send("");
+  }
+
   // then push user to chat
   await Chat.findOne({ groupID })
     .then((chat) => {
-
-      // if user declined the invite, no need to proceed..
-      if (decision === 'declined') {
-        return res.status(200).send(chat);
-      }
 
       chat.users.push(foundUser.username);
       chat.save();

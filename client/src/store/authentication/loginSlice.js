@@ -19,7 +19,14 @@ const initialUserState = user
 const loginSlice = createSlice({
   name: "user",
   initialState: initialUserState,
-  reducers: {},
+  reducers: {
+    popInvite: (state, action) => {
+      const inviteIdx = state.invites.findIndex(
+        (invite) => invite.groupID === action.payload
+      );
+      state.invites.splice(inviteIdx, 1);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(userLoginAsync.pending, (state) => {

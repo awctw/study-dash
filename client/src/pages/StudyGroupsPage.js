@@ -27,6 +27,7 @@ import { fetchToken } from "../firebaseInit";
 import Notification from "../components/notifs/notification";
 import Notif from "../components/notifs/notification";
 import InvitesDrawer from "../components/notifs/invitesDrawer";
+import { getUserInvitesAsync } from "../store/authentication/thunks";
 
 const StudyGroupPage = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const StudyGroupPage = () => {
   useEffect(() => {
     if (user) {
       dispatch(getUserChatsAsync(user.username));
+      dispatch(getUserInvitesAsync(user.userID));
     }
   }, [user]);
 

@@ -79,7 +79,7 @@ const getUser = (userID) => {
   });
 };
 
-const getUserInvites = (userID) => {
+const getUserInvites = async (userID) => {
   return axios
     .get(API_URL + `invites/${userID}`)
     .then((res) => res.data)

@@ -146,6 +146,7 @@ exports.getUserInvites = async (req, res, next) => {
       res.status(200).send(user.invites);
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send(err);
     });
 }

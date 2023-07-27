@@ -51,6 +51,13 @@ const inviteUserAsync = createAsyncThunk(
   }
 );
 
+const respondToInviteAsync = createAsyncThunk(
+  actionTypes.PATCH_INVITE_RESPONSE,
+  async (inviteResponse) => {
+    return await chatService.respondToInvite(inviteResponse);
+  }
+);
+
 const leaveChatAsync = createAsyncThunk(
   actionTypes.PATCH_LEAVECHAT,
   async (userInfo) => {
@@ -66,5 +73,6 @@ export {
   renameChatAsync,
   groupChatAsync,
   inviteUserAsync,
+  respondToInviteAsync,
   leaveChatAsync,
 };

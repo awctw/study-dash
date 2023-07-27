@@ -59,6 +59,15 @@ const inviteUser = async (username, groupID) => {
     });
 };
 
+const respondToInvite = async (inviteResponse) => {
+  return await axios
+    .patch(URL + "chat/respondToInvite", inviteResponse)
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+};
+
 const leaveChat = async (userInfo) => {
   return await axios
     .patch(URL + "chat/leaveChat", userInfo)
@@ -87,6 +96,7 @@ const exports = {
   renameChat,
   groupChat,
   inviteUser,
+  respondToInvite,
   leaveChat,
 };
 

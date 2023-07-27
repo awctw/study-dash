@@ -8,6 +8,7 @@ import {
   groupChatAsync,
   inviteUserAsync,
   leaveChatAsync,
+  respondToInviteAsync,
 } from "./thunks";
 
 const INIT_STATE = {
@@ -18,6 +19,7 @@ const INIT_STATE = {
   getUserChats: REQUEST_STATE.IDLE,
   groupChat: REQUEST_STATE.IDLE,
   inviteUser: REQUEST_STATE.IDLE,
+  respondToInvite: REQUEST_STATE.IDLE,
   leaveChat: REQUEST_STATE.IDLE,
   renameChat: REQUEST_STATE.IDLE,
   error: null,
@@ -83,10 +85,21 @@ const chatSlice = createSlice({
       })
       .addCase(inviteUserAsync.fulfilled, (state, action) => {
         state.inviteUser = REQUEST_STATE.FULFILLED;
-        state.currentChat = action.payload;
       })
       .addCase(inviteUserAsync.rejected, (state, action) => {
         state.inviteUser = REQUEST_STATE.REJECTED;
+        state.error = action.error;
+      })
+      .addCase(respondToInviteAsync.pending, (state) => {
+        state.respondToInvite = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(respondToInviteAsync.fulfilled, (state, action) => {
+        state.respondToInvite = REQUEST_STATE.FULFILLED;
+        if (action.payload) state.chats.push(action.payload);
+      })
+      .addCase(respondToInviteAsync.rejected, (state, action) => {
+        state.respondToInvite = REQUEST_STATE.REJECTED;
         state.error = action.error;
       })
       .addCase(leaveChatAsync.pending, (state) => {

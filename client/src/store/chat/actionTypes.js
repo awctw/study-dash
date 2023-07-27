@@ -6,5 +6,6 @@ export const actionTypes = {
   PATCH_RENAMECHAT: "chat/patchRenameChat",
   POST_GROUP_CHAT: "chat/groupChat",
   PATCH_INVITE_USER: "chat/inviteUser",
+  PATCH_INVITE_RESPONSE: "chat/inviteResponse",
   PATCH_LEAVECHAT: "chat/leaveChat",
 };
