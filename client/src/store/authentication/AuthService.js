@@ -68,32 +68,6 @@ const edit = (userID, username, firstName, lastName, email) => {
     });
 };
 
-const groupChat = (username, groupID) => {
-  return axios
-    .put(API_URL + "groupChat", {
-      username,
-      groupID,
-    })
-    .then((response) => {
-      if (response.data.accessToken) {
-        sessionStorage.setItem("user", JSON.stringify(response.data));
-      }
-
-      return response.data;
-    });
-};
-
-const inviteUser = (username, groupID) => {
-  return axios
-    .put(API_URL + "inviteUser", {
-      username,
-      groupID,
-    })
-    .then((response) => {
-      return response.data;
-    });
-};
-
 const getUser = (userID) => {
   return axios.get(API_URL + `getUser/${userID}`).then((response) => {
     if (response.data.accessToken) {
@@ -103,34 +77,12 @@ const getUser = (userID) => {
   });
 };
 
-const leaveChat = async (userInfo) => {
-  return await axios
-    .patch(API_URL + "leaveChat", userInfo)
-    .then((res) => res.data)
-    .catch((err) => {
-      throw new Error(err);
-    });
-};
-
-const getGroupMembers = async (groupID) => {
-  return await axios
-    .get(API_URL + `members/${groupID}`)
-    .then((res) => res.data)
-    .catch((err) => {
-      throw new Error(err);
-    });
-};
-
 const AuthService = {
   login,
   logout,
   register,
   edit,
-  groupChat,
-  inviteUser,
   getUser,
-  leaveChat,
-  getGroupMembers,
 };
 
 export default AuthService;

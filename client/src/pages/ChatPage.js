@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SideBar from "../components/SideBar";
 import {
   Card,
@@ -26,14 +26,11 @@ import {
 } from "@heroicons/react/24/solid";
 import {
   getChatHistoryAsync,
+  inviteUserAsync,
+  leaveChatAsync,
   putChatHistoryAsync,
   renameChatAsync,
 } from "../store/chat/thunks";
-import {
-  inviteUserAsync,
-  getUserAsync,
-  leaveChatAsync,
-} from "../store/authentication/thunks";
 import { useNavigate } from "react-router-dom";
 
 // Credits: Setting up socket io for chat
@@ -41,9 +38,10 @@ import { useNavigate } from "react-router-dom";
 const ChatPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const chat = useSelector((state) => state.chatReducer.chat);
+  const currChat = useSelector((state) => state.chatReducer.currentChat);
   const user = useSelector((state) => state.loginReducer);
   const groupID = window.location.pathname.split("/").pop();
+  const msgList = useRef(null);
 
   const [socket, setSocket] = useState(null);
   const [message, setMessage] = useState("");
@@ -57,9 +55,15 @@ const ChatPage = () => {
   );
   const username = user.user ? user.user.username : "";
 
+  const scrollToBottom = () => {
+    msgList.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
     dispatch(getChatHistoryAsync(groupID));
   }, [dispatch, groupID]);
+
+  useEffect(scrollToBottom, [currChat]);
 
   useEffect(() => {
     const newSocket = io("http://localhost:8080");
@@ -84,6 +88,7 @@ const ChatPage = () => {
 
   const handleMessage = (message) => {
     dispatch(putChatHistoryAsync({ groupID, newMessage: message }));
+    // scrollToBottom();
   };
 
   const handleSubmit = async (event) => {
@@ -156,11 +161,15 @@ const ChatPage = () => {
       </div>
       <div className="p-5 !pl-[300px]">
         <div className="flex justify-center">
-          <Chip
-            value={chat.name ? chat.name : ""}
-            variant="outlined"
-            className="text-center text-indigo-300 w-3/5 text-ellipsis overflow-hidden"
-          />
+          <div className="w-4/5 text-ellipsis overflow-hidden">
+            <Typography className="font-sans text-black/80 font-semibold text-4xl">
+              {currChat && currChat.name}
+            </Typography>
+            <Typography className="text-blue-gray-400 font-sans text-md ml-1">
+              {currChat.users && currChat.users.length} members
+            </Typography>
+            <hr className="mt-3 border-blue-gray-300/40 w-[95%]" />
+          </div>
         </div>
 
         <div className="absolute top-0 right-0 m-5">
@@ -191,23 +200,42 @@ const ChatPage = () => {
 
         <div className="flex justify-center">
           <div className="mb-5 absolute bottom-0 w-3/5">
-            <Card className="flex mb-5">
-              <ul className="p-5 max-h-[30rem] overflow-y-auto scrollbar-width:none">
-                {chat.history
-                  ? chat.history.map((message, index) => (
-                      <li key={index}>
-                        <span className="font-bold">{message.username}: </span>
-                        {message.message}
-                      </li>
-                    ))
-                  : null}
-              </ul>
+            <Card className="flex mb-5 px-5 py-0 max-h-[30rem] overflow-y-auto scrollbar scrollbar-none shadow-none">
+              {currChat.history &&
+                currChat.history.map((message, index) => (
+                  <div
+                    key={index}
+                    className={`flex flex-col mt-1 ${
+                      username === message.username ? "items-end" : ""
+                    }`}
+                  >
+                    {!isSameSender(currChat.history, index) ? (
+                      <span
+                        className={`font-semibold mt-3 text-gray-900/60 ${
+                          username === message.username ? "pr-2" : "pl-1"
+                        }`}
+                      >
+                        {message.username}
+                      </span>
+                    ) : (
+                      <></>
+                    )}
+                    <span className="px-3 py-1 w-fit max-w-lg break-all rounded-full bg-indigo-50 text-indigo-300">
+                      {message.message}
+                    </span>
+                  </div>
+                ))}
+              <hr className="w-0" ref={msgList} />
             </Card>
-            <Card className="flex">
+            <Card className="flex shadow-none">
               <form onSubmit={handleSubmit} className="flex p-5">
-                <Textarea
-                  label="Message"
+                <Input
+                  placeholder="Type your message..."
                   value={message}
+                  className="focus:!border-t-indigo-300 focus:!border-indigo-300 ring-4 ring-transparent focus:ring-indigo-50 !border !border-blue-gray-100 bg-white shadow-lg shadow-blue-gray-900/5 placeholder:text-blue-gray-200 text-blue-gray-500"
+                  labelProps={{
+                    className: "hidden",
+                  }}
                   onChange={(event) => setMessage(event.target.value)}
                 />
 
@@ -271,7 +299,7 @@ const ChatPage = () => {
             <Input
               label="Name"
               size="lg"
-              placeholder={chat.name ? chat.name : ""}
+              placeholder={currChat.name ? currChat.name : ""}
               onChange={(e) => setName(e.target.value)}
             />
           </CardBody>
@@ -311,6 +339,12 @@ const ChatPage = () => {
         </DialogFooter>
       </Dialog>
     </div>
+  );
+};
+
+const isSameSender = (messages, msgIdx) => {
+  return (
+    msgIdx >= 1 && messages[msgIdx - 1].username === messages[msgIdx].username
   );
 };
 
