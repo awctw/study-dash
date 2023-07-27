@@ -19,7 +19,10 @@ router.get('/fetchAllItems/:userID/:categoryID?', async (req, res) => {
 
     let outputList = await TODOItem
       .find(filter)
-      .select({ _id: 1, title: 1, startDate: 1, endDate: 1, isFinished: 1, description: 1, category: 1 });
+      .select({
+        _id: 1, title: 1, startDate: 1, endDate: 1,
+        isFinished: 1, description: 1, category: 1
+      });
 
     // sort the todoItems by their startDate attribute
     outputList = outputList.sort((todoOne, todoTwo) => {

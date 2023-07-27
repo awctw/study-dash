@@ -31,12 +31,15 @@ const TODOListViewer = ({ selectedCategoryID }) => {
   }, [dispatch, fetchTODOList, selectedCategoryID, user]);
 
   // Only render the ListView if the isVisibleTODOListEmpty function returns false,
-  // indicating that there are visible TODOItems to display.
+  // indicating that there are visible TODOItems to display. At least 1 rem of horizontal
+  // spacing is guaranteed between "TODO List" and "Total Todos"
   return (
     <div>
       <header className="flex justify-between flex-wrap">
-        <Typography variant="h5">TODO List</Typography>
-        <Typography variant="small" className="">
+        <Typography className="mr-4" variant="h5">
+          TODO List
+        </Typography>
+        <Typography variant="small" className="mt-1 text-green-600">
           Total Todos: {TODOList.length}
         </Typography>
       </header>

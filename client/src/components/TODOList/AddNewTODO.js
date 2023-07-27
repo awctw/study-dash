@@ -165,6 +165,9 @@ const AddTODOItem = () => {
                   timeInputLabel="Time (hh:mm:AM/PM):"
                   selected={formData.startDate}
                   onChange={handleStartDateInput}
+                  // the most recent (inclusive) Date value that the user
+                  // can select for "Start Date"
+                  maxDate={formData.endDate}
                 />
               </div>
               <div className="inputField">
@@ -177,6 +180,9 @@ const AddTODOItem = () => {
                   timeInputLabel="Time (hh:mm:AM/PM):"
                   selected={formData.endDate}
                   onChange={handleEndDateInput}
+                  // the oldest (inclusive) Date value that the user
+                  // can select for "End Date"
+                  minDate={formData.startDate}
                 />
               </div>
             </div>
