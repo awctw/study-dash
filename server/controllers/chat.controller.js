@@ -44,7 +44,7 @@ const putChatHistory = async (req, res, next) => {
 
       if (tokenList.length > 0) {
         sendNotification(tokenList, {
-          title: newMessage.username,
+          title: `${newMessage.username} from ${chat.name}`,
           body: newMessage.message,
         });
       }
