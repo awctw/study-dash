@@ -38,8 +38,8 @@ const GanttChart = (props) => {
     const CIRCLE_RADIUS = 5;
     const renderChart = useCallback(() => {
         // Filter data to see if the chart needs to be rendered
-        const xDomainStart = Date.now() - upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
-        const xDomainEnd = Date.now() + upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
+        const xDomainStart = Date.now() - upToDateChartSettings.current.axisTimeScale * 60 * 60 * 1000;
+        const xDomainEnd = Date.now() + upToDateChartSettings.current.axisTimeScale * 60 * 60 * 1000;
         // 'Clone' upToDateTodos.current to bypass read-only for scaleBand duplicate title handling
         let filteredData = JSON.parse(JSON.stringify(upToDateTodos.current));
         filteredData = filteredData.filter(d => Date.parse(d.endDate) - Date.parse(d.startDate) !== 0 &&
@@ -109,8 +109,8 @@ const GanttChart = (props) => {
         }
         // Increasing containerHeight affects inner chart height
         if (props.containerHeight === undefined) {
-            // 40 px per item
-            containerHeight = margin.top + margin.bottom + 30 * filteredData.length;
+            // Variable px per item
+            containerHeight = margin.top + margin.bottom + upToDateChartSettings.current.axisVerticalScale * filteredData.length;
         }
         if (props.tooltipPadding === undefined) {
             tooltipPadding = 15;

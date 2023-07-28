@@ -9,6 +9,7 @@ import {
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { putChartSettingsAsync } from "../../store/chartSettings/thunks";
+import {Player} from "@lottiefiles/react-lottie-player";
 
 const ChartSettingsModal = (props) => {
     const user = useSelector((state) => state.loginReducer);
@@ -41,36 +42,82 @@ const ChartSettingsModal = (props) => {
                         label="Visible Hour Range (1 to 84 Hours Before and After)"
                         color="blue-gray"
                         type="number"
-                        value={modalChartSettings.axisScale}
+                        containerProps={{ className: "mb-5" }}
+                        value={modalChartSettings.axisTimeScale}
                         onChange={(e) => {
                             // Max and min checking
                             if (e.target.value > 84) {
                                 e.target.value = "84";
                                 setModalChartSettings((prevProps) => ({
                                     ...prevProps,
-                                    axisScale: 84
+                                    axisTimeScale: 84
                                 }))
                             } else if (e.target.value < 1) {
                                 e.target.value = "1";
                                 setModalChartSettings((prevProps) => ({
                                     ...prevProps,
-                                    axisScale: 1
+                                    axisTimeScale: 1
                                 }))
                             }
 
-                            // Set axisScale
+                            // Set axisTimeScale
                             setModalChartSettings((prevProps) => ({
                                 ...prevProps,
-                                axisScale: e.target.value
+                                axisTimeScale: e.target.value
                             }))
                         }}
                     />
-                    <Typography variant="h6" color="blue-gray" className="mt-3 mb-5">
+                    <Input
+                        variant="outlined"
+                        label="Relative Vertical Scale (1 to 100)"
+                        color="blue-gray"
+                        type="number"
+                        value={modalChartSettings.axisVerticalScale}
+                        onChange={(e) => {
+                            // Max and min checking
+                            if (e.target.value > 100) {
+                                e.target.value = "100";
+                                setModalChartSettings((prevProps) => ({
+                                    ...prevProps,
+                                    axisVerticalScale: 100
+                                }))
+                            } else if (e.target.value < 1) {
+                                e.target.value = "1";
+                                setModalChartSettings((prevProps) => ({
+                                    ...prevProps,
+                                    axisVerticalScale: 1
+                                }))
+                            }
+
+                            // Set axisTimeScale
+                            setModalChartSettings((prevProps) => ({
+                                ...prevProps,
+                                axisVerticalScale: e.target.value
+                            }))
+                        }}
+                    />
+                    <Typography variant="h6" color="blue-gray" className="mt-3 text-center">
                         Category Colors
                     </Typography>
+                    {modalChartSettings.categoryColors.length === 0 ?
+                        <div className="mx-auto">
+                            <Typography className="text-center">
+                                No categories to color...
+                            </Typography>
+                            <div className="flex items-center justify-center">
+                                <Player
+                                    src={
+                                        "https://lottie.host/13926b54-ea64-4465-bbe6-2fc45507cb74/jiSPjnMiBV.json"
+                                    }
+                                    style={{ height: "300px", width: "600px", padding: 0 }}
+                                    autoplay
+                                    loop
+                                />
+                            </div>
+                        </div> : null}
                     <div className="grid gap-x-3 gap-y-5 sm:grid-cols-3">
                         {modalChartSettings.categoryColors.map((item, index) =>
-                            <div key={index} className="sm:col-span-1">
+                            <div key={index} className="sm:col-span-1 mt-5">
                                 <Input
                                     type="color"
                                     className="mb-5"
@@ -79,7 +126,8 @@ const ChartSettingsModal = (props) => {
                                     color="blue-gray"
                                     value={item.color}
                                     onChange={(e) => setModalChartSettings((prevState) => ({
-                                        axisScale: prevState.axisScale,
+                                        axisTimeScale: prevState.axisTimeScale,
+                                        axisVerticalScale: prevState.axisVerticalScale,
                                         categoryColors: prevState.categoryColors.map(c => {
                                             if (c.category === item.category) {
                                                 c.color = e.target.value;
@@ -104,12 +152,6 @@ const ChartSettingsModal = (props) => {
                     <Button
                         className="bg-indigo-300 text-white m-2"
                         onClick={() => {
-                            if (modalChartSettings.axisScale.length <= 0) return;
-                            for (let i = 0; i < modalChartSettings.categoryColors.length; i++) {
-                                if (modalChartSettings.categoryColors[i].length <= 0) {
-                                    return;
-                                }
-                            }
                             handlePut();
                             props.setVisible(false);
                         }}

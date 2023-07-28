@@ -15,7 +15,8 @@ const getChartSettings = async (req, res, next) => {
             }
             const chartSettings = new ChartSettings({
                 userID: req.params.userID,
-                axisScale: 24,
+                axisTimeScale: 24,
+                axisVerticalScale: 30,
                 categoryColors: categoryColors
             });
             await chartSettings.save()
@@ -56,7 +57,8 @@ const putChartSettings = async (req, res, next) => {
         .then((result) => {
             res.status(200).send({
                 userID: req.params.userID,
-                axisScale: result.axisScale,
+                axisTimeScale: result.axisTimeScale,
+                axisVerticalScale: result.axisVerticalScale,
                 categoryColors: result.categoryColors
             });
         })
