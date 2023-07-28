@@ -18,6 +18,8 @@ const GanttChart = (props) => {
     let upToDateChartSettings = useRef(chartSettings);
     let upToDateTodos = useRef(todos);
     let upToDateHabits = useRef(habits);
+    let prevTimeout = useRef(-1);
+    let currentTimeout = useRef(-1);
 
     // Function for string to Date handling
     const parseDate = function(date) {
@@ -316,6 +318,21 @@ const GanttChart = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // Update the chart on every minute change (to keep 'now' line accurate)
+    // New instance of setTimeOut() every runClock() so no memory build-up due to garbage collector
+    const runClock = useCallback(() => {
+        // Update the chart on every minute change (to keep 'now' line accurate)
+        // New instance of setTimeOut() every runClock() so no memory build-up due to garbage collector
+        const now = new Date();
+        const timeToNextTick = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+        return setTimeout(() => {
+            prevTimeout.current = currentTimeout.current;
+            renderChart();
+            currentTimeout.current = runClock();
+            clearTimeout(prevTimeout.current);
+        }, timeToNextTick);
+    }, [renderChart]);
+
     // Sync ref variables and re-render chart whenever data or chartSettings changes
     useEffect(() => {
         if (todos !== null && habits !== null && chartSettings !== null) {
@@ -323,21 +340,16 @@ const GanttChart = (props) => {
             upToDateHabits.current = habits;
             upToDateChartSettings.current = chartSettings;
             renderChart();
-            runClock();
+            currentTimeout.current = runClock();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [todos, habits, chartSettings]);
 
-    // Update the chart on every minute change (to keep 'now' line accurate)
-    // New instance of setTimeOut() every runClock() so no memory build-up due to garbage collector
-    const runClock = () => {
-        const now = new Date();
-        const timeToNextTick = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
-        setTimeout(() => {
-            renderChart();
-            runClock();
-        }, timeToNextTick);
-    }
+        // Cleanup on unmount
+        return () => {
+            clearTimeout(prevTimeout.current);
+            clearTimeout(currentTimeout.current);
+        };
+
+    }, [todos, habits, chartSettings, renderChart, runClock]);
 
     return(
         <div>
