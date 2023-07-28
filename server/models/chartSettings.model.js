@@ -4,7 +4,11 @@ const ChartSettings = mongoose.model(
     "ChartSettings",
     new mongoose.Schema({
         userID: String,
-        axisScale: Number,
+        axisScale: {
+            type: Number,
+            min: 1,
+            max: 84
+        },
         categoryColors: [{ categoryID: String, category: String, color: String}]
     })
 );

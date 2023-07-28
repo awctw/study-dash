@@ -38,14 +38,32 @@ const ChartSettingsModal = (props) => {
                     </Typography>
                     <Input
                         variant="outlined"
-                        label="Visible Hour Range (Before and After)"
+                        label="Visible Hour Range (1 to 84 Hours Before and After)"
                         color="blue-gray"
                         type="number"
                         value={modalChartSettings.axisScale}
-                        onChange={(e) => setModalChartSettings((prevProps) => ({
-                            ...prevProps,
-                            axisScale: e.target.value
-                        }))}
+                        onChange={(e) => {
+                            // Max and min checking
+                            if (e.target.value > 84) {
+                                e.target.value = "84";
+                                setModalChartSettings((prevProps) => ({
+                                    ...prevProps,
+                                    axisScale: 84
+                                }))
+                            } else if (e.target.value < 1) {
+                                e.target.value = "1";
+                                setModalChartSettings((prevProps) => ({
+                                    ...prevProps,
+                                    axisScale: 1
+                                }))
+                            }
+
+                            // Set axisScale
+                            setModalChartSettings((prevProps) => ({
+                                ...prevProps,
+                                axisScale: e.target.value
+                            }))
+                        }}
                     />
                     <Typography variant="h6" color="blue-gray" className="mt-3 mb-5">
                         Category Colors
