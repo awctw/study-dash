@@ -24,10 +24,12 @@ router.get('/fetchAllItems/:userID/:categoryID?', async (req, res) => {
         isFinished: 1, description: 1, category: 1
       });
 
-    // sort the todoItems by their startDate attribute
+    // sort the todoItems by their endDate attribute.
+    // generally speaking, users want to complete TODOs
+    // with earliest deadlines first
     outputList = outputList.sort((todoOne, todoTwo) => {
-      const dateOne = new Date(todoOne.startDate);
-      const dateTwo = new Date(todoTwo.startDate);
+      const dateOne = new Date(todoOne.endDate);
+      const dateTwo = new Date(todoTwo.endDate);
       return dateOne - dateTwo;
     });
 

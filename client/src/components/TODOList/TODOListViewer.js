@@ -35,7 +35,7 @@ const TODOListViewer = ({ selectedCategoryID }) => {
   // spacing is guaranteed between "TODO List" and "Total Todos"
   return (
     <div>
-      <header className="flex justify-between flex-wrap">
+      <header className="flex justify-evenly flex-wrap mr-8">
         <Typography className="mr-4" variant="h5">
           TODO List
         </Typography>
