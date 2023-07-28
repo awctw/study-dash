@@ -22,12 +22,12 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 // Handle incoming messages while the app is not in focus (i.e in the background, hidden behind other tabs, or completely closed).
-messaging.onBackgroundMessage(function (payload) {
-  console.log("Received background message ", payload);
+messaging.onBackgroundMessage(function ({ data }) {
+  console.log("Received background message ", data);
 
-  const notificationTitle = payload.notification.title;
+  const notificationTitle = data.title;
   const notificationOptions = {
-    body: payload.notification.body,
+    body: data.body,
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);

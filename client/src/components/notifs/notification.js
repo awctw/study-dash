@@ -29,8 +29,8 @@ const Notif = () => {
   onMessageListener()
     .then((payload) => {
       setNotification({
-        title: payload?.notification?.title,
-        body: payload?.notification?.body,
+        title: payload?.data?.title,
+        body: payload?.data?.body,
       });
     })
     .catch((err) => {

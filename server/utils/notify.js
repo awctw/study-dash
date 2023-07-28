@@ -1,10 +1,10 @@
 const { response } = require('../app');
 const { messaging } = require('../config/firebaseInit');
 
-const sendNotification = (tokens, notification) => {
+const sendNotification = (tokens, data) => {
     
     messaging
-        .sendEachForMulticast({ tokens, notification })
+        .sendEachForMulticast({ tokens, data })
         .then(response => {
 
             console.log(
