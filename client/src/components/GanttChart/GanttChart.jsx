@@ -40,8 +40,8 @@ const GanttChart = (props) => {
         const xDomainEnd = Date.now() + upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
         // 'Clone' upToDateTodos.current to bypass read-only for scaleBand duplicate title handling
         let filteredData = JSON.parse(JSON.stringify(upToDateTodos.current));
-        filteredData = filteredData.filter(d => xDomainStart <= Date.parse(d.endDate) &&
-            Date.parse(d.startDate) <= xDomainEnd);
+        filteredData = filteredData.filter(d => Date.parse(d.endDate) - Date.parse(d.startDate) !== 0 &&
+            xDomainStart <= Date.parse(d.endDate) && Date.parse(d.startDate) <= xDomainEnd);
 
         // Habit day of the week handling
         let currDate = new Date(xDomainStart);
@@ -61,7 +61,7 @@ const GanttChart = (props) => {
                             retDate = new Date(retDate).setFullYear(currDate.getFullYear());
                             return retDate;
                         }();
-                        if (xDomainStart <= endDate && startDate <= xDomainEnd) {
+                        if (endDate - startDate !== 0 && xDomainStart <= endDate && startDate <= xDomainEnd) {
                             filteredData.push({
                                 _id: habit["_id"],
                                 title: habit.name,
