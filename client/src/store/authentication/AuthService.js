@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/auth/";
+const API_URL = process.env.REACT_APP_BASE_SERVER_URL;
 
 const login = (userID, username, password, fbToken) => {
   return axios
-    .post(API_URL + "signin", { userID, username, password, fbToken })
+    .post(API_URL + "/auth/signin", { userID, username, password, fbToken })
     .then((response) => {
       if (response.data.accessToken) {
         sessionStorage.setItem("user", JSON.stringify(response.data));
@@ -17,9 +17,11 @@ const login = (userID, username, password, fbToken) => {
 };
 
 const logout = (username, password) => {
-  return axios.post(API_URL + "signout", { username, password }).then(() => {
-    sessionStorage.removeItem("user");
-  });
+  return axios
+    .post(API_URL + "/auth/signout", { username, password })
+    .then(() => {
+      sessionStorage.removeItem("user");
+    });
 };
 
 const register = (
@@ -33,7 +35,7 @@ const register = (
   firebaseToken
 ) => {
   return axios
-    .post(API_URL + "signup", {
+    .post(API_URL + "/auth/signup", {
       userID,
       groupID,
       username,
@@ -54,7 +56,7 @@ const register = (
 
 const edit = (userID, username, firstName, lastName, email) => {
   return axios
-    .put(API_URL + "edit", {
+    .put(API_URL + "/auth/edit", {
       userID,
       username,
       firstName,
@@ -71,7 +73,7 @@ const edit = (userID, username, firstName, lastName, email) => {
 };
 
 const getUser = (userID) => {
-  return axios.get(API_URL + `getUser/${userID}`).then((response) => {
+  return axios.get(API_URL + `/auth/getUser/${userID}`).then((response) => {
     if (response.data.accessToken) {
       sessionStorage.setItem("user", JSON.stringify(response.data));
     }
@@ -81,7 +83,7 @@ const getUser = (userID) => {
 
 const getUserInvites = async (userID) => {
   return axios
-    .get(API_URL + `invites/${userID}`)
+    .get(API_URL + `/auth/invites/${userID}`)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);

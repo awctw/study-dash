@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const URL = "http://localhost:8080/";
+const URL = process.env.REACT_APP_BASE_SERVER_URL;
 
 const getTimerSettings = async (userID) => {
   return await axios
-    .get(URL + `timerSettings/${userID}`)
+    .get(URL + `/timerSettings/${userID}`)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);
@@ -13,7 +13,7 @@ const getTimerSettings = async (userID) => {
 
 const putTimerSettings = async (settings) => {
   return await axios
-    .put(URL + `timerSettings`, settings)
+    .put(URL + `/timerSettings`, settings)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);

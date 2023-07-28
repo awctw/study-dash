@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const URL = "http://localhost:8080/";
+const URL = process.env.REACT_APP_BASE_SERVER_URL;
 
 const getHabits = async (userID) => {
   const response = await axios
-    .get(URL + `habits/${userID}`)
+    .get(URL + `/habits/${userID}`)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);
@@ -14,7 +14,7 @@ const getHabits = async (userID) => {
 
 const addHabit = async (habit) => {
   const response = await axios
-    .post(URL + "habits", habit, {
+    .post(URL + "/habits", habit, {
       headers: {
         "Content-Type": "application/json",
       },

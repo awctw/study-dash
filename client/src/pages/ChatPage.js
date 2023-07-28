@@ -36,6 +36,7 @@ import { useNavigate } from "react-router-dom";
 // Credits: Setting up socket io for chat
 // https://dev.to/bhavik786/building-a-real-time-chat-application-using-mern-stack-and-socketio-1obn
 const ChatPage = () => {
+  const URL = process.env.REACT_APP_BASE_SERVER_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currChat = useSelector((state) => state.chatReducer.currentChat);
@@ -66,7 +67,7 @@ const ChatPage = () => {
   useEffect(scrollToBottom, [currChat]);
 
   useEffect(() => {
-    const newSocket = io("http://localhost:8080");
+    const newSocket = io(URL);
     setSocket(newSocket);
 
     return () => {
