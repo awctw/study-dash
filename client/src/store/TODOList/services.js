@@ -80,7 +80,7 @@ const handleRequestError = (error) => {
   }
 };
 
-export default {
+const services = {
   getCategories,
   deleteCategory,
   getTODOList,
@@ -89,3 +89,5 @@ export default {
   editTODOItem,
   deleteTODOItem,
 };
+
+export default services;
