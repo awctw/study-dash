@@ -6,7 +6,6 @@ const Joi = require('joi');
 const TODOItemSchema = new mongoose.Schema({
   title: {
     type: String,
-    lowercase: true,
     required: true,
     trim: true,
   },

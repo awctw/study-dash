@@ -15,13 +15,17 @@ const getChartSettings = async (req, res, next) => {
             }
             const chartSettings = new ChartSettings({
                 userID: req.params.userID,
-                axisScale: 24,
+                axisTimeScale: 24,
+                axisVerticalScale: 30,
                 categoryColors: categoryColors
             });
             await chartSettings.save()
             res.status(200).send(chartSettings);
         } else {
-            for (const category of await Category.find({userID: req.params.userID})) {
+            const userCategories = await Category.find({userID: req.params.userID});
+
+            // Union arrays
+            for (const category of userCategories) {
                 if (result.categoryColors.find(c => c.categoryID === category["_id"].toString()) === undefined) {
                     result.categoryColors.push({
                         categoryID: category["_id"],
@@ -30,6 +34,14 @@ const getChartSettings = async (req, res, next) => {
                     });
                 }
             }
+            let idsToRemove = [];
+            for (const category of result.categoryColors) {
+                if (userCategories.find(c => c["_id"].toString() === category.categoryID) === undefined) {
+                    idsToRemove.push(category.categoryID);
+                }
+            }
+            result.categoryColors = result.categoryColors.filter(c => !idsToRemove.includes(c.categoryID));
+
             await result.save();
             res.status(200).send(result);
         }
@@ -45,7 +57,8 @@ const putChartSettings = async (req, res, next) => {
         .then((result) => {
             res.status(200).send({
                 userID: req.params.userID,
-                axisScale: result.axisScale,
+                axisTimeScale: result.axisTimeScale,
+                axisVerticalScale: result.axisVerticalScale,
                 categoryColors: result.categoryColors
             });
         })

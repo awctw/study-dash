@@ -15,3 +15,26 @@
 #AddNewTODOButton {
   margin-bottom: 1rem;
 }
+
+/*
+  Styles for Calendar TODOItem view
+*/
+.react-calendar__tile--active {
+  background-color: transparent;
+  color: transparent;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background-color: transparent;
+}
+
+.react-calendar__tile {
+  /* Style to reset background color when not active */
+  background: transparent;
+}
+
+/* style to reset background color when clicking outside */
+.react-calendar__tile--outside {
+  background: transparent !important;
+}
