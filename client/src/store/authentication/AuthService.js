@@ -2,9 +2,9 @@ import axios from "axios";
 
 const API_URL = process.env.REACT_APP_BASE_SERVER_URL;
 
-const login = (userID, username, password) => {
+const login = (userID, username, password, fbToken) => {
   return axios
-    .post(API_URL + "/auth/signin", { userID, username, password })
+    .post(API_URL + "/auth/signin", { userID, username, password, fbToken })
     .then((response) => {
       if (response.data.accessToken) {
         sessionStorage.setItem("user", JSON.stringify(response.data));
@@ -31,7 +31,8 @@ const register = (
   firstName,
   lastName,
   email,
-  password
+  password,
+  firebaseToken
 ) => {
   return axios
     .post(API_URL + "/auth/signup", {
@@ -42,6 +43,7 @@ const register = (
       lastName,
       email,
       password,
+      firebaseToken,
     })
     .then((response) => {
       if (response.data.accessToken) {
@@ -70,32 +72,6 @@ const edit = (userID, username, firstName, lastName, email) => {
     });
 };
 
-const groupChat = (username, groupID) => {
-  return axios
-    .put(API_URL + "/auth/groupChat", {
-      username,
-      groupID,
-    })
-    .then((response) => {
-      if (response.data.accessToken) {
-        sessionStorage.setItem("user", JSON.stringify(response.data));
-      }
-
-      return response.data;
-    });
-};
-
-const inviteUser = (username, groupID) => {
-  return axios
-    .put(API_URL + "/auth/inviteUser", {
-      username,
-      groupID,
-    })
-    .then((response) => {
-      return response.data;
-    });
-};
-
 const getUser = (userID) => {
   return axios.get(API_URL + `/auth/getUser/${userID}`).then((response) => {
     if (response.data.accessToken) {
@@ -105,18 +81,9 @@ const getUser = (userID) => {
   });
 };
 
-const leaveChat = async (userInfo) => {
-  return await axios
-    .patch(API_URL + "/auth/leaveChat", userInfo)
-    .then((res) => res.data)
-    .catch((err) => {
-      throw new Error(err);
-    });
-};
-
-const getGroupMembers = async (groupID) => {
-  return await axios
-    .get(API_URL + `/auth/members/${groupID}`)
+const getUserInvites = async (userID) => {
+  return axios
+    .get(API_URL + `/auth/invites/${userID}`)
     .then((res) => res.data)
     .catch((err) => {
       throw new Error(err);
@@ -128,11 +95,8 @@ const AuthService = {
   logout,
   register,
   edit,
-  groupChat,
-  inviteUser,
   getUser,
-  leaveChat,
-  getGroupMembers,
+  getUserInvites,
 };
 
 export default AuthService;

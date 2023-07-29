@@ -22,7 +22,7 @@ import {
   UserGroupIcon,
   PowerIcon,
 } from "@heroicons/react/24/solid";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogoutAsync } from "../store/authentication/thunks";
@@ -34,6 +34,7 @@ const SideBar = () => {
   const user = useSelector((state) => state.loginReducer);
   const { TODOList } = useSelector((state) => state.todoReducer);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleOpenLogout = () => {
     setOpenLogout(!openLogout);
@@ -47,6 +48,7 @@ const SideBar = () => {
     };
 
     dispatch(userLogoutAsync(logoutUser));
+    navigate("/");
   };
 
   return (
@@ -140,11 +142,9 @@ const SideBar = () => {
                 >
                   <span>Cancel</span>
                 </Button>
-                <NavLink to={"/"}>
-                  <Button className="bg-indigo-300" onClick={handleLogout}>
-                    <span>Confirm</span>
-                  </Button>
-                </NavLink>
+                <Button className="bg-indigo-300" onClick={handleLogout}>
+                  <span>Confirm</span>
+                </Button>
               </DialogFooter>
             </Dialog>
           </>

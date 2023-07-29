@@ -4,12 +4,18 @@ const User = mongoose.model(
   "User",
   new mongoose.Schema({
     userID: String,
-    groupID: [String],
-    username: String,
+    username: { type: String, unique: true },
     firstName: String,
     lastName: String,
     email: String,
     password: String,
+    firebaseToken: String,
+    invites: [
+      {
+        groupID: String,
+        chatName: String,
+      }
+    ]
   })
 );
 
