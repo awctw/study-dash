@@ -20,21 +20,14 @@
   Styles for Calendar TODOItem view
 */
 .react-calendar__tile--active {
-  background-color: transparent;
-  color: transparent;
+  background: rgba(255, 255, 255, 0);
+
+  /* Controls the colour of text within each date tile */
+  color: #000000;
 }
 
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-  background-color: transparent;
-}
-
-.react-calendar__tile {
-  /* Style to reset background color when not active */
-  background: transparent;
-}
-
-/* style to reset background color when clicking outside */
-.react-calendar__tile--outside {
-  background: transparent !important;
+  /* Controls the colour of date tile when clicked */
+  background-color: rgb(255, 211, 176);
 }
