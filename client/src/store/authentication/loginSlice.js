@@ -6,23 +6,27 @@ import {
   userLogoutAsync,
   userRegisterAsync,
   userEditAsync,
-  groupChatAsync,
-  inviteUserAsync,
-  leaveChatAsync,
-  getGroupMembersAsync,
+  getUserInvitesAsync,
 } from "./thunks";
 import { REQUEST_STATE } from "../utils";
 
 const user = JSON.parse(sessionStorage.getItem("user"));
 
 const initialUserState = user
-  ? { isLoggedIn: true, user, error: null, members: [] }
-  : { isLoggedIn: false, user: null, error: null, members: [] };
+  ? { isLoggedIn: true, user, error: null, invites: [] }
+  : { isLoggedIn: false, user: null, error: null, invites: [] };
 
 const loginSlice = createSlice({
   name: "user",
   initialState: initialUserState,
-  reducers: {},
+  reducers: {
+    popInvite: (state, action) => {
+      const inviteIdx = state.invites.findIndex(
+        (invite) => invite.groupID === action.payload
+      );
+      state.invites.splice(inviteIdx, 1);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(userLoginAsync.pending, (state) => {
@@ -97,29 +101,6 @@ const loginSlice = createSlice({
         state.edit = REQUEST_STATE.REJECTED;
         state.error = action.error;
       })
-      .addCase(groupChatAsync.pending, (state) => {
-        state.groupChat = REQUEST_STATE.PENDING;
-        state.error = null;
-      })
-      .addCase(groupChatAsync.fulfilled, (state, action) => {
-        state.groupChat = REQUEST_STATE.FULFILLED;
-        state.user = action.payload;
-      })
-      .addCase(groupChatAsync.rejected, (state, action) => {
-        state.groupChat = REQUEST_STATE.REJECTED;
-        state.error = action.error;
-      })
-      .addCase(inviteUserAsync.pending, (state) => {
-        state.invite = REQUEST_STATE.PENDING;
-        state.error = null;
-      })
-      .addCase(inviteUserAsync.fulfilled, (state, action) => {
-        state.invite = REQUEST_STATE.FULFILLED;
-      })
-      .addCase(inviteUserAsync.rejected, (state, action) => {
-        state.invite = REQUEST_STATE.REJECTED;
-        state.error = action.error;
-      })
       .addCase(getUserAsync.pending, (state) => {
         state.getUser = REQUEST_STATE.PENDING;
         state.error = null;
@@ -132,28 +113,17 @@ const loginSlice = createSlice({
         state.getUser = REQUEST_STATE.REJECTED;
         state.error = action.error;
       })
-      .addCase(leaveChatAsync.pending, (state) => {
-        state.leaveChat = REQUEST_STATE.PENDING;
+      .addCase(getUserInvitesAsync.pending, (state) => {
+        state.getUserInvites = REQUEST_STATE.PENDING;
         state.error = null;
       })
-      .addCase(leaveChatAsync.fulfilled, (state, action) => {
-        state.leaveChat = REQUEST_STATE.FULFILLED;
-        state.user = action.payload;
+      .addCase(getUserInvitesAsync.fulfilled, (state, action) => {
+        state.getUserInvites = REQUEST_STATE.FULFILLED;
+        console.log("Invites: ", action.payload);
+        state.invites = action.payload;
       })
-      .addCase(leaveChatAsync.rejected, (state, action) => {
-        state.leaveChat = REQUEST_STATE.REJECTED;
-        state.error = action.error;
-      })
-      .addCase(getGroupMembersAsync.pending, (state) => {
-        state.getMembers = REQUEST_STATE.PENDING;
-        state.error = null;
-      })
-      .addCase(getGroupMembersAsync.fulfilled, (state, action) => {
-        state.getMembers = REQUEST_STATE.FULFILLED;
-        state.members = action.payload;
-      })
-      .addCase(getGroupMembersAsync.rejected, (state, action) => {
-        state.getMembers = REQUEST_STATE.REJECTED;
+      .addCase(getUserInvitesAsync.rejected, (state, action) => {
+        state.getUserInvites = REQUEST_STATE.REJECTED;
         state.error = action.error;
       });
   },

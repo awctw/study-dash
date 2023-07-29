@@ -8,12 +8,13 @@ var bcrypt = require("bcryptjs");
 exports.signup = (req, res) => {
   const user = new User({
     userID: req.body.userID,
-    groupID: req.body.groupID,
     username: req.body.username,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
+    firebaseToken: req.body.firebaseToken,
     password: bcrypt.hashSync(req.body.password, 8),
+    invites: [],
   });
 
   user.save((err, user) => {
@@ -29,20 +30,20 @@ exports.signup = (req, res) => {
 
     res.status(200).send({
       userID: user.userID,
-      groupID: user.groupID,
       username: user.username,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      invites: user.invites,
       accessToken: token,
     });
   });
 };
 
-exports.signin = (req, res) => {
+exports.signin = async (req, res) => {
   User.findOne({
     username: req.body.username,
-  }).exec((err, user) => {
+  }).exec(async (err, user) => {
     if (err) {
       res.status(500).send({ message: err });
       return;
@@ -63,6 +64,11 @@ exports.signin = (req, res) => {
     });
     req.session.token = token;
 
+    // update firebase token on sign up
+    user.firebaseToken = req.body.fbToken;
+
+    await user.save();
+
     res.status(200).send({
       userID: user.userID,
       username: user.username,
@@ -70,6 +76,8 @@ exports.signin = (req, res) => {
       lastName: user.lastName,
       email: user.email,
       accessToken: token,
+      invites: user.invites,
+      firebaseToken: user.firebaseToken
     });
   });
 };
@@ -77,7 +85,17 @@ exports.signin = (req, res) => {
 exports.signout = async (req, res) => {
   try {
     req.session = null;
-    return res.status(200).send({ message: "You've been signed out!" });
+    
+    // clear firebase token to ensure users only receive notifs if they're logged in
+    const founduser = await User.findOne({ username: req.body.username });
+
+    founduser.firebaseToken = "";
+
+    await founduser.save()
+      .then(() => {
+        return res.status(200).send({ message: "You've been signed out!" });
+      });
+
   } catch (err) {
     this.next(err);
   }
@@ -88,7 +106,6 @@ exports.edit = async (req, res) => {
     { userID: req.body.userID },
     {
       userID: req.body.userID,
-      groupID: req.body.groupID,
       username: req.body.username,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -104,69 +121,13 @@ exports.edit = async (req, res) => {
 
   res.status(200).send({
     userID: user.userID,
-    groupID: user.groupID,
     username: user.username,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
+    invites: user.invites,
     accessToken: token,
   });
-};
-
-exports.groupChat = async (req, res) => {
-  const { username, groupID } = req.body;
-
-  const foundUser = await User.findOne({ username });
-
-  await User.findOneAndUpdate(
-    { username: username },
-    {
-      groupID: [...foundUser.groupID, groupID],
-    },
-    { new: true, upsert: false }
-  );
-
-  var token = jwt.sign({ id: foundUser.userID }, config.secret, {
-    expiresIn: 86400, // 24 hours
-  });
-  req.session.token = token;
-
-  res.status(200).send({
-    userID: foundUser.userID,
-    groupID: foundUser.groupID,
-    username: foundUser.username,
-    firstName: foundUser.firstName,
-    lastName: foundUser.lastName,
-    email: foundUser.email,
-    accessToken: token,
-  });
-};
-
-exports.inviteUser = async (req, res) => {
-  const { username, groupID } = req.body;
-
-  const foundUser = await User.findOne({ username });
-
-  if (foundUser === null) {
-    return res.status(400).send("Username not found!");
-  }
-
-  // if invitation already exists then no need to invite again
-  if (foundUser.groupID.indexOf(groupID) !== -1) {
-    return res.status(200);
-  }
-
-  foundUser.groupID.push(groupID);
-
-  await User.findOneAndUpdate(
-    { username: username },
-    {
-      groupID: foundUser.groupID,
-    },
-    { new: true, upsert: false }
-  );
-
-  res.status(200);
 };
 
 exports.getUser = async (req, res, next) => {
@@ -179,37 +140,13 @@ exports.getUser = async (req, res, next) => {
     });
 };
 
-exports.leaveChat = async (req, res, next) => {
-  const { username, groupID } = req.body;
-
-  const foundUser = await User.findOne({ username });
-
-  const groupIndex = foundUser.groupID.indexOf(groupID);
-
-  // if chat exists remove it
-  if (groupIndex > -1) {
-    foundUser.groupID.splice(groupIndex, 1);
-  }
-
-  await foundUser.save()
+exports.getUserInvites = async (req, res, next) => {
+  await User.findOne({ userID: req.params.userID })
     .then((user) => {
-      res.status(200).send(user);
+      res.status(200).send(user.invites);
     })
     .catch((err) => {
-      res.status(500).send(err);
-    });
-};
-
-exports.getChatMembers = async (req, res, next) => {
-  const groupID = req.params.groupID;
-
-  await User.find({ 
-    groupID: { $in: [groupID] }
-  })
-    .then((users) => {
-      res.status(200).send(users);
-    })
-    .catch((err) => {
+      console.log(err);
       res.status(500).send(err);
     });
 }

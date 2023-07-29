@@ -52,7 +52,7 @@ const deleteTODOItemAsync = createAsyncThunk(
   }
 );
 
-export default {
+const thunk = {
   getCategoryListAsync,
   deleteCategoryAsync,
   getTODOListAsync,
@@ -61,3 +61,5 @@ export default {
   editTODOItemAsync,
   deleteTODOItemAsync,
 };
+
+export default thunk;
