@@ -12,7 +12,12 @@ export const userLogoutAsync = createAsyncThunk(
 export const userLoginAsync = createAsyncThunk(
   actionTypes.POST_USER_SIGNIN,
   async (user) => {
-    return await AuthService.login(user.userID, user.username, user.password);
+    return await AuthService.login(
+      user.userID,
+      user.username,
+      user.password,
+      user.fbToken
+    );
   }
 );
 
@@ -26,7 +31,8 @@ export const userRegisterAsync = createAsyncThunk(
       user.firstName,
       user.lastName,
       user.email,
-      user.password
+      user.password,
+      user.firebaseToken
     );
   }
 );
@@ -44,20 +50,6 @@ export const userEditAsync = createAsyncThunk(
   }
 );
 
-export const groupChatAsync = createAsyncThunk(
-  actionTypes.PUT_GROUP_CHAT,
-  async (user) => {
-    return await AuthService.groupChat(user.username, user.groupID);
-  }
-);
-
-export const inviteUserAsync = createAsyncThunk(
-  actionTypes.PUT_INVITE_USER,
-  async (user) => {
-    return await AuthService.inviteUser(user.username, user.groupID);
-  }
-);
-
 export const getUserAsync = createAsyncThunk(
   actionTypes.GET_USER,
   async (user) => {
@@ -65,16 +57,9 @@ export const getUserAsync = createAsyncThunk(
   }
 );
 
-export const leaveChatAsync = createAsyncThunk(
-  actionTypes.PATCH_LEAVECHAT,
-  async (userInfo) => {
-    return await AuthService.leaveChat(userInfo);
-  }
-);
-
-export const getGroupMembersAsync = createAsyncThunk(
-  actionTypes.GET_MEMBERS,
-  async (groupID) => {
-    return await AuthService.getGroupMembers(groupID);
+export const getUserInvitesAsync = createAsyncThunk(
+  actionTypes.GET_USER_INVITES,
+  async (userID) => {
+    return await AuthService.getUserInvites(userID);
   }
 );

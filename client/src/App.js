@@ -12,11 +12,13 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import LoginPage from "./pages/LoginPage";
 import ChatPage from "./pages/ChatPage";
+import Notif from "./components/notifs/notification";
 
 // Referenced Tailwind Elements Example for styling: https://tailwind-elements.com/docs/standard/navigation/sidenav/
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Notif />
       <Router>
         <Routes>
           <Route path={"/"} element={<LoginPage />} />

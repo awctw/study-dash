@@ -15,14 +15,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { userRegisterAsync } from "../store/authentication/thunks";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { v4 as uuidv4 } from "uuid";
+import { fetchToken } from "../firebaseInit";
+import { toast } from "react-hot-toast";
 
 const RegisterPage = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [lastName, setLastName] = useState("");
   const [firstName, setFirstName] = useState("");
+  const [fbToken, setFbToken] = useState("");
   const [email, setEmail] = useState("");
   const [alert, setAlert] = useState(false);
+
+  useEffect(() => {
+    /**
+     * FCM token is unique per device! need to fetch this on signup & signin and
+     * clear this token (convert to "") in the backend on logout to ensure correct
+     * behavior for multiple accounts on the same device!!!!!!!!!!!!!!!!
+     */
+    fetchToken(setFbToken);
+  }, []);
 
   const user = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
@@ -47,7 +59,12 @@ const RegisterPage = () => {
     setEmail(event.target.value);
   };
 
-  const registerHandler = () => {
+  const registerHandler = async () => {
+    if (!fbToken) {
+      toast.error("Please grant notification permissions before signing up!");
+      return;
+    }
+
     const newUser = {
       userID: uuidv4(),
       groupID: [],
@@ -56,6 +73,7 @@ const RegisterPage = () => {
       lastName: lastName,
       email: email,
       password: password,
+      firebaseToken: fbToken,
     };
 
     dispatch(userRegisterAsync(newUser));

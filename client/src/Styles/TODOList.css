@@ -28,7 +28,6 @@
 
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-
   /* Controls the colour of date tile when clicked */
   background-color: rgb(255, 211, 176);
 }
