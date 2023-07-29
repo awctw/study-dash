@@ -5,7 +5,7 @@ import {
   IconButton,
   Typography,
 } from "@material-tailwind/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import StatusBar from "./statusBar";
 import AddFlashcard from "./addFlashcard";

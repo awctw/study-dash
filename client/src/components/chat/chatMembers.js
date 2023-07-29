@@ -7,9 +7,7 @@ import {
   PopoverHandler,
   Typography,
 } from "@material-tailwind/react";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getGroupMembersAsync } from "../../store/authentication/thunks";
+import React from "react";
 
 const ChatMembers = (props) => {
   return (

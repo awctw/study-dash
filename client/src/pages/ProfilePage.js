@@ -1,7 +1,4 @@
-import {
-  UserCircleIcon,
-  InformationCircleIcon,
-} from "@heroicons/react/24/solid";
+import { InformationCircleIcon } from "@heroicons/react/24/solid";
 import { Typography, Alert } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,8 +10,6 @@ const ProfilePage = () => {
   const user = useSelector((state) => state.loginReducer);
   const dispatch = useDispatch();
   const [alert, setAlert] = useState(false);
-  const [selectedFile, setSelectedFile] = useState();
-  const [isFilePicked, setIsFilePicked] = useState(false);
 
   const [username, setUsername] = useState(
     user.isLoggedIn ? user.user.username : ""
@@ -26,11 +21,6 @@ const ProfilePage = () => {
     user.isLoggedIn ? user.user.lastName : ""
   );
   const [email, setEmail] = useState(user.isLoggedIn ? user.user.email : "");
-
-  const changeHandler = (event) => {
-    setSelectedFile(event.target.files[0]);
-    setIsFilePicked(true);
-  };
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -70,8 +60,6 @@ const ProfilePage = () => {
     setEmail(event.target.value);
   };
 
-  const handleUpload = (event) => {};
-
   return (
     <div>
       <div className="fixed left-0 top-0 z-[1035] h-screen">
@@ -86,35 +74,7 @@ const ProfilePage = () => {
                 This information will be displayed publicly so be careful what
                 you share.
               </p>
-              <div className="col-span-full">
-                <label
-                  htmlFor="photo"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Photo
-                </label>
-                <div className="mt-2 flex items-center gap-x-3">
-                  <UserCircleIcon
-                    className="h-12 w-12 text-gray-300"
-                    aria-hidden="true"
-                  />
-                  <input
-                    type="file"
-                    name="file"
-                    onChange={changeHandler}
-                    className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleUpload}
-                    className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  >
-                    Change
-                  </button>
-                </div>
-              </div>
             </div>
-
             <div className="border-b border-gray-900/10 pb-12">
               <h2 className="text-base font-semibold leading-7 text-gray-900">
                 Personal Information

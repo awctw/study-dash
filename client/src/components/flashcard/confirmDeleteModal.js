@@ -1,23 +1,18 @@
-import { PencilIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
 import {
   Button,
   Card,
-  CardBody,
-  CardFooter,
   Dialog,
   DialogBody,
   DialogFooter,
   DialogHeader,
   Typography,
 } from "@material-tailwind/react";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useDispatch } from "react-redux";
 import {
   deleteFlashcardAsync,
   deleteModuleAsync,
-  editFlashcardAsync,
 } from "../../store/flashcards/thunks";
-import { nanoid } from "@reduxjs/toolkit";
 
 const DeleteModal = (props) => {
   const dispatch = useDispatch();

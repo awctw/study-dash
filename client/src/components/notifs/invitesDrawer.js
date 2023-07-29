@@ -4,12 +4,10 @@ import {
   Button,
   Drawer,
   IconButton,
-  List,
-  ListItem,
   Tooltip,
   Typography,
 } from "@material-tailwind/react";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInvitesAsync } from "../../store/authentication/thunks";
 import {

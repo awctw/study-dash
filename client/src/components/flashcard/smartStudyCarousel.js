@@ -10,8 +10,6 @@ import {
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import StatusBar from "./statusBar";
-import AddFlashcard from "./addFlashcard";
-import EditFlashcard from "./editFlashcard";
 import Scale from "./answerScale";
 import { Player } from "@lottiefiles/react-lottie-player";
 

@@ -76,7 +76,7 @@ const editFlashcard = async (cardData) => {
 };
 
 const deleteFlashcard = async (cardData) => {
-  const response = await axios
+  await axios
     .delete(URL + `/flashcards/${cardData.moduleId}/${cardData.index}`)
     .then((res) => res.data)
     .catch((err) => {
@@ -87,7 +87,7 @@ const deleteFlashcard = async (cardData) => {
 };
 
 const deleteModule = async (moduleId) => {
-  const response = await axios
+  await axios
     .delete(URL + `/flashcards/${moduleId}`)
     .then((res) => res.data)
     .catch((err) => {
@@ -129,7 +129,7 @@ const refreshFlashcard = async (cardData) => {
   return response;
 };
 
-export default {
+const exports = {
   addModule,
   getModules,
   addFlashcard,
@@ -139,3 +139,5 @@ export default {
   getScheduledCards,
   refreshFlashcard,
 };
+
+export default exports;

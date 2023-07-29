@@ -4,7 +4,6 @@ import ProfilePage from "./pages/ProfilePage";
 import HabitsPage from "./pages/HabitsPage";
 import TODOPage from "./pages/TODOPage";
 import DashboardPage from "./pages/DashboardPage";
-import StatisticsPage from "./pages/StatisticsPage";
 import StudyGroupPage from "./pages/StudyGroupsPage";
 import RegisterPage from "./pages/RegisterPage";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -26,7 +25,6 @@ function App() {
           <Route path={"/profile"} element={<ProfilePage />} />
           <Route path={"/todos"} element={<TODOPage />} />
           <Route path={"/habits"} element={<HabitsPage />} />
-          <Route path={"/statistics"} element={<StatisticsPage />} />
           <Route path={"/studyGroups"} element={<StudyGroupPage />} />
           <Route path={"/register"} element={<RegisterPage />} />
           <Route path={"/chat/:id"} element={<ChatPage />} />
