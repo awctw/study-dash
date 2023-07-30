@@ -1,21 +1,16 @@
 import SideBar from "../components/SideBar";
 import {
-  Badge,
   Button,
   Card,
   CardBody,
   CardFooter,
   Dialog,
-  IconButton,
   Input,
-  Tooltip,
   Typography,
 } from "@material-tailwind/react";
 import {
   ArrowLongRightIcon,
-  BellIcon,
   ChatBubbleLeftRightIcon,
-  EnvelopeIcon,
 } from "@heroicons/react/24/solid";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,9 +18,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ChatMembers from "../components/chat/chatMembers";
 import { getUserChatsAsync, groupChatAsync } from "../store/chat/thunks";
-import { fetchToken } from "../firebaseInit";
-import Notification from "../components/notifs/notification";
-import Notif from "../components/notifs/notification";
 import InvitesDrawer from "../components/notifs/invitesDrawer";
 import { getUserInvitesAsync } from "../store/authentication/thunks";
 
@@ -75,6 +67,9 @@ const StudyGroupPage = () => {
         <SideBar />
       </div>
       <div className="p-5 !pl-[300px]">
+        <div className="mx-7">
+          <Typography variant="h2">Study Groups</Typography>
+        </div>
         <div className="mx-5">
           <div className="flex flex-row w-full items-center justify-between">
             <Button onClick={createChatHandler} className="bg-indigo-300 m-2">

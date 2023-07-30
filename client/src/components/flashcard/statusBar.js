@@ -11,7 +11,7 @@ import {
   Progress,
   Typography,
 } from "@material-tailwind/react";
-import React, { useState } from "react";
+import React from "react";
 
 const StatusBar = (props) => {
   const navList = (

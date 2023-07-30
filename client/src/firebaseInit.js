@@ -1,6 +1,5 @@
 import firebase from "firebase/compat/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
-import { toast } from "react-hot-toast";
 
 const config = {
   apiKey: "AIzaSyAgUY5d0kc556sShMaMogBmfcLRNZ_ClDU",

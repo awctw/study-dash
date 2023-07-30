@@ -26,4 +26,6 @@ const addHabit = async (habit) => {
   return response;
 };
 
-export default { getHabits, addHabit };
+const exports = { getHabits, addHabit };
+
+export default exports;

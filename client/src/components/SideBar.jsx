@@ -17,7 +17,6 @@ import {
   AcademicCapIcon,
   ArrowPathRoundedSquareIcon,
   ListBulletIcon,
-  ChartBarIcon,
   UserCircleIcon,
   UserGroupIcon,
   PowerIcon,
@@ -101,14 +100,6 @@ const SideBar = () => {
               <ArrowPathRoundedSquareIcon className="h-5 w-5" />
             </ListItemPrefix>
             Habits
-          </ListItem>
-        </NavLink>
-        <NavLink to={"/statistics"}>
-          <ListItem>
-            <ListItemPrefix>
-              <ChartBarIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            Statistics
           </ListItem>
         </NavLink>
         <NavLink to={"/studyGroups"}>
