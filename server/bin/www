@@ -41,7 +41,7 @@ io.on("connection", (socket) => {
   console.log(`Socket ${socket.id} connected`);
 
   socket.on("sendMessage", (message) => {
-    // io.emit("message", message);
+    io.emit("message", message);
     socket.broadcast.emit("message", message);
   });
 
