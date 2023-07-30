@@ -81,6 +81,7 @@ const ChatPage = () => {
     return () => {
       if (socket) {
         socket.off("message", handleMessage);
+        socket.disconnect();
       }
     };
   }, [socket]);
