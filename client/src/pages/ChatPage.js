@@ -66,10 +66,22 @@ const ChatPage = () => {
 
   useEffect(() => {
     const newSocket = io(URL);
-    setSocket(newSocket);
+    // setSocket(newSocket);
 
+    // return () => {
+    //   newSocket.disconnect();
+    // };
+    // Add "message" event listener
+    if (newSocket) {
+      newSocket.on("message", handleMessage);
+    }
+
+    // Clean up the "message" event listener on component unmount
     return () => {
-      newSocket.disconnect();
+      if (newSocket) {
+        newSocket.off("message", handleMessage);
+        newSocket.disconnect();
+      }
     };
   }, []);
 
@@ -81,7 +93,6 @@ const ChatPage = () => {
     return () => {
       if (socket) {
         socket.off("message", handleMessage);
-        socket.disconnect();
       }
     };
   }, [socket]);
