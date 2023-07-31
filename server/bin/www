@@ -42,16 +42,12 @@ io.on("connection", (socket) => {
 
   socket.on("joinRoom", (id) => {
     // Join the room with the socket ID as its identifier
-    // console.log(id);
     socket.join(id);
   });
 
   socket.on("sendMessage", (message) => {
-    console.log(message.groupID);
     io.to(message.groupID).emit("message", message.newMessage);
 
-    // io.emit("message", message);
-    // socket.broadcast.emit("message", message);
   });
 
   socket.on("disconnect", () => {

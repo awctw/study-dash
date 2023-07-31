@@ -23,8 +23,6 @@ const getChatHistory = async (req, res, next) => {
 const putChatHistory = async (req, res, next) => {
   const { groupID, newMessage, username } = req.body;
 
-  console.log(newMessage);
-
   const chat = await Chat.findOne({ groupID });
 
   const msgFound = chat.history.find((msg) => msg.id === newMessage.id);

@@ -85,14 +85,11 @@ const ChatPage = () => {
     return () => {
       if (socket) {
         socket.off("message");
-        // socket.off("message", handleMessage);
       }
     };
   }, [socket]);
 
   const handleMessage = (message) => {
-    console.log(message);
-
     dispatch(
       putChatHistoryAsync({
         groupID,
