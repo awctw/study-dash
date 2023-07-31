@@ -30,6 +30,7 @@ import {
   renameChatAsync,
 } from "../store/chat/thunks";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 // Credits: Setting up socket io for chat
 // https://dev.to/bhavik786/building-a-real-time-chat-application-using-mern-stack-and-socketio-1obn
@@ -90,6 +91,8 @@ const ChatPage = () => {
   }, [socket]);
 
   const handleMessage = (message) => {
+    console.log(message);
+
     dispatch(
       putChatHistoryAsync({
         groupID,
@@ -105,6 +108,7 @@ const ChatPage = () => {
     if (message) {
       socket.emit("sendMessage", {
         newMessage: {
+          id: uuidv4(),
           username,
           message,
         },

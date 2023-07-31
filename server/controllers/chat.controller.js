@@ -23,9 +23,15 @@ const getChatHistory = async (req, res, next) => {
 const putChatHistory = async (req, res, next) => {
   const { groupID, newMessage, username } = req.body;
 
+  console.log(newMessage);
+
   const chat = await Chat.findOne({ groupID });
 
-  chat.history.push(newMessage);
+  const msgFound = chat.history.find((msg) => msg.id === newMessage.id);
+
+  if (!msgFound) {
+    chat.history.push(newMessage);
+  }
 
   // retrieve all target user tokens for this notif (a join b/w chat & users)
   await User.find({
