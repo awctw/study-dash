@@ -34,8 +34,6 @@ import { useNavigate } from "react-router-dom";
 // Credits: Setting up socket io for chat
 // https://dev.to/bhavik786/building-a-real-time-chat-application-using-mern-stack-and-socketio-1obn
 const ChatPage = () => {
-  const isMounted = useRef(false); // Use a ref to keep track of component mount status
-
   const URL = process.env.REACT_APP_BASE_SERVER_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -85,29 +83,20 @@ const ChatPage = () => {
 
     return () => {
       if (socket) {
-        socket.off("message", handleMessage);
+        socket.off("message");
+        // socket.off("message", handleMessage);
       }
     };
   }, [socket]);
 
-  useEffect(() => {
-    isMounted.current = true; // The component is now mounted
-
-    return () => {
-      isMounted.current = false; // The component is being unmounted
-    };
-  }, []);
-
   const handleMessage = (message) => {
-    if (isMounted.current) {
-      dispatch(
-        putChatHistoryAsync({
-          groupID,
-          newMessage: message,
-          username: username,
-        })
-      );
-    }
+    dispatch(
+      putChatHistoryAsync({
+        groupID,
+        newMessage: message,
+        username: username,
+      })
+    );
   };
 
   const handleSubmit = async (event) => {
