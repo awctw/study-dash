@@ -69,6 +69,7 @@ const ChatPage = () => {
   useEffect(() => {
     const newSocket = io(URL);
     setSocket(newSocket);
+    newSocket.emit("joinRoom", groupID);
 
     return () => {
       if (newSocket) {
@@ -113,7 +114,13 @@ const ChatPage = () => {
     event.preventDefault();
 
     if (message) {
-      socket.emit("sendMessage", { username, message });
+      socket.emit("sendMessage", {
+        newMessage: {
+          username,
+          message,
+        },
+        groupID,
+      });
       setMessage("");
     }
   };
