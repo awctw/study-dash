@@ -1,6 +1,6 @@
-import TODOListMainView from "../components/TODOList/TODOListMainView";
 import SideBar from "../components/SideBar";
 import { Typography } from "@material-tailwind/react";
+import TODOListModule from "../components/TODOList/TODOListModule";
 
 const TODOPage = () => {
   return (
@@ -13,7 +13,7 @@ const TODOPage = () => {
           <Typography variant="h2">TODO</Typography>
         </div>
         <div>
-          <TODOListMainView />
+          <TODOListModule />
         </div>
       </div>
     </>
