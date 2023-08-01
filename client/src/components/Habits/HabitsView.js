@@ -14,7 +14,6 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import { TimePicker } from "@mui/x-date-pickers";
-import { ListBulletIcon } from "@heroicons/react/24/solid";
 
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -64,7 +63,6 @@ const HabitsView = () => {
       <Card className="w-80 shadow-xl shadow-pmd-blue-600">
         <CardBody className="flex-1">
           <div className="mb-2 flex items-center gap-4 p-4">
-            <ListBulletIcon className="blue-gray w-8 h-8" />
             <Typography variant="h5" color="blue-gray">
               Habits
             </Typography>

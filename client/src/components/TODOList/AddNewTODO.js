@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import DatePicker from "react-datepicker";
 import {
   Button,
-  Card,
   Dialog,
+  DialogBody,
+  DialogHeader,
   Input,
-  Spinner,
   Textarea,
 } from "@material-tailwind/react";
 import thunk from "../../store/TODOList/thunk";
@@ -25,7 +25,6 @@ const AddTODOItem = () => {
 
   // openAddTODO is used to control the visibility of the addTODO dialog popup.
   const [openAddTODO, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   // formData state variable is used to store the values entered in the form.
   const [formData, setFormData] = useState({
@@ -94,12 +93,10 @@ const AddTODOItem = () => {
       userID: user.user.userID,
     };
 
-    setLoading(true);
     const success = await dispatch(thunk.addTODOItemAsync(newTodo));
-    setLoading(false);
 
     if (success) {
-      setOpen(false);
+      setOpen(!openAddTODO);
     }
   };
 
@@ -140,8 +137,10 @@ const AddTODOItem = () => {
         handler={handleOpen}
         className="shadow-none"
       >
-        <Card className="m-4">
-          <h2 className="flex flex-row justify-center">Add TODO Item</h2>
+        <DialogHeader className="flex flex-row justify-center">
+          Add TODO Item
+        </DialogHeader>
+        <DialogBody>
           <form
             className="flex flex-col justify-evenly h-[30rem] overflow-y-auto"
             onSubmit={handleSubmit}
@@ -156,10 +155,10 @@ const AddTODOItem = () => {
             </div>
             <div className="flex flex-row justify-between flex-wrap">
               <div className="inputField mr-4">
-                <label htmlFor="add-startDate">Start Date:</label>
+                <label htmlFor="add-startDate">Start:</label>
                 <DatePicker
                   id="add-startDate"
-                  className="bg-orange-200 w-[12rem]"
+                  className="bg-indigo-100 rounded borders w-[12rem]"
                   dateFormat="MMM-dd-yyyy, h:mm aa"
                   showTimeInput
                   timeInputLabel="Time (hh:mm:AM/PM):"
@@ -171,10 +170,10 @@ const AddTODOItem = () => {
                 />
               </div>
               <div className="inputField">
-                <label htmlFor="add-endDate">End Date:</label>
+                <label htmlFor="add-endDate">Due:</label>
                 <DatePicker
                   id="add-endDate"
-                  className="bg-orange-200 w-[12rem]"
+                  className="bg-indigo-100 rounded borders w-[12rem]"
                   dateFormat="MMM-dd-yyyy, h:mm aa"
                   showTimeInput
                   timeInputLabel="Time (hh:mm:AM/PM):"
@@ -210,7 +209,6 @@ const AddTODOItem = () => {
               </datalist>
             </div>
 
-            {loading && <Spinner className="h-10 w-10" />}
             {errMessage && (
               <p className="error-msg flex flex-row justify-center">
                 {errMessage}
@@ -218,17 +216,11 @@ const AddTODOItem = () => {
             )}
 
             <div className="flex flex-row justify-evenly flex-wrap">
-              <Button
-                className="mb-4"
-                color="light-blue"
-                size="sm"
-                type="submit"
-              >
+              <Button className="mb-4 bg-indigo-300" size="sm" type="submit">
                 Confirm
               </Button>
               <Button
-                className="mb-4"
-                color="gray"
+                className="mb-4 border-indigo-300 bg-white text-indigo-300 border-solid border"
                 size="sm"
                 type="reset"
                 onClick={resetFormHandler}
@@ -236,8 +228,7 @@ const AddTODOItem = () => {
                 Clear
               </Button>
               <Button
-                className="mb-4"
-                color="red"
+                className="mb-4 border-indigo-300 bg-white text-indigo-300 border-solid border"
                 size="sm"
                 type="button"
                 onClick={handleOpen}
@@ -246,7 +237,7 @@ const AddTODOItem = () => {
               </Button>
             </div>
           </form>
-        </Card>
+        </DialogBody>
       </Dialog>
     </>
   );

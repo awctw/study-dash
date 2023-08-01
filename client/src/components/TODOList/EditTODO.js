@@ -3,11 +3,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   Button,
-  Card,
   Checkbox,
   Dialog,
+  DialogBody,
+  DialogHeader,
   Input,
-  Spinner,
   Textarea,
 } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +28,6 @@ const EditTODO = ({ todo }) => {
 
   // openEdit state controls the visibility of the edit dialog popup.
   const [openEdit, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   // formData state variable is used to store the values entered in the form.
   const [formData, setFormData] = useState({
@@ -46,11 +45,9 @@ const EditTODO = ({ todo }) => {
   // of the edit dialog popup. It also sets the initial values of the input fields
   // and clears the error message.
   const handleOpen = async () => {
-    setLoading(true);
     const success = await dispatch(thunk.getTODOItemAsync(todo._id));
-    setLoading(false);
     if (success) {
-      setOpen(true);
+      setOpen(!openEdit);
     }
   };
 
@@ -129,14 +126,12 @@ const EditTODO = ({ todo }) => {
       userID: user.user.userID,
     };
 
-    setLoading(true);
     const success = await dispatch(
       thunk.editTODOItemAsync({
         itemID: currentTODOItem._id,
         item: updatedTodo,
       })
     );
-    setLoading(false);
 
     if (success) {
       setOpen(false);
@@ -188,8 +183,10 @@ const EditTODO = ({ todo }) => {
         handler={handleOpen}
         className="shadow-none"
       >
-        <Card className="m-4">
-          <h2 className="flex flex-row justify-center">Edit TODO</h2>
+        <DialogHeader className="flex flex-row justify-center">
+          Edit TODO
+        </DialogHeader>
+        <DialogBody>
           <form
             className="flex flex-col justify-evenly h-[30rem] overflow-y-auto"
             onSubmit={handleFormSubmit}
@@ -204,10 +201,10 @@ const EditTODO = ({ todo }) => {
             </div>
             <div className="flex flex-row justify-between flex-wrap">
               <div className="inputField">
-                <label htmlFor="edit-startDate">Start Date:</label>
+                <label htmlFor="edit-startDate">Start:</label>
                 <DatePicker
                   id="edit-startDate"
-                  className="bg-orange-200 w-[12rem]"
+                  className="bg-indigo-100 rounded borders w-[12rem]"
                   dateFormat="MMM-dd-yyyy, h:mm aa"
                   showTimeInput
                   timeInputLabel="Time:"
@@ -219,10 +216,10 @@ const EditTODO = ({ todo }) => {
                 />
               </div>
               <div className="inputField">
-                <label htmlFor="edit-endDate">End Date:</label>
+                <label htmlFor="edit-endDate">Due:</label>
                 <DatePicker
                   id="edit-endDate"
-                  className="bg-orange-200 w-[12rem]"
+                  className="bg-indigo-100 rounded borders w-[12rem]"
                   dateFormat="MMM-dd-yyyy, h:mm aa"
                   showTimeInput
                   timeInputLabel="Time:"
@@ -265,7 +262,6 @@ const EditTODO = ({ todo }) => {
               </datalist>
             </div>
 
-            {loading && <Spinner className="h-10 w-10" />}
             {errMessage && (
               <p className="error-msg flex flex-row justify-center">
                 {errMessage}
@@ -273,25 +269,18 @@ const EditTODO = ({ todo }) => {
             )}
 
             <div className="flex flex-row justify-evenly flex-wrap">
-              <Button
-                className="mb-4"
-                color="light-blue"
-                size="sm"
-                type="submit"
-              >
+              <Button className="mb-4 bg-indigo-300" size="sm" type="submit">
                 Confirm
               </Button>
               <Button
-                className="mb-4"
-                color="gray"
+                className="mb-4 border-indigo-300 bg-white text-indigo-300 border-solid border"
                 size="sm"
                 onClick={resetFormHandler}
               >
                 Clear
               </Button>
               <Button
-                className="mb-4"
-                color="red"
+                className="mb-4 border-indigo-300 bg-white text-indigo-300 border-solid border"
                 size="sm"
                 onClick={handleClose}
               >
@@ -299,7 +288,7 @@ const EditTODO = ({ todo }) => {
               </Button>
             </div>
           </form>
-        </Card>
+        </DialogBody>
       </Dialog>
     </>
   );

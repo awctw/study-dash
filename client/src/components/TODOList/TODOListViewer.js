@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Spinner, Typography } from "@material-tailwind/react";
+import React, { useEffect } from "react";
+import { Typography } from "@material-tailwind/react";
 import ListView from "./ListView";
 import { useDispatch, useSelector } from "react-redux";
 import thunk from "../../store/TODOList/thunk";
@@ -12,21 +12,17 @@ const TODOListViewer = ({ selectedCategoryID }) => {
   const user = useSelector((state) => state.loginReducer);
 
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
 
   // updates todoList in redux store from server whenever list is
   // updated
   useEffect(() => {
-    setLoading(true);
     if (user.isLoggedIn) {
       dispatch(
         thunk.getTODOListAsync({
           userID: user.user.userID,
           categoryID: selectedCategoryID,
         })
-      ).then(() => {
-        setLoading(false);
-      });
+      );
     }
   }, [dispatch, fetchTODOList, selectedCategoryID, user]);
 
@@ -34,16 +30,15 @@ const TODOListViewer = ({ selectedCategoryID }) => {
   // indicating that there are visible TODOItems to display. At least 1 rem of horizontal
   // spacing is guaranteed between "TODO List" and "Total Todos"
   return (
-    <div>
-      <header className="flex justify-evenly flex-wrap mr-8">
-        <Typography className="mr-4" variant="h5">
+    <div className="flex flex-col mx-2">
+      <div className="flex align-items-center justify-between">
+        <Typography className="text-black" variant="h5">
           TODO List
         </Typography>
-        <Typography variant="small" className="mt-1 text-green-600">
+        <Typography variant="small" className="mt-1 text-black">
           Total Todos: {TODOList.length}
         </Typography>
-      </header>
-      {loading && <Spinner className="h-10 w-10" />}
+      </div>
       <ListView />
     </div>
   );

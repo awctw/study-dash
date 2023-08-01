@@ -1,11 +1,9 @@
 import React from "react";
-import { Button, Spinner } from "@material-tailwind/react";
-import { useDispatch, useSelector } from "react-redux";
+import { Button } from "@material-tailwind/react";
+import { useDispatch } from "react-redux";
 import thunk from "../../store/TODOList/thunk";
-import { REQUEST_STATE } from "../../store/utils";
 
 const CategoryDelete = ({ category, setSelectedCategoryID }) => {
-  const { deleteCategory } = useSelector((state) => state.todoReducer);
   const dispatch = useDispatch();
 
   const handleDelete = async () => {
@@ -17,10 +15,11 @@ const CategoryDelete = ({ category, setSelectedCategoryID }) => {
 
   return (
     <>
-      <Button color="red" size="sm" onClick={handleDelete} className="ml-8">
-        {deleteCategory === REQUEST_STATE.PENDING && (
-          <Spinner className="h-5 w-5" />
-        )}
+      <Button
+        size="sm"
+        onClick={handleDelete}
+        className="ml-8 border-indigo-300 bg-white text-indigo-300 border-solid border"
+      >
         Delete
       </Button>
     </>

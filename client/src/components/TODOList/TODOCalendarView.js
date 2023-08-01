@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Spinner } from "@material-tailwind/react";
+import React, { useEffect } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,20 +12,16 @@ const TODOCalendarView = ({ selectedCategoryID }) => {
   const user = useSelector((state) => state.loginReducer);
 
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
 
   // Fetch TODOList from Redux store whenever list is updated
   useEffect(() => {
-    setLoading(true);
     if (user.isLoggedIn) {
       dispatch(
         thunk.getTODOListAsync({
           userID: user.user.userID,
           categoryID: selectedCategoryID,
         })
-      ).then(() => {
-        setLoading(false);
-      });
+      );
     }
   }, [dispatch, fetchTODOList, selectedCategoryID, user]);
 
@@ -68,9 +63,18 @@ const TODOCalendarView = ({ selectedCategoryID }) => {
   };
 
   return (
-    <div className="flex flex-col items-center mt-4">
-      {loading && <Spinner className="h-10 w-10" />}
-      <Calendar tileContent={populateDateTileWithTODOs} />
+    <div className="flex flex-col items-center mx-2">
+      <Calendar
+        className="rounded-lg borders custom-no-underline"
+        tileContent={populateDateTileWithTODOs}
+      />
+      <style>
+        {`
+          .custom-no-underline .react-calendar__month-view__weekdays__weekday abbr {
+            text-decoration: none;
+          }
+        `}
+      </style>
     </div>
   );
 };
