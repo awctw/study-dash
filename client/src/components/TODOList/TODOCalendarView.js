@@ -15,7 +15,7 @@ const TODOCalendarView = ({ selectedCategoryID }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  // flag showing whether current "Date" tile is selected or not
+  // variable showing the date value of the currently selected "Date" tile
   const [selectedDate, setSelectedDate] = useState(null);
 
   // Fetch TODOList from Redux store whenever list is updated
