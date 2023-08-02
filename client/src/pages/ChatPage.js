@@ -30,6 +30,7 @@ import {
   renameChatAsync,
 } from "../store/chat/thunks";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 // Credits: Setting up socket io for chat
 // https://dev.to/bhavik786/building-a-real-time-chat-application-using-mern-stack-and-socketio-1obn
@@ -67,9 +68,12 @@ const ChatPage = () => {
   useEffect(() => {
     const newSocket = io(URL);
     setSocket(newSocket);
+    newSocket.emit("joinRoom", groupID);
 
     return () => {
-      newSocket.disconnect();
+      if (newSocket) {
+        newSocket.disconnect();
+      }
     };
   }, []);
 
@@ -80,14 +84,18 @@ const ChatPage = () => {
 
     return () => {
       if (socket) {
-        socket.off("message", handleMessage);
+        socket.off("message");
       }
     };
   }, [socket]);
 
   const handleMessage = (message) => {
     dispatch(
-      putChatHistoryAsync({ groupID, newMessage: message, username: username })
+      putChatHistoryAsync({
+        groupID,
+        newMessage: message,
+        username: username,
+      })
     );
   };
 
@@ -95,7 +103,14 @@ const ChatPage = () => {
     event.preventDefault();
 
     if (message) {
-      socket.emit("sendMessage", { username, message });
+      socket.emit("sendMessage", {
+        newMessage: {
+          id: uuidv4(),
+          username,
+          message,
+        },
+        groupID,
+      });
       setMessage("");
     }
   };

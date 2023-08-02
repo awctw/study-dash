@@ -25,15 +25,18 @@ const putChatHistory = async (req, res, next) => {
 
   const chat = await Chat.findOne({ groupID });
 
-  chat.history.push(newMessage);
+  const msgFound = chat.history.find((msg) => msg.id === newMessage.id);
+
+  if (!msgFound) {
+    chat.history.push(newMessage);
+  }
 
   // retrieve all target user tokens for this notif (a join b/w chat & users)
   await User.find({
-    username: { $in: chat.users }
+    username: { $in: chat.users },
   })
     .then((users) => {
       const tokenList = users.reduce((list, user) => {
-
         // can't send notif to the sender of this message
         if (user.firebaseToken && user.username !== username) {
           list.push(user.firebaseToken);
@@ -48,7 +51,6 @@ const putChatHistory = async (req, res, next) => {
           body: newMessage.message,
         });
       }
-
     })
     .catch((err) => {
       console.log("unable to send notifs: ", err);
@@ -74,14 +76,15 @@ const renameChat = async (req, res, next) => {
 
   chat.name = req.body.name;
 
-  await chat.save()
+  await chat
+    .save()
     .then((result) => {
       res.status(200).send(result);
     })
     .catch((err) => {
       res.status(500).send(err);
     });
-}
+};
 
 const groupChat = async (req, res) => {
   const { username, groupID, chatName } = req.body;
@@ -90,21 +93,20 @@ const groupChat = async (req, res) => {
     history: [],
     groupID: groupID,
     name: chatName,
-    users: [username]
+    users: [username],
   });
 
-  await chat.save()
+  await chat
+    .save()
     .then((result) => {
       res.status(200).send(result);
     })
     .catch((err) => {
       res.status(500).send(err);
     });
-
 };
 
 const sendUserInvite = async (req, res) => {
-
   const { username, groupID } = req.body;
 
   const foundUser = await User.findOne({ username });
@@ -116,12 +118,17 @@ const sendUserInvite = async (req, res) => {
   // we'll now actually return the user, since that's what we're updating
   await Chat.findOne({ groupID })
     .then(async (chat) => {
-      
-      const foundInvite = foundUser.invites.findIndex((invite) => invite.groupID === groupID);
+      const foundInvite = foundUser.invites.findIndex(
+        (invite) => invite.groupID === groupID
+      );
 
       // no need to send invite, if invitation already exists or user already exists in chat
       if (foundInvite !== -1 || chat.users.indexOf(foundUser.username) !== -1) {
-        return res.status(200).send("Either the user is already in the chat or the invite has been already sent out");
+        return res
+          .status(200)
+          .send(
+            "Either the user is already in the chat or the invite has been already sent out"
+          );
       }
 
       foundUser.invites.push({
@@ -132,7 +139,7 @@ const sendUserInvite = async (req, res) => {
       if (foundUser.firebaseToken) {
         sendNotification([foundUser.firebaseToken], {
           title: "You have an invitation",
-          body: `You have been invited to group chat, ${chat.name}` 
+          body: `You have been invited to group chat, ${chat.name}`,
         });
       }
 
@@ -143,11 +150,9 @@ const sendUserInvite = async (req, res) => {
     .catch((err) => {
       res.status(500).send(err);
     });
-
 };
 
 const inviteResponse = async (req, res, next) => {
-
   const { username, groupID, decision } = req.body;
 
   // First delete the invite
@@ -158,7 +163,9 @@ const inviteResponse = async (req, res, next) => {
   }
 
   // find and remove invite
-  const inviteIndex = foundUser.invites.findIndex((invite) => invite.groupID === groupID);
+  const inviteIndex = foundUser.invites.findIndex(
+    (invite) => invite.groupID === groupID
+  );
 
   if (inviteIndex === -1) {
     return res.status(400).send("Invite not found!");
@@ -169,14 +176,13 @@ const inviteResponse = async (req, res, next) => {
   await foundUser.save();
 
   // if user declined the invite, no need to proceed..
-  if (decision === 'declined') {
+  if (decision === "declined") {
     return res.status(200).send("");
   }
 
   // then push user to chat
   await Chat.findOne({ groupID })
     .then((chat) => {
-
       chat.users.push(foundUser.username);
       chat.save();
 
@@ -199,7 +205,8 @@ const leaveChat = async (req, res, next) => {
     foundChat.users.splice(userIndex, 1);
   }
 
-  await foundChat.save()
+  await foundChat
+    .save()
     .then((chat) => {
       res.status(200).send(chat);
     })
@@ -212,7 +219,7 @@ const getUserChats = async (req, res, next) => {
   const username = req.params.username;
 
   await Chat.find({
-    users: { $in: [username] }
+    users: { $in: [username] },
   })
     .then((chats) => {
       res.status(200).send(chats);
@@ -220,8 +227,7 @@ const getUserChats = async (req, res, next) => {
     .catch((err) => {
       res.status(500).send(err);
     });
-
-}
+};
 
 module.exports = {
   getChatHistory,
