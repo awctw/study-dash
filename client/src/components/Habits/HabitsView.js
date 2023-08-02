@@ -60,7 +60,7 @@ const HabitsView = () => {
 
   return (
     <>
-      <Card className="shadow-xl shadow-pmd-blue-600">
+      <Card className="shadow-xl shadow-pmd-blue-600 h-[17rem]">
         <CardBody className="flex-1">
           <div className="mb-2 flex items-center gap-4 p-4">
             <Typography variant="h5" color="blue-gray">
@@ -93,7 +93,7 @@ const HabitsView = () => {
               );
             })}
           </List>
-          <div className="flex flex-col items-center mt-8">
+          <div className="flex flex-col items-center mt-12">
             <Button
               onClick={handleOpen}
               className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100"

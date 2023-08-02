@@ -128,7 +128,7 @@ const Pomodoro = () => {
   };
 
   return (
-    <Card className="m-3 h-[16rem] w-[16rem] items-center">
+    <Card className="m-3 p-5 items-center h-[19rem]">
       <div className="absolute top-0 right-0">
         <IconButton onClick={handleOpen} className="h-6 w-6 m-2 bg-white">
           <AdjustmentsHorizontalIcon className="h-5 w-5 text-indigo-300" />

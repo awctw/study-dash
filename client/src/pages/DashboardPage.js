@@ -26,16 +26,16 @@ const DashboardPage = () => {
         <SideBar />
       </div>
       <div className="p-5 !pl-[300px]">
+        <div className="ml-8">
+          <Typography variant="h2">Dashboard</Typography>
+        </div>
         <div className="flex flex-wrap mx-5">
-          <div className="">
-            <Typography variant="h2">Dashboard</Typography>
-          </div>
           <div className="flex flex-row items-center justify-evenly flex-grow my-5">
             <div className="flex-grow">
-              <TODOListDashboardView className="" />
+              <TODOListDashboardView />
             </div>
-            <div className="">
-              <Pomodoro className="flex-grow" />
+            <div className="flex-grow">
+              <Pomodoro />
             </div>
           </div>
 
@@ -44,7 +44,7 @@ const DashboardPage = () => {
               <HabitsView />
             </div>
             <div className="flex-grow">
-              <GanttChartContainer className="" />
+              <GanttChartContainer />
             </div>
           </div>
 

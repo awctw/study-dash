@@ -23,7 +23,7 @@ const Overview = (props) => {
   return (
     <>
       {modules.length > 0 ? (
-        <Card className="w-110 max-h-[21.5rem] flex shadow-xl shadow-pmd-blue-600">
+        <Card className="min-w-[40rem] h-[20rem] flex shadow-xl shadow-pmd-blue-600">
           <div className="p-3">
             <Typography variant="h5" color="blue-gray" className="mb-2">
               Flashcards
@@ -59,20 +59,20 @@ const Overview = (props) => {
               ))}
             </List>
           </CardBody>
-          <CardFooter className="py-3 h-[4rem] border-t border-gray-400/50">
+          <CardFooter className="py-3 h-[4rem] border-t border-gray-400/50  mt-5">
             <Button
               onClick={() => {
                 setModId(modules[0]._id);
                 setVisible(true);
               }}
-              className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100"
+              className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100 mt-3"
             >
               Start Review!
             </Button>
           </CardFooter>
         </Card>
       ) : (
-        <Card className="w-[18rem] h-max-[21.5rem] flex shadow-xl shadow-pmd-blue-600">
+        <Card className="min-w-[40rem] h-[20rem] flex shadow-xl shadow-pmd-blue-600">
           <div className="p-3">
             <Typography variant="h5" color="blue-gray" className="mb-2">
               Flashcards
