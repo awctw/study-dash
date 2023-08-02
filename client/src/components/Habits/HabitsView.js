@@ -61,14 +61,18 @@ const HabitsView = () => {
 
   return (
     <>
-      <Card className="shadow-xl shadow-pmd-blue-600 h-[17rem]">
-        <CardBody className="flex-1 overflow-y-auto scrollbar scrollbar-hide">
-          <div className="mb-2 flex items-center gap-4 p-4">
-            <Typography variant="h5" color="blue-gray">
-              Habits
-            </Typography>
-          </div>
-          <List>
+      <Card className="shadow-xl shadow-pmd-blue-600 max-h-[17rem] pb-0">
+        <div className="p-3 pb-0">
+          <Typography variant="h5" color="blue-gray">
+            Habits
+          </Typography>
+          <Typography className="mb-3">
+            Here is an overview of all your flashcard modules. Click to start
+            reviewing!
+          </Typography>
+        </div>
+        <CardBody className="flex-1 pt-0 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
+          <List className="w-full">
             {habits.map((habit) => {
               return (
                 <ListItem key={habit._id} className="p-0">
@@ -96,7 +100,7 @@ const HabitsView = () => {
             })}
           </List>
         </CardBody>
-        <CardFooter className="py-3 h-[4rem] border-t border-gray-400/50">
+        <CardFooter className="p-3 flex items-center border-t border-gray-400/50">
           <Button
             onClick={handleOpen}
             className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100"

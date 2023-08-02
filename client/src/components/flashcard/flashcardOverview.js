@@ -23,9 +23,9 @@ const Overview = (props) => {
   return (
     <>
       {modules.length > 0 ? (
-        <Card className="min-w-[40rem] h-[20rem] flex shadow-xl shadow-pmd-blue-600">
+        <Card className="min-w-[40rem] max-h-[20rem] flex shadow-xl shadow-pmd-blue-600">
           <div className="p-3">
-            <Typography variant="h5" color="blue-gray" className="mb-2">
+            <Typography variant="h5" color="blue-gray">
               Flashcards
             </Typography>
             <Typography className="mb-3">
@@ -33,7 +33,7 @@ const Overview = (props) => {
               reviewing!
             </Typography>
           </div>
-          <CardBody className="pt-0 overflow-y-auto scrollbar-hide">
+          <CardBody className="pt-0 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
             <List className="pl-0">
               {modules.map((module, i) => (
                 <ListItem
@@ -59,13 +59,13 @@ const Overview = (props) => {
               ))}
             </List>
           </CardBody>
-          <CardFooter className="py-3 h-[4rem] border-t border-gray-400/50  mt-5">
+          <CardFooter className="flex items-center py-3 border-t border-gray-400/50">
             <Button
               onClick={() => {
                 setModId(modules[0]._id);
                 setVisible(true);
               }}
-              className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100 mt-3"
+              className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100"
             >
               Start Review!
             </Button>
