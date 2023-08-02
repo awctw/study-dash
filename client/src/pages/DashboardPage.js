@@ -26,24 +26,32 @@ const DashboardPage = () => {
         <SideBar />
       </div>
       <div className="p-5 !pl-[300px]">
-        <div className="mx-7">
-          <Typography variant="h2">Dashboard</Typography>
-        </div>
-        <div className="flex flex-wrap">
-          <div className="mx-3">
-            <TODOListDashboardView />
+        <div className="flex flex-wrap mx-5">
+          <div className="">
+            <Typography variant="h2">Dashboard</Typography>
           </div>
-          <div className="mx-3">
-            <Pomodoro />
+          <div className="flex flex-row items-center justify-evenly flex-grow">
+            <div className="">
+              <TODOListDashboardView className="" />
+            </div>
+            <div className="">
+              <Pomodoro className="" />
+            </div>
           </div>
-          <div className="mx-7">
-            <HabitsView />
+
+          <div className="flex flex-row items-center justify-evenly flex-grow">
+            <div className="">
+              <HabitsView />
+            </div>
+            <div className="">
+              <GanttChartContainer className="" />
+            </div>
           </div>
-          <div className="mx-2">
-            <GanttChartContainer />
-          </div>
-          <div className="mx-7 mt-5">
-            <Overview />
+
+          <div className="flex flex-row items-center justify-evenly flex-grow">
+            <div className="mt-5">
+              <Overview />
+            </div>
           </div>
         </div>
         {!user.isLoggedIn && <Navigate to="/" replace={true} />}
