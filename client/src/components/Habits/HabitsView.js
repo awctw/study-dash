@@ -67,11 +67,10 @@ const HabitsView = () => {
             Habits
           </Typography>
           <Typography className="mb-3">
-            Here is an overview of all your flashcard modules. Click to start
-            reviewing!
+            Here's an overview of all your Habits.
           </Typography>
         </div>
-        <CardBody className="flex-1 pt-0 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
+        <CardBody className="flex-1 py-0 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
           <List className="w-full">
             {habits.map((habit) => {
               return (

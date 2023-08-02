@@ -63,7 +63,7 @@ const TODOCalendarView = ({ selectedCategoryID }) => {
   };
 
   return (
-    <div className="flex flex-col items-center mx-2">
+    <div className="flex flex-col items-center mx-2 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
       <Calendar
         className="rounded-lg borders custom-no-underline"
         tileContent={populateDateTileWithTODOs}
