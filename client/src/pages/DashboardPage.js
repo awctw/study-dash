@@ -30,27 +30,27 @@ const DashboardPage = () => {
           <div className="">
             <Typography variant="h2">Dashboard</Typography>
           </div>
-          <div className="flex flex-row items-center justify-evenly flex-grow">
-            <div className="">
+          <div className="flex flex-row items-center justify-evenly flex-grow my-5">
+            <div className="flex-grow">
               <TODOListDashboardView className="" />
             </div>
             <div className="">
-              <Pomodoro className="" />
+              <Pomodoro className="flex-grow" />
             </div>
           </div>
 
-          <div className="flex flex-row items-center justify-evenly flex-grow">
-            <div className="">
+          <div className="flex flex-row items-center justify-evenly flex-grow my-5">
+            <div className="flex-grow ml-4 mr-7">
               <HabitsView />
             </div>
-            <div className="">
+            <div className="flex-grow">
               <GanttChartContainer className="" />
             </div>
           </div>
 
-          <div className="flex flex-row items-center justify-evenly flex-grow">
-            <div className="mt-5">
-              <Overview />
+          <div className="flex flex-row items-center justify-evenly flex-grow my-5">
+            <div className="flex-grow ml-4">
+              <Overview className="" />
             </div>
           </div>
         </div>
