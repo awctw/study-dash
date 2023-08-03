@@ -78,6 +78,21 @@ const HabitsView = () => {
     setCheckedHabits(prevSet)
   }
 
+  const isTicked = (habit) => {
+    let date = new Date()
+    let day = date.getDate()
+    let month = date.getMonth()
+    let year = date.getFullYear()
+    date = new Date(year, month, day)
+    let today = dayjs(date)
+
+    if (habit.dates.length == 0 || (habit.dates.length > 0 && today.diff(habit.dates.at(-1)))) {
+      return false
+    } else {
+      return true
+    }
+  }
+
   return (
     <>
       <Card className="w-80 shadow-xl shadow-pmd-blue-600">
@@ -105,6 +120,7 @@ const HabitsView = () => {
                           className: "p-0",
                         }}
                         onClick={() => toggleHabit(habit._id)}
+                        defaultChecked={isTicked(habit)}
                       />
                     </ListItemPrefix>
                     <Typography color="blue-gray" className="font-medium">
