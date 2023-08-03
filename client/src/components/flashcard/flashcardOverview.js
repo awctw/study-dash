@@ -7,11 +7,10 @@ import {
   ListItem,
   Typography,
 } from "@material-tailwind/react";
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import FlashCardModal from "./flashcardModal";
-import { getModulesAsync } from "../../store/flashcards/thunks";
 import { Player } from "@lottiefiles/react-lottie-player";
 import AddModuleModal from "./addModuleModal";
 

@@ -1,6 +1,16 @@
 # StudyDash
 
 ## Project Description
+StudyDash aims to enhance the day-to-day learning 
+process by providing a dashboard of productivity 
+tools that encourages the building of mastery through 
+repeated, deliberate practice. These tools include a 
+customizable Pomodoro timer, TODO list, habit tracker, 
+Gantt chart, and spaced-repetition flashcard reviewer. 
+Users are also able to create chat groups with one 
+another to facilitate shared learning and communication.
+
+## Initial Project Description
 
 The study application is for learners seeking to build
 mastery through deliberate practice by allowing users

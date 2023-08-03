@@ -40,4 +40,6 @@ const toggleHabbitDate = async (habitID) => {
     return response;
 };
 
-export default { getHabits, addHabit, toggleHabbitDate };
+const exports = { getHabits, addHabit, toggleHabbitDate };
+
+export default exports;

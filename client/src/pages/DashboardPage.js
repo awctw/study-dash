@@ -1,5 +1,6 @@
 import HabitsView from "../components/Habits/HabitsView";
 import Pomodoro from "../components/Timer/Pomodoro";
+import { Typography } from "@material-tailwind/react";
 import GanttChartContainer from "../components/GanttChart/GanttChartContainer";
 import SideBar from "../components/SideBar";
 import Overview from "../components/flashcard/flashcardOverview";
@@ -25,6 +26,9 @@ const DashboardPage = () => {
         <SideBar />
       </div>
       <div className="p-5 !pl-[300px]">
+        <div className="mx-7">
+          <Typography variant="h2">Dashboard</Typography>
+        </div>
         <div className="flex flex-wrap">
           <div className="mx-3">
             <TODOListDashboardView />

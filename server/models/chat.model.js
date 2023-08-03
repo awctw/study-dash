@@ -5,12 +5,14 @@ const Chat = mongoose.model(
   new mongoose.Schema({
     history: [
       {
+        id: String,
         username: String,
         message: String,
       },
     ],
     groupID: String,
     name: String,
+    users: [String],
   })
 );
 

@@ -15,3 +15,19 @@
 #AddNewTODOButton {
   margin-bottom: 1rem;
 }
+
+/*
+  Styles for Calendar TODOItem view
+*/
+.react-calendar__tile--active {
+  background: rgba(255, 255, 255, 0);
+
+  /* Controls the colour of text within each date tile */
+  color: #000000;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  /* Controls the colour of date tile when clicked */
+  background-color: rgb(255, 211, 176);
+}

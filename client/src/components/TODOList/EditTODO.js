@@ -213,6 +213,9 @@ const EditTODO = ({ todo }) => {
                   timeInputLabel="Time:"
                   selected={formData.startDate}
                   onChange={handleStartDateInput}
+                  // the most recent (inclusive) Date value that the user
+                  // can select for "Start Date"
+                  maxDate={formData.endDate}
                 />
               </div>
               <div className="inputField">
@@ -225,6 +228,9 @@ const EditTODO = ({ todo }) => {
                   timeInputLabel="Time:"
                   selected={formData.endDate}
                   onChange={handleEndDateInput}
+                  // the oldest (inclusive) Date value that the user
+                  // can select for "End Date"
+                  minDate={formData.startDate}
                 />
               </div>
             </div>

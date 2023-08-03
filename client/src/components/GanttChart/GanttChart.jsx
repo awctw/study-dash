@@ -18,6 +18,8 @@ const GanttChart = (props) => {
     let upToDateChartSettings = useRef(chartSettings);
     let upToDateTodos = useRef(todos);
     let upToDateHabits = useRef(habits);
+    let prevTimeout = useRef(-1);
+    let currentTimeout = useRef(-1);
 
     // Function for string to Date handling
     const parseDate = function(date) {
@@ -36,12 +38,12 @@ const GanttChart = (props) => {
     const CIRCLE_RADIUS = 5;
     const renderChart = useCallback(() => {
         // Filter data to see if the chart needs to be rendered
-        const xDomainStart = Date.now() - upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
-        const xDomainEnd = Date.now() + upToDateChartSettings.current.axisScale * 60 * 60 * 1000;
+        const xDomainStart = Date.now() - upToDateChartSettings.current.axisTimeScale * 60 * 60 * 1000;
+        const xDomainEnd = Date.now() + upToDateChartSettings.current.axisTimeScale * 60 * 60 * 1000;
         // 'Clone' upToDateTodos.current to bypass read-only for scaleBand duplicate title handling
         let filteredData = JSON.parse(JSON.stringify(upToDateTodos.current));
-        filteredData = filteredData.filter(d => xDomainStart <= Date.parse(d.endDate) &&
-            Date.parse(d.startDate) <= xDomainEnd);
+        filteredData = filteredData.filter(d => Date.parse(d.endDate) - Date.parse(d.startDate) !== 0 &&
+            xDomainStart <= Date.parse(d.endDate) && Date.parse(d.startDate) <= xDomainEnd);
 
         // Habit day of the week handling
         let currDate = new Date(xDomainStart);
@@ -61,7 +63,7 @@ const GanttChart = (props) => {
                             retDate = new Date(retDate).setFullYear(currDate.getFullYear());
                             return retDate;
                         }();
-                        if (xDomainStart <= endDate && startDate <= xDomainEnd) {
+                        if (endDate - startDate !== 0 && xDomainStart <= endDate && startDate <= xDomainEnd) {
                             filteredData.push({
                                 _id: habit["_id"],
                                 title: habit.name,
@@ -107,8 +109,8 @@ const GanttChart = (props) => {
         }
         // Increasing containerHeight affects inner chart height
         if (props.containerHeight === undefined) {
-            // 40 px per item
-            containerHeight = margin.top + margin.bottom + 30 * filteredData.length;
+            // Variable px per item
+            containerHeight = margin.top + margin.bottom + upToDateChartSettings.current.axisVerticalScale * filteredData.length;
         }
         if (props.tooltipPadding === undefined) {
             tooltipPadding = 15;
@@ -316,6 +318,21 @@ const GanttChart = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // Update the chart on every minute change (to keep 'now' line accurate)
+    // New instance of setTimeOut() every runClock() so no memory build-up due to garbage collector
+    const runClock = useCallback(() => {
+        // Update the chart on every minute change (to keep 'now' line accurate)
+        // New instance of setTimeOut() every runClock() so no memory build-up due to garbage collector
+        const now = new Date();
+        const timeToNextTick = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+        return setTimeout(() => {
+            prevTimeout.current = currentTimeout.current;
+            renderChart();
+            currentTimeout.current = runClock();
+            clearTimeout(prevTimeout.current);
+        }, timeToNextTick);
+    }, [renderChart]);
+
     // Sync ref variables and re-render chart whenever data or chartSettings changes
     useEffect(() => {
         if (todos !== null && habits !== null && chartSettings !== null) {
@@ -323,21 +340,16 @@ const GanttChart = (props) => {
             upToDateHabits.current = habits;
             upToDateChartSettings.current = chartSettings;
             renderChart();
-            runClock();
+            currentTimeout.current = runClock();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [todos, habits, chartSettings]);
 
-    // Update the chart on every minute change (to keep 'now' line accurate)
-    // New instance of setTimeOut() every runClock() so no memory build-up due to garbage collector
-    const runClock = () => {
-        const now = new Date();
-        const timeToNextTick = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
-        setTimeout(() => {
-            renderChart();
-            runClock();
-        }, timeToNextTick);
-    }
+        // Cleanup on unmount
+        return () => {
+            clearTimeout(prevTimeout.current);
+            clearTimeout(currentTimeout.current);
+        };
+
+    }, [todos, habits, chartSettings, renderChart, runClock]);
 
     return(
         <div>

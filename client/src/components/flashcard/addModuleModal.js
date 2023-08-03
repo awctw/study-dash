@@ -1,13 +1,7 @@
 import {
-  ArrowLongRightIcon,
-  ArrowRightIcon,
-  PlusIcon,
-} from "@heroicons/react/24/solid";
-import {
   Button,
   Card,
   CardBody,
-  CardFooter,
   Dialog,
   Input,
   Typography,

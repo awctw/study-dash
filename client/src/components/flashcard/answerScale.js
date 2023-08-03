@@ -1,5 +1,5 @@
 import { Button, Card, Typography } from "@material-tailwind/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { refreshFlashCardAsync } from "../../store/flashcards/thunks";
 

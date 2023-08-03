@@ -26,7 +26,7 @@ router.delete('/:categoryID', async (req, res) => {
       return res
         .status(409)
         .send(
-          'The category is still used by other TODO Items. So, the category cannot be deleted'
+          'This category is still in use and so cannot be deleted.'
         );
     }
 
