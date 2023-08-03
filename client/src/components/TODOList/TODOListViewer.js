@@ -39,7 +39,7 @@ const TODOListViewer = ({ selectedCategoryID }) => {
         <Typography className="mr-4" variant="h5">
           TODO List
         </Typography>
-        <Typography variant="small" className="mt-1 text-green-600">
+        <Typography variant="paragraph" className="mt-1 text-green-600">
           Total Todos: {TODOList.length}
         </Typography>
       </header>

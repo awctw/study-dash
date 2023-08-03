@@ -22,11 +22,21 @@ const TODOItem = ({ todo }) => {
   const endDateObj = new Date(todo.endDate);
 
   const startDateVal = `${startDateObj.toDateString()}, ${startDateObj.toLocaleTimeString(
-    "en-CA"
+    "en-CA",
+    {
+      // Add options to omit seconds component from time string
+      hour: "numeric",
+      minute: "numeric",
+    }
   )}`;
 
   const endDateVal = `${endDateObj.toDateString()}, ${endDateObj.toLocaleTimeString(
-    "en-CA"
+    "en-CA",
+    {
+      // Add options to omit seconds component from time string
+      hour: "numeric",
+      minute: "numeric",
+    }
   )}`;
 
   return (
