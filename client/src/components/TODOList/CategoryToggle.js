@@ -28,7 +28,7 @@ function CategoryToggle({ setSelectedCategoryID, setErrMessage }) {
   };
 
   return (
-    <div className="mt-4 w-[13rem]">
+    <div className="mt-4 w-[13rem] flex">
       <Select
         id="categoryFilter"
         label="Select by Category"

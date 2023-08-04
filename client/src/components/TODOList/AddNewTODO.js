@@ -6,11 +6,14 @@ import {
   Dialog,
   DialogBody,
   DialogHeader,
+  IconButton,
   Input,
   Textarea,
+  Tooltip,
 } from "@material-tailwind/react";
 import thunk from "../../store/TODOList/thunk";
 import { REQUEST_STATE } from "../../store/utils";
+import { PlusIcon } from "@heroicons/react/20/solid";
 
 // AddTODOItem component provides a form to add new TODOItems
 const AddTODOItem = () => {
@@ -123,14 +126,16 @@ const AddTODOItem = () => {
 
   return (
     <>
-      <Button
-        id="AddNewTODOButton"
-        className="bg-indigo-300 text-white mt-4 m-4"
-        size="sm"
-        onClick={handleOpen}
-      >
-        Add
-      </Button>
+      <Tooltip content={"Add a todo!"} placement="left">
+        <IconButton
+          id="AddNewTODOButton"
+          className="bg-indigo-50 text-indigo-300 shadow-none hover:shadow-none mx-3 mt-8"
+          size="md"
+          onClick={handleOpen}
+        >
+          <PlusIcon className="h-6 w-6" />
+        </IconButton>
+      </Tooltip>
       <Dialog
         size="lg"
         open={openAddTODO}

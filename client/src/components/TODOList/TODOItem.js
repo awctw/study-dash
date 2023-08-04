@@ -60,19 +60,21 @@ const TODOItem = ({ todo, shorten }) => {
             className="flex flex-col items-center
           overflow-y-auto max-h-[15rem]"
           >
-            <List className="p-0">
-              <Button
-                variant="text"
-                size="sm"
-                color="red"
-                className="flex text-sm font-sans font-normal normal-case items-center gap-3"
-                onClick={handleDelete}
-              >
-                <TrashIcon className="text-red-400 w-4 h-4" />
-                Delete
-              </Button>
-              <EditTODO todo={todo} />
-            </List>
+            <div className="flex">
+              <List className="p-0 min-w-[9rem]">
+                <Button
+                  variant="text"
+                  size="sm"
+                  color="red"
+                  className="flex text-sm font-sans font-normal normal-case items-center gap-3"
+                  onClick={handleDelete}
+                >
+                  <TrashIcon className="text-red-400 w-4 h-4" />
+                  Delete
+                </Button>
+                <EditTODO todo={todo} />
+              </List>
+            </div>
           </PopoverContent>
         </Popover>
       </div>
