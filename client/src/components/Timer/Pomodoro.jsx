@@ -10,11 +10,8 @@ import {
   DialogHeader,
   Input,
 } from "@material-tailwind/react";
-import {
-  PlayIcon,
-  PauseIcon,
-  AdjustmentsHorizontalIcon,
-} from "@heroicons/react/24/solid";
+import { PlayIcon, PauseIcon } from "@heroicons/react/24/solid";
+import { Cog6ToothIcon } from "@heroicons/react/20/solid";
 import {
   CircularProgressbarWithChildren,
   buildStyles,
@@ -130,9 +127,11 @@ const Pomodoro = () => {
   return (
     <Card className="m-3 p-5 items-center h-[19rem]">
       <div className="absolute top-0 right-0">
-        <IconButton onClick={handleOpen} className="h-6 w-6 m-2 bg-white">
-          <AdjustmentsHorizontalIcon className="h-5 w-5 text-indigo-300" />
-        </IconButton>
+        <Cog6ToothIcon
+          className="h-5 w-5 cursor-pointer float-right m-2"
+          color="black"
+          onClick={handleOpen}
+        />
       </div>
       <div className="w-[12rem] h-[12rem] flex justify-center items-center rounded-full bg-gradient-to-t to-pmd-blue-600 from-pmd-blue-900 shadow-2xl shadow-pmd-blue-600">
         <div className="w-[9rem] h-[9rem] flex justify-center items-center rounded-full text-3xl bg-pmd-blue-900">
@@ -202,7 +201,7 @@ const Pomodoro = () => {
             />
           </div>
         </DialogBody>
-        <DialogFooter tabIndex={1}>
+        <DialogFooter>
           <Button
             onClick={handleOpen}
             className="border-indigo-300 bg-white text-indigo-300 border-solid border m-2"

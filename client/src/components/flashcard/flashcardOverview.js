@@ -23,8 +23,8 @@ const Overview = (props) => {
   return (
     <>
       {modules.length > 0 ? (
-        <Card className="min-w-[40rem] max-h-[20rem] flex shadow-xl shadow-pmd-blue-600">
-          <div className="p-3">
+        <Card className="min-w-[40rem] min-h-[20rem] flex shadow-xl shadow-pmd-blue-600">
+          <div className="p-3 pb-0">
             <Typography variant="h5" color="blue-gray">
               Flashcards
             </Typography>
@@ -91,7 +91,7 @@ const Overview = (props) => {
               loop
             />
           </div>
-          <CardFooter className="py-3 border-t border-gray-400/50">
+          <CardFooter className="p-3 flex items-center border-t border-gray-400/50">
             <AddModuleModal
               visible={initVisible}
               setVisible={setInitVisible}

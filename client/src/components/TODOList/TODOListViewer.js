@@ -30,8 +30,8 @@ const TODOListViewer = ({ selectedCategoryID }) => {
   // indicating that there are visible TODOItems to display. At least 1 rem of horizontal
   // spacing is guaranteed between "TODO List" and "Total Todos"
   return (
-    <div className="flex flex-col mx-2">
-      <div className="flex align-items-center justify-between">
+    <div className="flex flex-col flex-grow">
+      <div className="flex items-start justify-between p-3 pb-0">
         <Typography className="text-black" variant="h5">
           TODO List
         </Typography>

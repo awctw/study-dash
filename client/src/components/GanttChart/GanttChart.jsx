@@ -398,9 +398,9 @@ const GanttChart = (props) => {
   }, [todos, habits, chartSettings, renderChart, runClock]);
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center min-w-[30rem]">
       <div id="empty-chart-div">
-        <Typography className="pt-2 px-5">
+        <Typography color="gray" className="pt-2 px-5">
           Nothing to display for the current time range.
         </Typography>
         <div className="flex items-center justify-center">
