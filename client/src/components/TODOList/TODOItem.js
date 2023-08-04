@@ -49,7 +49,7 @@ const TODOItem = ({ todo, shorten }) => {
         {startDateVal} - {endDateVal}
       </p>
       <hr className="my-4 border border-gray-400/25" />
-      <div class="absolute top-0 right-0 m-2">
+      <div className="absolute top-0 right-0 m-2">
         <Popover>
           <PopoverHandler>
             <IconButton variant="text" color="blue-gray" size="sm">
