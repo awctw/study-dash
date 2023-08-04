@@ -1,14 +1,31 @@
 import React from "react";
-import { Typography } from "@material-tailwind/react";
-import { CheckCircleIcon } from "@heroicons/react/20/solid";
+import { Chip, Typography } from "@material-tailwind/react";
+import { CheckCircleIcon, CheckIcon } from "@heroicons/react/20/solid";
 
-const TodoDoneNotice = () => {
+const TodoDoneNotice = (props) => {
   return (
-    <div className="flex align-items-center justify-between">
-      <CheckCircleIcon className="text-indigo-300 mr-4 h-6 mb-4" />
-      <Typography variant="h4" className="text-sm text-indigo-300">
-        Task Completed
-      </Typography>
+    <div className="flex align-items-center justify-between mb-3">
+      {props.isFinished ? (
+        <Chip
+          className="normal-case text-sm font-semibold font-sans"
+          variant="ghost"
+          color="green"
+          size="sm"
+          value="Done"
+          icon={<CheckIcon />}
+        />
+      ) : (
+        <Chip
+          className="normal-case text-sm font-semibold font-sans"
+          variant="ghost"
+          color="cyan"
+          size="sm"
+          value="Pending"
+          icon={
+            <span className="mx-auto mt-1 block h-2 w-2 rounded-full bg-green-900 content-['']" />
+          }
+        />
+      )}
     </div>
   );
 };

@@ -13,6 +13,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import thunk from "../../store/TODOList/thunk";
 import { REQUEST_STATE } from "../../store/utils";
+import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 
 // The EditTODO component allows users to edit the properties of a TODOItem
 // through a dialog popup.
@@ -174,7 +175,14 @@ const EditTODO = ({ todo }) => {
 
   return (
     <>
-      <Button onClick={handleOpen} className="bg-indigo-300 mb-4">
+      <Button
+        onClick={handleOpen}
+        variant="text"
+        size="sm"
+        color="blue-gray"
+        className="flex text-sm font-sans font-normal normal-case items-center gap-3"
+      >
+        <MagnifyingGlassIcon className="text-blue-gray-300 w-4 h-4" />
         Details
       </Button>
       <Dialog
