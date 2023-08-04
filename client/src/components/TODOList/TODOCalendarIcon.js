@@ -37,7 +37,7 @@ const TODOCalendarIcon = ({ TODOList }) => {
       overflow-y-auto max-h-[15rem] scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50"
       >
         {TODOList.map((todo) => (
-          <TODOItem key={todo._id} todo={todo} />
+          <TODOItem key={todo._id} todo={todo} shorten={true} />
         ))}
       </PopoverContent>
     </Popover>

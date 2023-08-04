@@ -34,12 +34,14 @@ function CategoryToggle({ setSelectedCategoryID, setErrMessage }) {
         label="Select by Category"
         onChange={handleCategorySelection}
       >
-        <Option value="">All Categories</Option>
+        <Option value="" className="pl-2 py-[0.65rem] pr-1">
+          All Categories
+        </Option>
         {categories.map((category) => (
           <Option
             key={category._id}
             value={category._id}
-            className="flex flex-row justify-between flex-wrap"
+            className="flex flex-row justify-between flex-wrap items-center pl-2 py-1 pr-1 my-1"
           >
             {category.category}
             <CategoryDelete

@@ -1,7 +1,8 @@
 import React from "react";
-import { Button } from "@material-tailwind/react";
+import { Button, IconButton } from "@material-tailwind/react";
 import { useDispatch } from "react-redux";
 import thunk from "../../store/TODOList/thunk";
+import { TrashIcon } from "@heroicons/react/20/solid";
 
 const CategoryDelete = ({ category, setSelectedCategoryID }) => {
   const dispatch = useDispatch();
@@ -15,13 +16,15 @@ const CategoryDelete = ({ category, setSelectedCategoryID }) => {
 
   return (
     <>
-      <Button
+      <IconButton
+        variant="text"
         size="sm"
+        color="blue-gray"
+        className="p-0 m-0"
         onClick={handleDelete}
-        className="ml-8 border-indigo-300 bg-white text-indigo-300 border-solid border"
       >
-        Delete
-      </Button>
+        <TrashIcon className="h-4 w-4 p-0" />
+      </IconButton>
     </>
   );
 };

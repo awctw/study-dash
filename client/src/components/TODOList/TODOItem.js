@@ -82,14 +82,21 @@ const TODOItem = ({ todo, shorten }) => {
 };
 
 const formatdate = (date) => {
-  const options = {
-    hour: "numeric",
-    minute: "numeric",
-    day: "numeric",
+  /**
+   * Reference: chatGPT
+   */
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? "pm" : "am";
+  const formattedHours = hours.toString().padStart(2, "0");
+  const formattedMinutes = minutes.toString().padStart(2, "0");
+  const formattedDate = date.toLocaleString("default", {
     month: "short",
+    day: "numeric",
     year: "numeric",
-  };
-  return new Intl.DateTimeFormat("en-US", options).format(date);
+  });
+
+  return `${formattedHours}:${formattedMinutes}, ${formattedDate}`;
 };
 
 export default TODOItem;
