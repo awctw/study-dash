@@ -161,14 +161,14 @@ const ChatPage = () => {
       </div>
       <div className="p-5 !pl-[300px]">
         <div className="flex justify-center">
-          <div className="w-4/5 text-ellipsis overflow-hidden">
+          <div className="mx-7 flex-grow text-ellipsis overflow-hidden">
             <Typography className="font-sans text-black/80 font-semibold text-4xl">
-              {currChat && currChat.name}
+              Study Group: {currChat && currChat.name}
             </Typography>
             <Typography className="text-blue-gray-400 font-sans text-md ml-1">
               {currChat.users && currChat.users.length} members
             </Typography>
-            <hr className="mt-3 border-blue-gray-300/40 w-[95%]" />
+            <hr className="mt-3 border-blue-gray-300/40 mr-7" />
           </div>
         </div>
 
@@ -199,8 +199,8 @@ const ChatPage = () => {
         </div>
 
         <div className="flex justify-center">
-          <div className="mb-5 absolute bottom-0 w-3/5">
-            <Card className="flex mb-5 px-5 py-0 max-h-[30rem] overflow-y-auto scrollbar scrollbar-none shadow-none">
+          <div className="flex flex-col justify-end ml-5 mr-12 mb-5 flex-grow">
+            <Card className="flex mb-5 px-5 py-0 h-[70vh] overflow-y-auto scrollbar scrollbar-none shadow-none">
               {currChat.history &&
                 currChat.history.map((message, index) => (
                   <div
@@ -322,7 +322,7 @@ const ChatPage = () => {
             size="sm"
             variant="text"
             color="blue-gray"
-            className="flex items-center mr-2 border border-gray-400/70"
+            className="flex items-center mr-2 border text-indigo-300 border-indigo-300"
             onClick={exitUserHandler}
           >
             Cancel
@@ -330,11 +330,10 @@ const ChatPage = () => {
           <Button
             size="sm"
             variant="text"
-            color="blue-gray"
-            className="flex items-center border border-gray-400/70"
+            className="flex items-center text-white bg-indigo-300"
             onClick={onExitUser}
           >
-            Yes
+            Confirm
           </Button>
         </DialogFooter>
       </Dialog>

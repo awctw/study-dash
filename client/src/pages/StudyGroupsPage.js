@@ -12,6 +12,7 @@ import {
   ArrowLongRightIcon,
   ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/solid";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -71,16 +72,13 @@ const StudyGroupPage = () => {
           <Typography variant="h2">Study Groups</Typography>
         </div>
         <div className="mx-5">
-          <div className="flex flex-row w-full items-center justify-between">
-            <Button onClick={createChatHandler} className="bg-indigo-300 m-2">
-              Create Chat
-            </Button>
+          <div className="flex flex-row w-full items-center justify-end">
             <InvitesDrawer />
           </div>
-          <div className="flex flex-wrap justify-center">
+          <div className="flex flex-wrap justify-start items-center">
             {chats &&
               chats.map((chat, index) => (
-                <Card className="mt-6 w-80 m-5" key={index}>
+                <Card className="mt-6 w-80 m-3" key={index}>
                   <CardBody className="pb-2">
                     <ChatBubbleLeftRightIcon className="text-indigo-300 w-12 h-12 mb-4" />
                     <Typography variant="h5" color="blue-gray" className="mb-2">
@@ -101,6 +99,12 @@ const StudyGroupPage = () => {
                   </CardFooter>
                 </Card>
               ))}
+            <div className="flex justify-center items-center mt-6 w-80 h-56 m-3">
+              <PlusCircleIcon
+                onClick={createChatHandler}
+                className="h-14 w-14 text-indigo-300 cursor-pointer"
+              />
+            </div>
           </div>
         </div>
         <Dialog
