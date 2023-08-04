@@ -4,7 +4,7 @@ import ListView from "./ListView";
 import { useDispatch, useSelector } from "react-redux";
 import thunk from "../../store/TODOList/thunk";
 
-const TODOListViewer = ({ selectedCategoryID }) => {
+const TODOListViewer = ({ selectedCategoryID, shorten }) => {
   // The useSelector hook extracts the TODOList array from the todoListSlice
   // slice in the rootReducer. TODOList is already sorted by due-date in
   // the server
@@ -30,16 +30,13 @@ const TODOListViewer = ({ selectedCategoryID }) => {
   // indicating that there are visible TODOItems to display. At least 1 rem of horizontal
   // spacing is guaranteed between "TODO List" and "Total Todos"
   return (
-    <div className="flex flex-col flex-grow">
-      <div className="flex items-start justify-between p-3 pb-0">
-        <Typography className="text-black" variant="h5">
-          TODO List
-        </Typography>
+    <div className="flex flex-col mx-2">
+      <div className="flex align-items-center justify-between">
         <Typography variant="small" className="mt-1 text-black">
           Total Todos: {TODOList.length}
         </Typography>
       </div>
-      <ListView />
+      <ListView shorten={shorten} />
     </div>
   );
 };
