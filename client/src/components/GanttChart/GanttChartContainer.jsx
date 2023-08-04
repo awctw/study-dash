@@ -14,20 +14,22 @@ const GanttChartContainer = () => {
 
   return (
     <div className="bg-clip-border rounded-xl bg-white shadow-lg h-[17rem]">
-      <Typography
-        variant="h5"
-        className="pl-5 pt-3 pb-2 leading-none tracking-tight dark:text-white"
-      >
-        Gantt Chart
-        {user.isLoggedIn && chartSettings !== null ? (
-          <Cog6ToothIcon
-            className="h-5 w-5 float-right mr-5 cursor-pointer"
-            onClick={() => {
-              setVisible(true);
-            }}
-          />
-        ) : null}
-      </Typography>
+      <div className="p-3 pb-0">
+        <Typography
+          variant="h5"
+          className="leading-none tracking-tight dark:text-white"
+        >
+          Gantt Chart
+          {user.isLoggedIn && chartSettings !== null ? (
+            <Cog6ToothIcon
+              className="h-5 w-5 float-right cursor-pointer"
+              onClick={() => {
+                setVisible(true);
+              }}
+            />
+          ) : null}
+        </Typography>
+      </div>
       <div className="gantt-chart">
         <GanttChart />
       </div>

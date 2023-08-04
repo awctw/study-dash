@@ -61,9 +61,9 @@ const HabitsView = () => {
 
   return (
     <>
-      <Card className="shadow-xl shadow-pmd-blue-600 max-h-[17rem] pb-0">
+      <Card className="shadow-xl shadow-pmd-blue-600 min-h-[17rem] min-w-[20rem] pb-0">
         <div className="p-3 pb-0">
-          <Typography variant="h5" color="blue-gray">
+          <Typography variant="h5" color="black">
             Habits
           </Typography>
           <Typography className="mb-3">

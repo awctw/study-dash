@@ -31,7 +31,7 @@ const DashboardPage = () => {
         </div>
         <div className="flex flex-wrap mx-5">
           <div className="flex flex-row items-center justify-evenly flex-grow my-5">
-            <div className="flex-grow">
+            <div className="flex-grow ml-4">
               <TODOListDashboardView />
             </div>
             <div className="flex-grow">
