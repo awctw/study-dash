@@ -29,6 +29,14 @@ const GanttChart = (props) => {
         return date;
     };
 
+    // Function for converting a date startTime to occur on the day, month, and year of currDate
+    const convertDateToSameDay = function(startTime, currDate) {
+        let retDate = new Date(startTime).setMonth(currDate.getMonth());
+        retDate = new Date(retDate).setDate(currDate.getDate());
+        retDate = new Date(retDate).setFullYear(currDate.getFullYear());
+        return retDate;
+    }
+
     // Chart consts
     const SVG_ID = 'gantt-chart-svg';
     const X_AXIS_SVG_ID = 'gantt-chart-x-axis-svg';
@@ -49,21 +57,11 @@ const GanttChart = (props) => {
         let currDate = new Date(xDomainStart);
         while (currDate <= xDomainEnd) {
             upToDateHabits.current.forEach((habit) => {
-                if (!(habit.startTime.toString() === habit.endTime.toString())) {
+                if (!(habit.startTime === habit.endTime)) {
                     if (habit.days[currDate.getDay()]) {
-                        const startDate = function() {
-                            let retDate = new Date(habit.startTime).setMonth(currDate.getMonth());
-                            retDate = new Date(retDate).setDate(currDate.getDate());
-                            retDate = new Date(retDate).setFullYear(currDate.getFullYear());
-                            return retDate;
-                        }();
-                        const endDate = function() {
-                            let retDate = new Date(habit.endTime).setMonth(currDate.getMonth())
-                            retDate = new Date(retDate).setDate(currDate.getDate())
-                            retDate = new Date(retDate).setFullYear(currDate.getFullYear());
-                            return retDate;
-                        }();
-                        if (endDate - startDate !== 0 && xDomainStart <= endDate && startDate <= xDomainEnd) {
+                        const startDate = convertDateToSameDay(habit.startTime, currDate);
+                        const endDate = convertDateToSameDay(habit.endTime, currDate);
+                        if (xDomainStart <= endDate && startDate <= xDomainEnd) {
                             filteredData.push({
                                 _id: habit["_id"],
                                 title: habit.name,
