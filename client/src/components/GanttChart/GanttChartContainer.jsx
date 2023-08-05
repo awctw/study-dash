@@ -13,7 +13,7 @@ const GanttChartContainer = () => {
   const user = useSelector((state) => state.loginReducer);
 
   return (
-    <div className="bg-clip-border rounded-xl bg-white shadow-lg h-[17rem]">
+    <div className="bg-clip-border rounded-xl bg-white shadow-lg min-h-[17rem]">
       <div className="p-3 pb-0">
         <Typography
           variant="h5"
