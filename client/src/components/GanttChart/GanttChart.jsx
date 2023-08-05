@@ -61,7 +61,7 @@ const GanttChart = (props) => {
                     if (habit.days[currDate.getDay()]) {
                         const startDate = convertDateToSameDay(habit.startTime, currDate);
                         const endDate = convertDateToSameDay(habit.endTime, currDate);
-                        if (xDomainStart <= endDate && startDate <= xDomainEnd) {
+                        if (xDomainStart <= endDate && startDate <= xDomainEnd && startDate < endDate) {
                             filteredData.push({
                                 _id: habit["_id"],
                                 title: habit.name,
