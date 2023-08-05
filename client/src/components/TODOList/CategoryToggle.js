@@ -32,6 +32,7 @@ function CategoryToggle({ setSelectedCategoryID, setErrMessage }) {
       <Select
         id="categoryFilter"
         label="Select by Category"
+        color="indigo"
         onChange={handleCategorySelection}
       >
         <Option value="" className="pl-2 py-[0.65rem] pr-1">

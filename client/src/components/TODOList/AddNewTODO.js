@@ -10,10 +10,11 @@ import {
   Input,
   Textarea,
   Tooltip,
+  Typography,
 } from "@material-tailwind/react";
 import thunk from "../../store/TODOList/thunk";
 import { REQUEST_STATE } from "../../store/utils";
-import { PlusIcon } from "@heroicons/react/20/solid";
+import { PlusIcon, XMarkIcon } from "@heroicons/react/20/solid";
 
 // AddTODOItem component provides a form to add new TODOItems
 const AddTODOItem = () => {
@@ -137,15 +138,26 @@ const AddTODOItem = () => {
         </IconButton>
       </Tooltip>
       <Dialog
-        size="lg"
+        size="sm"
         open={openAddTODO}
         handler={handleOpen}
         className="shadow-none"
       >
-        <DialogHeader className="flex flex-row justify-center">
-          Add TODO Item
+        <DialogHeader className="flex flex-row items-center justify-between">
+          <Typography className="text-2xl font-semibold text-blue-gray-900">
+            Add TODO Item
+          </Typography>
+          <IconButton
+            size="sm"
+            type="button"
+            color="blue-gray"
+            variant="text"
+            onClick={handleOpen}
+          >
+            <XMarkIcon className="w-5 h-5" />
+          </IconButton>
         </DialogHeader>
-        <DialogBody>
+        <DialogBody divider className="border-b-0">
           <form
             className="flex flex-col justify-evenly h-[30rem] overflow-y-auto"
             onSubmit={handleSubmit}
@@ -155,6 +167,7 @@ const AddTODOItem = () => {
                 name="title"
                 value={formData.title}
                 label="Title"
+                color="indigo"
                 onChange={handleInputChange}
               />
             </div>
@@ -163,7 +176,7 @@ const AddTODOItem = () => {
                 <label htmlFor="add-startDate">Start:</label>
                 <DatePicker
                   id="add-startDate"
-                  className="bg-indigo-100 rounded borders w-[12rem]"
+                  className="bg-indigo-50 rounded p-1 ml-1"
                   dateFormat="MMM-dd-yyyy, h:mm aa"
                   showTimeInput
                   timeInputLabel="Time (hh:mm:AM/PM):"
@@ -178,7 +191,7 @@ const AddTODOItem = () => {
                 <label htmlFor="add-endDate">Due:</label>
                 <DatePicker
                   id="add-endDate"
-                  className="bg-indigo-100 rounded borders w-[12rem]"
+                  className="bg-indigo-50 rounded p-1 ml-1"
                   dateFormat="MMM-dd-yyyy, h:mm aa"
                   showTimeInput
                   timeInputLabel="Time (hh:mm:AM/PM):"
@@ -194,6 +207,7 @@ const AddTODOItem = () => {
               <Textarea
                 name="description"
                 label="Description"
+                color="indigo"
                 value={formData.description}
                 onChange={handleInputChange}
               />
@@ -203,6 +217,7 @@ const AddTODOItem = () => {
                 name="category"
                 label="Category"
                 autoComplete="off"
+                color="indigo"
                 value={formData.category}
                 list="categoryOptions"
                 onChange={handleInputChange}
@@ -220,25 +235,23 @@ const AddTODOItem = () => {
               </p>
             )}
 
-            <div className="flex flex-row justify-evenly flex-wrap">
-              <Button className="mb-4 bg-indigo-300" size="sm" type="submit">
+            <div className="flex flex-row gap-2 items-center flex-wrap">
+              <Button
+                className="bg-indigo-50 text-indigo-300 shadow-none hover:shadow-none"
+                size="sm"
+                type="submit"
+              >
                 Confirm
               </Button>
               <Button
-                className="mb-4 border-indigo-300 bg-white text-indigo-300 border-solid border"
+                className="text-indigo-300"
+                color="indigo"
                 size="sm"
                 type="reset"
+                variant="text"
                 onClick={resetFormHandler}
               >
                 Clear
-              </Button>
-              <Button
-                className="mb-4 border-indigo-300 bg-white text-indigo-300 border-solid border"
-                size="sm"
-                type="button"
-                onClick={handleOpen}
-              >
-                Close
               </Button>
             </div>
           </form>
