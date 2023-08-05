@@ -29,8 +29,9 @@ const GanttChart = (props) => {
         return date;
     };
 
-    // Function for converting a date startTime to occur on the day, month, and year of currDate
+    // Function for converting a Date 'startTime' to occur on the day, month, and year of 'currDate'
     const convertDateToSameDay = function(startTime, currDate) {
+        // Date constructor usage is required since the variable is treated as a number
         let retDate = new Date(startTime).setMonth(currDate.getMonth());
         retDate = new Date(retDate).setDate(currDate.getDate());
         retDate = new Date(retDate).setFullYear(currDate.getFullYear());
@@ -48,14 +49,15 @@ const GanttChart = (props) => {
         // Filter data to see if the chart needs to be rendered
         const xDomainStart = Date.now() - upToDateChartSettings.current.axisTimeScale * 60 * 60 * 1000;
         const xDomainEnd = Date.now() + upToDateChartSettings.current.axisTimeScale * 60 * 60 * 1000;
-        // 'Clone' upToDateTodos.current to bypass read-only for scaleBand duplicate title handling
+        // 'Clone' upToDateTodos.current to bypass read-only for filtering for scaleBand duplicate title handling
+        // (duplicate titles without this handling would appear in the same space rather than being different)
         let filteredData = JSON.parse(JSON.stringify(upToDateTodos.current));
         filteredData = filteredData.filter(d => Date.parse(d.endDate) - Date.parse(d.startDate) !== 0 &&
             xDomainStart <= Date.parse(d.endDate) && Date.parse(d.startDate) <= xDomainEnd);
 
         // Habit day of the week handling
         let currDate = new Date(xDomainStart);
-        while (currDate <= xDomainEnd) {
+        while (currDate <= xDomainEnd) { // Create habit entries for the days of the week they are on
             upToDateHabits.current.forEach((habit) => {
                 if (!(habit.startTime === habit.endTime)) {
                     if (habit.days[currDate.getDay()]) {
