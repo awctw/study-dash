@@ -23,7 +23,7 @@ const Overview = (props) => {
   return (
     <>
       {modules.length > 0 ? (
-        <Card className="min-w-[40rem] min-h-[20rem] max-h-[30rem] flex shadow-xl shadow-pmd-blue-600">
+        <Card className="min-w-[40rem] max-h-[30rem] flex shadow-xl shadow-pmd-blue-600">
           <div className="p-3 pb-0">
             <Typography variant="h5" color="blue-gray">
               Flashcards
@@ -72,7 +72,7 @@ const Overview = (props) => {
           </CardFooter>
         </Card>
       ) : (
-        <Card className="min-w-[40rem] h-[20rem] flex shadow-xl shadow-pmd-blue-600">
+        <Card className="min-w-[40rem] max-h-[25rem] flex shadow-xl shadow-pmd-blue-600">
           <div className="p-3">
             <Typography variant="h5" color="blue-gray" className="mb-2">
               Flashcards
@@ -91,7 +91,7 @@ const Overview = (props) => {
               loop
             />
           </div>
-          <CardFooter className="p-3 flex items-center border-t border-gray-400/50">
+          <CardFooter className="flex items-center py-3 border-t border-gray-400/50">
             <AddModuleModal
               visible={initVisible}
               setVisible={setInitVisible}
@@ -101,7 +101,7 @@ const Overview = (props) => {
                 onClick={() => {
                   setInitVisible(true);
                 }}
-                className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100"
+                className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100 m-0"
               >
                 Get Started
               </Button>

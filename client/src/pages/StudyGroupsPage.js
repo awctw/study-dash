@@ -5,12 +5,15 @@ import {
   CardBody,
   CardFooter,
   Dialog,
+  IconButton,
   Input,
+  Tooltip,
   Typography,
 } from "@material-tailwind/react";
 import {
   ArrowLongRightIcon,
   ChatBubbleLeftRightIcon,
+  PlusIcon,
 } from "@heroicons/react/24/solid";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { v4 as uuidv4 } from "uuid";
@@ -100,10 +103,15 @@ const StudyGroupPage = () => {
                 </Card>
               ))}
             <div className="flex justify-center items-center mt-6 w-80 h-56 m-3">
-              <PlusCircleIcon
-                onClick={createChatHandler}
-                className="h-14 w-14 text-indigo-300 cursor-pointer"
-              />
+              <Tooltip content={"Create a Group Chat"}>
+                <IconButton
+                  className="bg-indigo-50 text-indigo-300 shadow-none hover:shadow-none mx-3 mt-8"
+                  size="lg"
+                  onClick={createChatHandler}
+                >
+                  <PlusIcon className="h-8 w-8" />
+                </IconButton>
+              </Tooltip>
             </div>
           </div>
         </div>
