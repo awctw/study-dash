@@ -131,9 +131,7 @@ const StudyGroupPage = () => {
               />
               <Button
                 size="sm"
-                variant="text"
-                color="blue-gray"
-                className="flex items-center mt-3 border border-gray-400/70"
+                className="flex items-center text-white bg-indigo-300 hover:shadow-none mt-4"
                 onClick={onClickHandler}
               >
                 Confirm

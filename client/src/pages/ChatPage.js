@@ -269,63 +269,64 @@ const ChatPage = () => {
       </div>
 
       <Dialog
-        size="sm"
         open={openUser}
         handler={addUserHandler}
-        className="bg-transparent shadow-none"
+        size="sm"
+        className="flex flex-row bg-transparent shadow-none items-center justify-center"
       >
-        <Card className="mx-auto w-full max-w-[24rem]">
-          <CardHeader
-            variant="gradient"
-            className="mb-4 grid h-28 place-items-center bg-indigo-300"
-          >
-            <Typography variant="h3" color="white">
-              Invite Friend
+        <Card className="relative flex w-3/4 rounded-lg overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100">
+          <CardBody className="mb-2">
+            <Typography variant="h5" color="blue-gray" className="mb-2">
+              Invite a Friend!
             </Typography>
-          </CardHeader>
-          <CardBody className="flex flex-col gap-4">
-            <Input label="Username" size="lg" onChange={onInviteUser} />
-          </CardBody>
-          <CardFooter className="pt-0">
+            <Typography className="mb-3">
+              Please enter the username of the person you'd like to invite.
+            </Typography>
+            <Input
+              variant="outlined"
+              label="Username"
+              color="blue-gray"
+              onChange={onInviteUser}
+            />
             <Button
-              className="bg-indigo-300"
+              size="sm"
+              className="flex items-center text-white bg-indigo-300 hover:shadow-none mt-4"
               onClick={inviteDispatch}
-              fullWidth
             >
-              Invite
+              Send Invite
             </Button>
-          </CardFooter>
+          </CardBody>
         </Card>
       </Dialog>
 
       <Dialog
-        size="sm"
         open={openName}
         handler={changeNameHandler}
-        className="bg-transparent shadow-none"
+        size="sm"
+        className="flex flex-row bg-transparent shadow-none items-center justify-center"
       >
-        <Card className="mx-auto w-full max-w-[24rem]">
-          <CardHeader
-            variant="gradient"
-            className="mb-4 grid h-28 place-items-center bg-indigo-300"
-          >
-            <Typography variant="h3" color="white">
+        <Card className="relative flex w-3/4 rounded-lg overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100">
+          <CardBody className="mb-2">
+            <Typography variant="h5" color="blue-gray" className="mb-2">
               Change Group Name
             </Typography>
-          </CardHeader>
-          <CardBody className="flex flex-col gap-4">
+            <Typography className="mb-3">
+              Rename your group by entering a name below.
+            </Typography>
             <Input
+              variant="outlined"
               label="Name"
-              size="lg"
-              placeholder={currChat.name ? currChat.name : ""}
+              color="blue-gray"
               onChange={(e) => setName(e.target.value)}
             />
-          </CardBody>
-          <CardFooter className="pt-0">
-            <Button className="bg-indigo-300" onClick={onChangeName} fullWidth>
-              Change
+            <Button
+              size="sm"
+              className="flex items-center text-white bg-indigo-300 hover:shadow-none mt-4"
+              onClick={onChangeName}
+            >
+              Rename
             </Button>
-          </CardFooter>
+          </CardBody>
         </Card>
       </Dialog>
 
@@ -347,8 +348,7 @@ const ChatPage = () => {
           </Button>
           <Button
             size="sm"
-            variant="text"
-            className="flex items-center text-white bg-indigo-300"
+            className="flex items-center text-white bg-indigo-300 hover:shadow-none"
             onClick={onExitUser}
           >
             Confirm
