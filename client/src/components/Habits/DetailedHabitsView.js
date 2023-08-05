@@ -38,23 +38,31 @@ const DetailedHabitsView = () => {
         return habitDate
     }
 
-    const getWidth = () => {
+    const getStartDate = () => {
+        const day = new Date()
+        const oneYear = new Date(dayjs(day).subtract(1, 'year').format('YYYY/MM/DD'))
+        console.log(oneYear)
+        return oneYear
+    }
 
+    const getEndDate = () => {
+        const day = new Date()
+        return day
     }
     
     return (
         <>
         {habits.map((habit) => {
             return (
-                <Card key={habit._id} className="shadow-xl shadow-pmd-blue-600 m-8">
+                <Card key={habit._id} className="shadow-xl shadow-pmd-blue-600 m-8 min-w-[50rem]">
                     <CardBody className="flex-1">
                         <Typography color="blue-gray" variant="h5">{habit.name}</Typography>
                         <br />
                         <HeatMap 
-                            width={705}
+                            width={720}
                             value={parseHabitDates(habit.dates)}
-                            startDate={new Date('2023/01/01')}
-                            endDate={new Date('2023/12/31')}
+                            startDate={getStartDate()}
+                            endDate={getEndDate()}
                             legendCellSize={0}
                         />
                     </CardBody>
