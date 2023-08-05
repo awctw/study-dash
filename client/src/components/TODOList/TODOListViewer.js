@@ -32,7 +32,7 @@ const TODOListViewer = ({ selectedCategoryID, shorten }) => {
   return (
     <div className="flex flex-col mx-2">
       <div className="flex align-items-center justify-between">
-        <Typography variant="small" className="mt-1 text-black">
+        <Typography variant="small" className="mt-1 ml-3 text-black">
           Total Todos: {TODOList.length}
         </Typography>
       </div>

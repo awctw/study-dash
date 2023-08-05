@@ -12,7 +12,7 @@ const TODOPage = () => {
         <div className="mx-3">
           <Typography variant="h2">Your Todos</Typography>
         </div>
-        <div>
+        <div className="flex">
           <TODOListMainView />
         </div>
       </div>
