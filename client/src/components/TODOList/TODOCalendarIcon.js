@@ -8,7 +8,7 @@ import {
 import TODOItem from "./TODOItem";
 
 // Creates an icon within the current "Date" tile to show the presence of
-// TODOItems starting at that date. Clicking the icon will show a popover
+// TODOItems ending on that date. Clicking the icon will show a popover
 // list of all the TODOItems for that "Date" tile
 const TODOCalendarIcon = ({ TODOList }) => {
   // If TODOList contains at least one non-finished TODOItem,
@@ -20,17 +20,22 @@ const TODOCalendarIcon = ({ TODOList }) => {
       return todo.isFinished === false;
     });
 
+    const notFinishedColour = "fill-red-500";
+    const finishedColour = "fill-light-green-500";
+
     if (notFinishedTODOs.length > 0) {
-      return "fill-red-500";
+      return notFinishedColour;
     }
 
-    return "fill-gray-400";
+    return finishedColour;
   };
 
   return (
     <Popover>
       <PopoverHandler>
-        <ExclamationCircleIcon className={configureTODOIconColour()} />
+        <ExclamationCircleIcon
+          className={`w-4 relative ${configureTODOIconColour()}`}
+        />
       </PopoverHandler>
       <PopoverContent
         className="flex flex-col items-center

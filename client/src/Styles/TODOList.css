@@ -31,3 +31,31 @@
   /* Controls the colour of date tile when clicked */
   background-color: rgb(255, 211, 176);
 }
+
+/* Styles for the TODOCalendarIcon component */
+
+/*
+  This selector targets the individual date tiles within the Calendar component.
+  The "position: relative" property is applied to each date tile.
+  Setting "position: relative" means that any child elements with absolute positioning
+  will be positioned relative to the date tile.
+*/
+.react-calendar .react-calendar__tile {
+  position: relative;
+}
+
+/*
+  The "position: absolute" causes the todo icon to be positioned
+  relative to its closest positioned ancestor, the date tile.
+  This allows us to move the todo icon around within the date tile.
+
+  The "top: 0; right: 0" properties are used to position the todo icon in the
+  top right corner of the date tile. "top: 0" moves the icon to the top
+  edge of the date tile; "right: 0" moves it to the right edge of
+  the date tile.
+*/
+.react-calendar .react-calendar__tile .relative {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

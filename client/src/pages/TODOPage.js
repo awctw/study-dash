@@ -1,6 +1,6 @@
-import TODOListMainView from "../components/TODOList/TODOListMainView";
 import SideBar from "../components/SideBar";
 import { Typography } from "@material-tailwind/react";
+import TODOListModule from "../components/TODOList/TODOListModule";
 
 const TODOPage = () => {
   return (
@@ -12,8 +12,8 @@ const TODOPage = () => {
         <div className="mx-3">
           <Typography variant="h2">Your Todos</Typography>
         </div>
-        <div className="flex">
-          <TODOListMainView />
+        <div>
+          <TODOListModule />
         </div>
       </div>
     </>
