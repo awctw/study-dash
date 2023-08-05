@@ -14,13 +14,21 @@ import {
   DialogHeader,
   DialogFooter,
   DialogBody,
+  SpeedDial,
+  SpeedDialHandler,
+  SpeedDialContent,
+  SpeedDialAction,
 } from "@material-tailwind/react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   ArrowRightOnRectangleIcon,
+  EllipsisVerticalIcon,
+  HomeIcon,
   PaperAirplaneIcon,
   PencilSquareIcon,
+  Square2StackIcon,
   UserPlusIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/solid";
 import {
   getChatHistoryAsync,
@@ -160,7 +168,7 @@ const ChatPage = () => {
         <SideBar />
       </div>
       <div className="p-5 !pl-[300px]">
-        <div className="flex justify-center">
+        <div className="relative flex justify-center">
           <div className="mx-7 flex-grow text-ellipsis overflow-hidden">
             <Typography className="font-sans text-black/80 font-semibold text-4xl">
               Study Group: {currChat && currChat.name}
@@ -170,37 +178,47 @@ const ChatPage = () => {
             </Typography>
             <hr className="mt-3 border-blue-gray-300/40 mr-7" />
           </div>
-        </div>
 
-        <div className="absolute top-0 right-0 m-5">
-          <IconButton
-            type="submit"
-            onClick={changeNameHandler}
-            className="flex bg-indigo-300 ml-5 mb-2"
-          >
-            <PencilSquareIcon className="h-5 w-5 " />
-          </IconButton>
-
-          <IconButton
-            type="submit"
-            onClick={addUserHandler}
-            className="flex bg-indigo-300 ml-5 mb-2"
-          >
-            <UserPlusIcon className="h-5 w-5" />
-          </IconButton>
-
-          <IconButton
-            type="submit"
-            onClick={exitUserHandler}
-            className="flex bg-indigo-300 ml-5 mb-2"
-          >
-            <ArrowRightOnRectangleIcon className="h-5 w-5" />
-          </IconButton>
+          <div className="absolute top-0 right-0 mr-[5%]">
+            <SpeedDial placement="right">
+              <SpeedDialHandler>
+                <IconButton
+                  size="md"
+                  className="rounded-full border border-gray-400"
+                  variant="text"
+                  color="blue-gray"
+                >
+                  <EllipsisVerticalIcon className="block h-5 w-5 group-hover:hidden" />
+                  <XMarkIcon className="hidden h-5 w-5 group-hover:block" />
+                </IconButton>
+              </SpeedDialHandler>
+              <SpeedDialContent className="flex-row">
+                <SpeedDialAction className="bg-indigo-50 border border-indigo-100">
+                  <PencilSquareIcon
+                    onClick={changeNameHandler}
+                    className="h-5 w-5 text-indigo-300"
+                  />
+                </SpeedDialAction>
+                <SpeedDialAction className="bg-indigo-50 border border-indigo-100">
+                  <UserPlusIcon
+                    onClick={addUserHandler}
+                    className="h-5 w-5 text-indigo-300"
+                  />
+                </SpeedDialAction>
+                <SpeedDialAction className="bg-indigo-50 border border-indigo-100">
+                  <ArrowRightOnRectangleIcon
+                    onClick={exitUserHandler}
+                    className="h-5 w-5 text-indigo-300"
+                  />
+                </SpeedDialAction>
+              </SpeedDialContent>
+            </SpeedDial>
+          </div>
         </div>
 
         <div className="flex justify-center">
-          <div className="flex flex-col justify-end ml-5 mr-12 mb-5 flex-grow">
-            <Card className="flex mb-5 px-5 py-0 h-[70vh] overflow-y-auto scrollbar scrollbar-none shadow-none">
+          <div className="flex flex-col justify-end ml-5 mr-12 flex-grow">
+            <Card className="flex px-5 py-0 h-[70vh] overflow-y-auto scrollbar scrollbar-none shadow-none">
               {currChat.history &&
                 currChat.history.map((message, index) => (
                   <div
