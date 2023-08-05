@@ -242,7 +242,7 @@ const EditTODO = ({ todo }) => {
                 <label htmlFor="edit-endDate">Due:</label>
                 <DatePicker
                   id="edit-endDate"
-                  className="bg-indigo-50 rounded p-1"
+                  className="bg-indigo-50 rounded p-1 ml-1"
                   dateFormat="MMM-dd-yyyy, h:mm aa"
                   showTimeInput
                   timeInputLabel="Time:"
@@ -301,18 +301,18 @@ const EditTODO = ({ todo }) => {
 
             <div className="flex flex-row gap-2 items-center flex-wrap">
               <Button
-                className="bg-indigo-50 text-indigo-300 shadow-none hover:shadow-none"
+                className="flex items-center text-white bg-indigo-300 hover:shadow-none"
                 size="sm"
                 type="submit"
               >
                 Confirm
               </Button>
               <Button
-                className="text-indigo-300"
-                color="indigo"
                 size="sm"
-                type="reset"
                 variant="text"
+                color="blue-gray"
+                className="flex items-center mr-2 border text-indigo-300 border-indigo-300"
+                type="reset"
                 onClick={resetFormHandler}
               >
                 Clear
