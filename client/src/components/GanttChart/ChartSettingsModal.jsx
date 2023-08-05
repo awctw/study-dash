@@ -31,7 +31,7 @@ const ChartSettingsModal = (props) => {
                 open={props.visible}
                 handler={props.setVisible}
                 size="xs"
-                className="min-w-max"
+                className="!min-w-max"
             >
                 <DialogHeader>Chart Settings</DialogHeader>
                 <DialogBody divider className="h-[40rem] overflow-y-auto">
