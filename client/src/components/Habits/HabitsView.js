@@ -30,10 +30,6 @@ const HabitsView = () => {
   const [startTime, setStartTime] = useState(dayjs());
   const [endTime, setEndTime] = useState(dayjs());
 
-  // create a set of checked habits (use set instead of array because O(1) lookup and order doesn't matter)
-  // when you mark a habit done, it updates the state by adding the habit id to the set and calls the backend to add today's date to habit.dates (toggleHabit) 
-  // when you unmark a habit, it updates the state by removing the habit id to the set and calls the backend to remove today's date to habit.dates (toggleHabit)
-  // at midnight (tomorrow), all checked checkboxes are automatically unchecked
   const [checkedHabits, setCheckedHabits] = useState(new Set());
 
   const { habits } = useSelector((state) => state.habitReducer);
