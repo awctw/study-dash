@@ -70,7 +70,7 @@ const HabitsView = () => {
             Here's an overview of all your Habits.
           </Typography>
         </div>
-        <CardBody className="flex-1 py-0 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
+        <CardBody className="flex-1 py-0 max-h-[10rem] overflow-y-auto scrollbar-none scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
           <List className="w-full">
             {habits.map((habit) => {
               return (

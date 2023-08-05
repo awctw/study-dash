@@ -125,7 +125,7 @@ const Pomodoro = () => {
   };
 
   return (
-    <Card className="m-3 p-5 items-center h-[19rem]">
+    <Card className="m-3 p-5 items-center h-[20rem]">
       <div className="absolute top-0 right-0">
         <Cog6ToothIcon
           className="h-5 w-5 cursor-pointer float-right m-2"

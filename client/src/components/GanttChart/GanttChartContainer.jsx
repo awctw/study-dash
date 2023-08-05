@@ -30,7 +30,7 @@ const GanttChartContainer = () => {
           ) : null}
         </Typography>
       </div>
-      <div className="gantt-chart">
+      <div className="gantt-chart scrollbar-none">
         <GanttChart />
       </div>
       {user.isLoggedIn && chartSettings !== null ? (

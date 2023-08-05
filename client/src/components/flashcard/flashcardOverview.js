@@ -23,7 +23,7 @@ const Overview = (props) => {
   return (
     <>
       {modules.length > 0 ? (
-        <Card className="min-w-[40rem] min-h-[20rem] flex shadow-xl shadow-pmd-blue-600">
+        <Card className="min-w-[40rem] min-h-[20rem] max-h-[30rem] flex shadow-xl shadow-pmd-blue-600">
           <div className="p-3 pb-0">
             <Typography variant="h5" color="blue-gray">
               Flashcards
@@ -33,7 +33,7 @@ const Overview = (props) => {
               reviewing!
             </Typography>
           </div>
-          <CardBody className="pt-0 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
+          <CardBody className="pt-0 max-h-[15rem] overflow-y-auto scrollbar-none scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
             <List className="pl-0">
               {modules.map((module, i) => (
                 <ListItem
