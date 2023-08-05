@@ -2,7 +2,7 @@ import {
     Button,
     Dialog,
     DialogBody,
-    DialogFooter,
+    DialogFooter, DialogHeader,
     Input,
     Typography,
 } from "@material-tailwind/react";
@@ -33,10 +33,8 @@ const ChartSettingsModal = (props) => {
                 size="xs"
                 className="min-w-max"
             >
+                <DialogHeader>Chart Settings</DialogHeader>
                 <DialogBody divider className="h-[40rem] overflow-y-auto">
-                    <Typography variant="h3" color="blue-gray" className="mb-2">
-                        Chart Settings
-                    </Typography>
                     <Input
                         variant="outlined"
                         label="Visible Hour Range (1 to 84 Hours Before and After)"
