@@ -8,6 +8,7 @@ import {Cog6ToothIcon} from "@heroicons/react/20/solid";
 const GanttChartContainer = () => {
     const [visible, setVisible] = useState(false);
     const chartSettings = useSelector((state) => state.chartSettingsReducer.chartSettings);
+    const categories = useSelector((state) => state.todoReducer.categories);
     const user = useSelector((state) => state.loginReducer);
 
   return (
@@ -28,6 +29,7 @@ const GanttChartContainer = () => {
                 visible={visible}
                 setVisible={setVisible}
                 chartSettings={chartSettings}
+                categories={categories}
             /> : null
         }
     </div>

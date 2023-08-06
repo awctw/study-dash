@@ -9,6 +9,13 @@ const getCategoryListAsync = createAsyncThunk(
   }
 );
 
+const patchCategoriesAsync = createAsyncThunk(
+  actionTypes.PATCH_CATEGORIES,
+  async (changedCategories) => {
+    return await services.patchCategories(changedCategories);
+  }
+);
+
 const deleteCategoryAsync = createAsyncThunk(
   actionTypes.DELETE_CATEGORY,
   async (categoryID) => {
@@ -54,6 +61,7 @@ const deleteTODOItemAsync = createAsyncThunk(
 
 const thunk = {
   getCategoryListAsync,
+  patchCategoriesAsync,
   deleteCategoryAsync,
   getTODOListAsync,
   getTODOItemAsync,

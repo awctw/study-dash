@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getChartSettingsAsync} from "../../store/chartSettings/thunks";
 import {Typography} from "@material-tailwind/react";
 import {Player} from "@lottiefiles/react-lottie-player";
+import thunk from "../../store/TODOList/thunk";
 
 const GanttChart = (props) => {
     // Redux selectors and dispatch
@@ -12,12 +13,14 @@ const GanttChart = (props) => {
     const chartSettings = useSelector((state) => state.chartSettingsReducer.chartSettings);
     const todos = useSelector((state) => state.todoReducer.TODOList);
     const habits = useSelector((state) => state.habitReducer.habits);
+    const categories = useSelector((state) => state.todoReducer.categories);
     const dispatch = useDispatch();
 
     // useRef needed for accessing up-to-date store in SetTimeout
     let upToDateChartSettings = useRef(chartSettings);
     let upToDateTodos = useRef(todos);
     let upToDateHabits = useRef(habits);
+    let upToDateCategories = useRef(categories);
     let prevTimeout = useRef(-1);
     let currentTimeout = useRef(-1);
 
@@ -251,7 +254,7 @@ const GanttChart = (props) => {
             .attr('height', yScale.bandwidth())
             .attr('y', d => yScale(yValue(d)))
             .attr('fill', (d) => {
-                const categoryColor = upToDateChartSettings.current.categoryColors.find(c => c.categoryID === d.category);
+                const categoryColor = upToDateCategories.current.find(c => c["_id"] === d.category);
                 if (categoryColor !== undefined) {
                     return categoryColor.color;
                 }
@@ -273,11 +276,10 @@ const GanttChart = (props) => {
               <div><i>End Time: ${new Date(d.endDate).toLocaleTimeString()}</i></div>
               <div><i>${function() {
                         if (d.category !== undefined) {
-                            const category = upToDateChartSettings.current.categoryColors
-                                .find(c => c.categoryID === d.category);
+                            const category = upToDateCategories.current
+                                .find(c => c["_id"] === d.category);
                             if (category !== undefined) {
-                                return "Category: " + upToDateChartSettings.current.categoryColors
-                                    .find(c => c.categoryID === d.category).category;
+                                return "Category: " + category.category;
                             }
                         }
                         return "";
@@ -312,9 +314,8 @@ const GanttChart = (props) => {
 
     // Get chart settings on first render
     useEffect(() => {
-        if (user.isLoggedIn) {
-            dispatch(getChartSettingsAsync(user.user.userID));
-        }
+        dispatch(thunk.getCategoryListAsync(user.user.userID));
+        dispatch(getChartSettingsAsync(user.user.userID));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -333,12 +334,13 @@ const GanttChart = (props) => {
         }, timeToNextTick);
     }, [renderChart]);
 
-    // Sync ref variables and re-render chart whenever data or chartSettings changes
+    // Sync ref variables and re-render chart whenever data, categories, or chartSettings changes
     useEffect(() => {
-        if (todos !== null && habits !== null && chartSettings !== null) {
+        if (todos !== null && habits !== null && chartSettings !== null && categories != null) {
             upToDateTodos.current = todos;
             upToDateHabits.current = habits;
             upToDateChartSettings.current = chartSettings;
+            upToDateCategories.current = categories;
             renderChart();
             currentTimeout.current = runClock();
         }
@@ -349,7 +351,7 @@ const GanttChart = (props) => {
             clearTimeout(currentTimeout.current);
         };
 
-    }, [todos, habits, chartSettings, renderChart, runClock]);
+    }, [todos, habits, chartSettings, categories, renderChart, runClock]);
 
     return(
         <div>

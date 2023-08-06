@@ -9,19 +9,32 @@ import {
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { putChartSettingsAsync } from "../../store/chartSettings/thunks";
+import thunk from "../../store/TODOList/thunk";
 import {Player} from "@lottiefiles/react-lottie-player";
 
 const ChartSettingsModal = (props) => {
     const user = useSelector((state) => state.loginReducer);
-    const [modalChartSettings, setModalChartSettings] = useState(structuredClone(props.chartSettings));
+    const [modalChartSettings, setModalChartSettings] = useState({});
+    const [categories, setCategories] = useState([]);
+    const [isChartSettingsChanged, setIsChartSettingsChanged] = useState(false);
+    const [categoriesChanged, setCategoriesChanged] = useState([]);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setModalChartSettings(structuredClone(props.chartSettings))
+        // Cloned again since
+        setModalChartSettings(structuredClone(props.chartSettings));
+        setCategories(structuredClone(props.categories));
     }, [props]);
 
     const handlePut = () => {
-        dispatch(putChartSettingsAsync([user.user.userID, modalChartSettings]));
+        if (isChartSettingsChanged) {
+            dispatch(putChartSettingsAsync([user.user.userID, modalChartSettings]));
+            setIsChartSettingsChanged(false);
+        }
+        if (categoriesChanged.length > 0) {
+            dispatch(thunk.patchCategoriesAsync(categoriesChanged));
+            setCategoriesChanged([]);
+        }
     };
 
     return (
@@ -63,6 +76,7 @@ const ChartSettingsModal = (props) => {
                                 ...prevProps,
                                 axisTimeScale: e.target.value
                             }))
+                            setIsChartSettingsChanged(true);
                         }}
                     />
                     <Input
@@ -92,12 +106,13 @@ const ChartSettingsModal = (props) => {
                                 ...prevProps,
                                 axisVerticalScale: e.target.value
                             }))
+                            setIsChartSettingsChanged(true);
                         }}
                     />
                     <Typography variant="h6" color="blue-gray" className="mt-3 text-center">
                         Category Colors
                     </Typography>
-                    {modalChartSettings.categoryColors.length === 0 ?
+                    {categories.length === 0 ?
                         <div className="mx-auto">
                             <Typography className="text-center">
                                 No categories to color...
@@ -114,7 +129,7 @@ const ChartSettingsModal = (props) => {
                             </div>
                         </div> : null}
                     <div className="grid gap-x-3 gap-y-5 sm:grid-cols-3">
-                        {modalChartSettings.categoryColors.map((item, index) =>
+                        {categories.map((item, index) =>
                             <div key={index} className="sm:col-span-1 mt-5">
                                 <Input
                                     type="color"
@@ -123,16 +138,28 @@ const ChartSettingsModal = (props) => {
                                     label={item.category + " TODO Color"}
                                     color="blue-gray"
                                     value={item.color}
-                                    onChange={(e) => setModalChartSettings((prevState) => ({
-                                        axisTimeScale: prevState.axisTimeScale,
-                                        axisVerticalScale: prevState.axisVerticalScale,
-                                        categoryColors: prevState.categoryColors.map(c => {
-                                            if (c.category === item.category) {
-                                                c.color = e.target.value;
-                                            }
-                                            return c;
-                                        })
-                                    }))}
+                                    onChange={(e) => {
+                                        setCategories((prevState) => (
+                                            prevState.map(c => {
+                                                if (c["_id"] === item["_id"]) {
+                                                    c.color = e.target.value;
+                                                }
+                                                return c;
+                                            })
+                                        ));
+                                        const index = categoriesChanged.findIndex((category) => category["_id"] === item["_id"]);
+                                        if (index !== -1) {
+                                            setCategoriesChanged(list => list.map((category, i) => {
+                                                if (i === index) {
+                                                    category.color = e.target.value;
+                                                }
+                                                return category;
+                                            }))
+                                        } else {
+                                            setCategoriesChanged((prevArray) =>
+                                                [...prevArray, {"_id": item["_id"], "color": e.target.value}]);
+                                        }
+                                    }}
                                 />
                             </div>
                         )}
