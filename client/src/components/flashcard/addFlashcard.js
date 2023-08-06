@@ -21,7 +21,6 @@ const AddFlashcard = (props) => {
   const dispatch = useDispatch();
 
   const handleAdd = () => {
-    // Can only pass one argument to a thunk! ¯\_(ツ)_/¯
     dispatch(
       addFlashcardAsync({
         moduleId: props.moduleId,

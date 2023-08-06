@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Option, Select, Spinner } from "@material-tailwind/react";
+import React, { useEffect } from "react";
+import { Option, Select } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import thunk from "../../store/TODOList/thunk";
 import CategoryDelete from "./CategoryDelete";
@@ -15,15 +15,11 @@ function CategoryToggle({ setSelectedCategoryID, setErrMessage }) {
   const user = useSelector((state) => state.loginReducer);
 
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
 
   // updates category list in redux store from server whenever list is
   // updated
   useEffect(() => {
-    setLoading(true);
-    dispatch(thunk.getCategoryListAsync(user.user.userID)).then(() => {
-      setLoading(false);
-    });
+    dispatch(thunk.getCategoryListAsync(user.user.userID));
   }, [dispatch, fetchCategoryList, user.user.userID]);
 
   const handleCategorySelection = (selectedID) => {
@@ -32,19 +28,21 @@ function CategoryToggle({ setSelectedCategoryID, setErrMessage }) {
   };
 
   return (
-    <div className="mt-4 w-[13rem]">
-      {loading && <Spinner className="h-10 w-10" />}
+    <div className="mt-4 w-[13rem] flex">
       <Select
         id="categoryFilter"
-        label="Search by Category"
+        label="Select by Category"
+        color="indigo"
         onChange={handleCategorySelection}
       >
-        <Option value="">All Categories</Option>
+        <Option value="" className="pl-2 py-[0.65rem] pr-1">
+          All Categories
+        </Option>
         {categories.map((category) => (
           <Option
             key={category._id}
             value={category._id}
-            className="flex flex-row justify-between flex-wrap"
+            className="flex flex-row justify-between flex-wrap items-center pl-2 py-1 pr-1 my-1"
           >
             {category.category}
             <CategoryDelete

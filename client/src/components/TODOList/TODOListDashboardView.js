@@ -5,8 +5,8 @@ import TODOCalendarView from "./TODOCalendarView";
 
 const TODOListDashboardView = () => {
   return (
-    <Card className="flex flex-row justify-evenly flex-wrap m-4 p-4">
-      <TODOListViewer selectedCategoryID={""} />
+    <Card className="flex flex-row justify-evenly m-4 p-4 h-[20rem]">
+      <TODOListViewer selectedCategoryID={""} shorten={true} />
       <TODOCalendarView selectedCategoryID={""} />
     </Card>
   );

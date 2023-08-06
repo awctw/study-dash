@@ -91,14 +91,12 @@ const SmartCards = (props) => {
                 <ChevronRightIcon strokeWidth={2} className="w-6 h-6" />
               </IconButton>
             )}
-            // Need to change next arrow so that it can be disabled
           >
             {flashcards.map((flashcard, i) => (
               <Card
                 key={flashcard._id + "-" + i}
                 className="w-full h-full object-cover bg-transparent items-center justify-center rounded-none"
               >
-                {/* <Typography key={i} variant="h2" className="text-gray-50 mx-28 text-center">{question}</Typography> */}
                 <div
                   className={`card ${
                     flip ? "flipped" : ""
@@ -165,7 +163,6 @@ const SmartCards = (props) => {
             <StatusBar
               setFlip={setFlip}
               flip={flip}
-              // note: .filter(Boolean) keeps every truthy value in the array!
               progress={(answered.filter(Boolean).length / numCards) * 100}
               numCorrect={numCorrect}
               numWrong={numWrong}

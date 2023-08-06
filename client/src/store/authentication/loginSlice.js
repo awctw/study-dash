@@ -119,7 +119,6 @@ const loginSlice = createSlice({
       })
       .addCase(getUserInvitesAsync.fulfilled, (state, action) => {
         state.getUserInvites = REQUEST_STATE.FULFILLED;
-        console.log("Invites: ", action.payload);
         state.invites = action.payload;
       })
       .addCase(getUserInvitesAsync.rejected, (state, action) => {

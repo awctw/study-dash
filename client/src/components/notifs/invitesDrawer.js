@@ -1,6 +1,6 @@
 import { EnvelopeIcon } from "@heroicons/react/24/solid";
 import {
-  Badge,
+  Chip,
   Button,
   Drawer,
   IconButton,
@@ -36,47 +36,52 @@ const InvitesDrawer = (props) => {
 
   return (
     <>
-      <Badge className={`${invites.length ? "bg-red-500" : "bg-transparent"}`}>
-        <Tooltip content="Your Invites" placement="left">
-          <IconButton
-            className="flex items-center bg-indigo-50 text-indigo-300 p-1 shadow-none hover:shadow-none font-sans font-medium border"
-            onClick={onOpenDrawer}
-          >
-            <EnvelopeIcon strokeWidth={1} className="w-5 h-5" />
-          </IconButton>
-        </Tooltip>
-      </Badge>
+      <Tooltip content="Your Invites" placement="left">
+        <IconButton
+          className="flex items-center bg-indigo-50 text-indigo-300 p-1 shadow-none hover:shadow-none font-sans font-medium border"
+          onClick={onOpenDrawer}
+        >
+          <EnvelopeIcon strokeWidth={1} className="w-5 h-5" />
+        </IconButton>
+      </Tooltip>
+      <Chip
+        value={invites.length}
+        size="sm"
+        variant="filled"
+        className="m-2 float-right rounded-full bg-indigo-300"
+      />
       <Drawer
         open={open}
         placement="right"
-        className="flex flex-col p-4 mt-2 mr-2 rounded-2xl border !h-[97%] border-gray-400/70 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50 shadow-lg"
         overlay={false}
         size={350}
         onClose={onCloseDrawer}
       >
-        {invites.length > 0 ? (
-          invites.map((invite) => (
-            <Invite
-              key={invite.groupID}
-              chatName={invite.chatName}
-              groupID={invite.groupID}
-            />
-          ))
-        ) : (
-          <div className="flex flex-col w-full h-full items-center justify-center">
-            <Player
-              src={
-                "https://assets8.lottiefiles.com/datafiles/wqxpXEEPRQf1JnQ/data.json"
-              }
-              style={{ height: "180px", width: "180px", padding: 0 }}
-              autoplay
-              loop
-            />
-            <Typography className="text-blue-gray-300/70 font-sans text-lg">
-              You have no invitations!
-            </Typography>
-          </div>
-        )}
+        <div className="flex flex-col p-4 mt-2 mr-2 rounded-2xl border !h-[97%] border-gray-400/70 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50 shadow-lg">
+          {invites.length > 0 ? (
+            invites.map((invite) => (
+              <Invite
+                key={invite.groupID}
+                chatName={invite.chatName}
+                groupID={invite.groupID}
+              />
+            ))
+          ) : (
+            <div className="flex flex-col w-full h-full items-center justify-center">
+              <Player
+                src={
+                  "https://assets8.lottiefiles.com/datafiles/wqxpXEEPRQf1JnQ/data.json"
+                }
+                style={{ height: "180px", width: "180px", padding: 0 }}
+                autoplay
+                loop
+              />
+              <Typography className="text-blue-gray-300/70 font-sans text-lg">
+                You have no invitations!
+              </Typography>
+            </div>
+          )}
+        </div>
       </Drawer>
     </>
   );

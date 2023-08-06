@@ -10,10 +10,7 @@ const TodoListModule = () => {
   const [selectedCategoryID, setSelectedCategoryID] = useState("");
 
   return (
-    <Card
-      className="flex flex-row justify-evenly flex-wrap
-    m-4 p-4 max-w-[70rem]"
-    >
+    <Card className="flex flex-row items-start pl-0 shadow-none mt-2">
       <TODOListMainView
         selectedCategoryID={selectedCategoryID}
         setSelectedCategoryID={setSelectedCategoryID}

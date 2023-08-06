@@ -1,5 +1,8 @@
 import React from "react";
-import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
+import {
+  CheckCircleIcon,
+  ExclamationCircleIcon,
+} from "@heroicons/react/20/solid";
 import {
   Popover,
   PopoverContent,
@@ -20,29 +23,28 @@ const TODOCalendarIcon = ({ TODOList }) => {
       return todo.isFinished === false;
     });
 
-    const notFinishedColour = "fill-red-500";
-    const finishedColour = "fill-light-green-500";
-
     if (notFinishedTODOs.length > 0) {
-      return notFinishedColour;
+      return false;
     }
 
-    return finishedColour;
+    return true;
   };
 
   return (
     <Popover>
       <PopoverHandler>
-        <ExclamationCircleIcon
-          className={`w-4 relative ${configureTODOIconColour()}`}
-        />
+        {configureTODOIconColour() ? (
+          <CheckCircleIcon className={`w-4 relative fill-green-500`} />
+        ) : (
+          <ExclamationCircleIcon className={`w-4 relative fill-red-500`} />
+        )}
       </PopoverHandler>
       <PopoverContent
         className="flex flex-col items-center
-      overflow-y-auto h-[15rem]"
+      overflow-y-auto max-h-[15rem] scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50"
       >
         {TODOList.map((todo) => (
-          <TODOItem key={todo._id} todo={todo} />
+          <TODOItem key={todo._id} todo={todo} shorten={true} />
         ))}
       </PopoverContent>
     </Popover>

@@ -1,16 +1,17 @@
 import {
     Button,
     Dialog,
+    DialogHeader,
     DialogBody,
-    DialogFooter, DialogHeader,
+    DialogFooter,
     Input,
     Typography,
 } from "@material-tailwind/react";
-import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { putChartSettingsAsync } from "../../store/chartSettings/thunks";
 import thunk from "../../store/TODOList/thunk";
-import {Player} from "@lottiefiles/react-lottie-player";
+import { Player } from "@lottiefiles/react-lottie-player";
 
 const ChartSettingsModal = (props) => {
     const user = useSelector((state) => state.loginReducer);
@@ -45,8 +46,8 @@ const ChartSettingsModal = (props) => {
                 size="xs"
                 className="!min-w-max"
             >
-                <DialogHeader>Chart Settings</DialogHeader>
-                <DialogBody divider className="h-[40rem] overflow-y-auto">
+                <DialogHeader>Settings</DialogHeader>
+                <DialogBody divider className="max-h-[35rem] overflow-y-auto">
                     <Input
                         variant="outlined"
                         label="Visible Hour Range (1 to 84 Hours Before and After)"
@@ -60,21 +61,21 @@ const ChartSettingsModal = (props) => {
                                 e.target.value = "84";
                                 setModalChartSettings((prevProps) => ({
                                     ...prevProps,
-                                    axisTimeScale: 84
-                                }))
+                                    axisTimeScale: 84,
+                                }));
                             } else if (e.target.value < 1) {
                                 e.target.value = "1";
                                 setModalChartSettings((prevProps) => ({
                                     ...prevProps,
-                                    axisTimeScale: 1
-                                }))
+                                    axisTimeScale: 1,
+                                }));
                             }
 
                             // Set axisTimeScale
                             setModalChartSettings((prevProps) => ({
                                 ...prevProps,
-                                axisTimeScale: e.target.value
-                            }))
+                                axisTimeScale: e.target.value,
+                            }));
                             setIsChartSettingsChanged(true);
                         }}
                     />
@@ -90,13 +91,13 @@ const ChartSettingsModal = (props) => {
                                 e.target.value = "100";
                                 setModalChartSettings((prevProps) => ({
                                     ...prevProps,
-                                    axisVerticalScale: 100
+                                    axisVerticalScale: 100,
                                 }));
                             } else if (e.target.value < 1) {
                                 e.target.value = "1";
                                 setModalChartSettings((prevProps) => ({
                                     ...prevProps,
-                                    axisVerticalScale: 1
+                                    axisVerticalScale: 1,
                                 }));
                             }
 
@@ -104,11 +105,15 @@ const ChartSettingsModal = (props) => {
                             setModalChartSettings((prevProps) => ({
                                 ...prevProps,
                                 axisVerticalScale: e.target.value
-                            }))
+                            }));
                             setIsChartSettingsChanged(true);
                         }}
                     />
-                    <Typography variant="h6" color="blue-gray" className="mt-3 text-center">
+                    <Typography
+                        variant="h6"
+                        color="blue-gray"
+                        className="mt-3 text-center"
+                    >
                         Category Colors
                     </Typography>
                     {categories.length === 0 ?
@@ -146,17 +151,25 @@ const ChartSettingsModal = (props) => {
                                                 return c;
                                             })
                                         ));
-                                        const index = categoriesChanged.findIndex((category) => category["_id"] === item["_id"]);
+                                        const index = categoriesChanged.findIndex(
+                                            (category) =>
+                                                category["_id"] === item["_id"]
+                                        );
                                         if (index !== -1) {
-                                            setCategoriesChanged(list => list.map((category, i) => {
-                                                if (i === index) {
-                                                    category.color = e.target.value;
-                                                }
-                                                return category;
-                                            }))
+                                            setCategoriesChanged(
+                                                (list) =>
+                                                    list.map((category, i) => {
+                                                        if (i === index) {
+                                                            category.color = e.target.value;
+                                                        }
+                                                        return category;
+                                                    })
+                                            );
                                         } else {
-                                            setCategoriesChanged((prevArray) =>
-                                                [...prevArray, {"_id": item["_id"], "color": e.target.value}]);
+                                            setCategoriesChanged(
+                                                (prevArray) =>
+                                                    [...prevArray, {"_id": item["_id"], "color": e.target.value}]
+                                            );
                                         }
                                     }}
                                 />
