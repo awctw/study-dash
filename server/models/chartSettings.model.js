@@ -13,8 +13,7 @@ const ChartSettings = mongoose.model(
             type: Number,
             min: 1,
             max: 100
-        },
-        categoryColors: [{ categoryID: String, category: String, color: String}]
+        }
     })
 );
 

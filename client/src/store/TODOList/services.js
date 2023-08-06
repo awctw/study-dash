@@ -11,6 +11,17 @@ const getCategories = async (userID) => {
   }
 };
 
+const patchCategories = async (changedCategories) => {
+  try {
+    const response = await axios.patch(`${API_URL}/api/categories/`, {
+      changedCategories: changedCategories,
+    });
+    return response.data;
+  } catch (error) {
+    handleRequestError(error);
+  }
+};
+
 const deleteCategory = async (categoryID) => {
   try {
     const response = await axios.delete(
@@ -82,6 +93,7 @@ const handleRequestError = (error) => {
 
 const services = {
   getCategories,
+  patchCategories,
   deleteCategory,
   getTODOList,
   getTODOItem,
