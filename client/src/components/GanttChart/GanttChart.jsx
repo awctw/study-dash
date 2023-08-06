@@ -112,8 +112,8 @@ const GanttChart = (props) => {
         }
         // Increasing containerHeight affects inner chart height
         if (props.containerHeight === undefined) {
-            // Variable px per item
-            containerHeight = margin.top + margin.bottom + upToDateChartSettings.current.axisVerticalScale * filteredData.length;
+            // Variable px per item; add 9 px for relative size
+            containerHeight = margin.top + margin.bottom + (upToDateChartSettings.current.axisVerticalScale + 9) * filteredData.length;
         }
         if (props.tooltipPadding === undefined) {
             tooltipPadding = 15;

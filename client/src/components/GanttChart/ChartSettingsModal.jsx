@@ -92,13 +92,13 @@ const ChartSettingsModal = (props) => {
                                 setModalChartSettings((prevProps) => ({
                                     ...prevProps,
                                     axisVerticalScale: 100
-                                }))
+                                }));
                             } else if (e.target.value < 1) {
                                 e.target.value = "1";
                                 setModalChartSettings((prevProps) => ({
                                     ...prevProps,
                                     axisVerticalScale: 1
-                                }))
+                                }));
                             }
 
                             // Set axisTimeScale

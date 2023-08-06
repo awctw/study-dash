@@ -8,7 +8,7 @@ const getChartSettings = async (req, res, next) => {
             const chartSettings = new ChartSettings({
                 userID: req.params.userID,
                 axisTimeScale: 24,
-                axisVerticalScale: 30,
+                axisVerticalScale: 21,
             });
             await chartSettings.save()
             res.status(200).send(chartSettings);
