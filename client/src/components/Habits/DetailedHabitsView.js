@@ -41,7 +41,6 @@ const DetailedHabitsView = () => {
     const getStartDate = () => {
         const day = new Date()
         const oneYear = new Date(dayjs(day).subtract(1, 'year').format('YYYY/MM/DD'))
-        console.log(oneYear)
         return oneYear
     }
 
@@ -59,7 +58,7 @@ const DetailedHabitsView = () => {
                         <Typography color="blue-gray" variant="h5">{habit.name}</Typography>
                         <br />
                         <HeatMap 
-                            width={720}
+                            width={730}
                             value={parseHabitDates(habit.dates)}
                             startDate={getStartDate()}
                             endDate={getEndDate()}
