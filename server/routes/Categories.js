@@ -15,6 +15,29 @@ router.get('/:userID', async (req, res) => {
   }
 });
 
+router.patch('/', async (req, res) => {
+  try {
+    let updateQueries = [];
+    req.body.changedCategories.forEach(async (category) => {
+      const {_id, userID, ...update} = category;
+      if (category !== null && category !== {}) {
+        updateQueries.push({
+          updateOne: {
+            filter: { _id: category["_id"] },
+            update: update
+          }
+        });
+      }
+    });
+    const bulkWriteResult = await Category.bulkWrite(updateQueries);
+
+    res.send(req.body.changedCategories.slice(0, bulkWriteResult.nModified));
+  } catch (error) {
+    console.error('Error changing category color:', error);
+    res.status(500).send('An error occurred while changing category color: ' + error.message);
+  }
+});
+
 router.delete('/:categoryID', async (req, res) => {
   try {
     const items = await TODOItem.find({

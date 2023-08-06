@@ -1,27 +1,30 @@
 import React, { useEffect, useCallback, useRef } from "react";
 import * as d3 from "d3";
-import "../../Styles/GanttChart.css";
+import "../../Styles/GanttChart.css"
 import { useDispatch, useSelector } from "react-redux";
 import { getChartSettingsAsync } from "../../store/chartSettings/thunks";
 import { Typography } from "@material-tailwind/react";
 import { Player } from "@lottiefiles/react-lottie-player";
+import thunk from "../../store/TODOList/thunk";
 
 const GanttChart = (props) => {
-  // Redux selectors and dispatch
-  const user = useSelector((state) => state.loginReducer);
-  const chartSettings = useSelector(
-    (state) => state.chartSettingsReducer.chartSettings
-  );
-  const todos = useSelector((state) => state.todoReducer.TODOList);
-  const habits = useSelector((state) => state.habitReducer.habits);
-  const dispatch = useDispatch();
+    // Redux selectors and dispatch
+    const user = useSelector((state) => state.loginReducer);
+    const chartSettings = useSelector(
+        (state) => state.chartSettingsReducer.chartSettings
+    );
+    const todos = useSelector((state) => state.todoReducer.TODOList);
+    const habits = useSelector((state) => state.habitReducer.habits);
+    const categories = useSelector((state) => state.todoReducer.categories);
+    const dispatch = useDispatch();
 
-  // useRef needed for accessing up-to-date store in SetTimeout
-  let upToDateChartSettings = useRef(chartSettings);
-  let upToDateTodos = useRef(todos);
-  let upToDateHabits = useRef(habits);
-  let prevTimeout = useRef(-1);
-  let currentTimeout = useRef(-1);
+    // useRef needed for accessing up-to-date store in SetTimeout
+    let upToDateChartSettings = useRef(chartSettings);
+    let upToDateTodos = useRef(todos);
+    let upToDateHabits = useRef(habits);
+    let upToDateCategories = useRef(categories);
+    let prevTimeout = useRef(-1);
+    let currentTimeout = useRef(-1);
 
   // Function for string to Date handling
   const parseDate = function (date) {
@@ -31,67 +34,56 @@ const GanttChart = (props) => {
     return date;
   };
 
-  // Chart consts
-  const SVG_ID = "gantt-chart-svg";
-  const X_AXIS_SVG_ID = "gantt-chart-x-axis-svg";
-  const CHART_ID = "gantt-chart-g";
-  const X_AXIS_G_ID = "gantt-x-axis-g";
-  const Y_AXIS_G_ID = "gantt-y-axis-g";
-  const CIRCLE_RADIUS = 5;
-  const renderChart = useCallback(() => {
-    // Filter data to see if the chart needs to be rendered
-    const xDomainStart =
-      Date.now() - upToDateChartSettings.current.axisTimeScale * 60 * 60 * 1000;
-    const xDomainEnd =
-      Date.now() + upToDateChartSettings.current.axisTimeScale * 60 * 60 * 1000;
-    // 'Clone' upToDateTodos.current to bypass read-only for scaleBand duplicate title handling
-    let filteredData = JSON.parse(JSON.stringify(upToDateTodos.current));
-    filteredData = filteredData.filter(
-      (d) =>
-        Date.parse(d.endDate) - Date.parse(d.startDate) !== 0 &&
-        xDomainStart <= Date.parse(d.endDate) &&
-        Date.parse(d.startDate) <= xDomainEnd
-    );
-
-    // Habit day of the week handling
-    let currDate = new Date(xDomainStart);
-    while (currDate <= xDomainEnd) {
-      upToDateHabits.current.forEach((habit) => {
-        if (!(habit.startTime.toString() === habit.endTime.toString())) {
-          if (habit.days[currDate.getDay()]) {
-            const startDate = (function () {
-              let retDate = new Date(habit.startTime).setMonth(
-                currDate.getMonth()
-              );
-              retDate = new Date(retDate).setDate(currDate.getDate());
-              retDate = new Date(retDate).setFullYear(currDate.getFullYear());
-              return retDate;
-            })();
-            const endDate = (function () {
-              let retDate = new Date(habit.endTime).setMonth(
-                currDate.getMonth()
-              );
-              retDate = new Date(retDate).setDate(currDate.getDate());
-              retDate = new Date(retDate).setFullYear(currDate.getFullYear());
-              return retDate;
-            })();
-            if (
-              endDate - startDate !== 0 &&
-              xDomainStart <= endDate &&
-              startDate <= xDomainEnd
-            ) {
-              filteredData.push({
-                _id: habit["_id"],
-                title: habit.name,
-                startDate: startDate,
-                endDate: endDate,
-              });
-            }
-          }
-        }
-      });
-      currDate.setDate(currDate.getDate() + 1);
+    // Function for converting a Date 'startTime' to occur on the day, month, and year of 'currDate'
+    const convertDateToSameDay = function(startTime, currDate) {
+        // Date constructor usage is required since the variable is treated as a number
+        let retDate = new Date(startTime).setMonth(currDate.getMonth());
+        retDate = new Date(retDate).setDate(currDate.getDate());
+        retDate = new Date(retDate).setFullYear(currDate.getFullYear());
+        return retDate;
     }
+
+    // Chart consts
+    const SVG_ID = 'gantt-chart-svg';
+    const X_AXIS_SVG_ID = 'gantt-chart-x-axis-svg';
+    const CHART_ID = 'gantt-chart-g';
+    const X_AXIS_G_ID = 'gantt-x-axis-g'
+    const Y_AXIS_G_ID = 'gantt-y-axis-g'
+    const CIRCLE_RADIUS = 5;
+    const renderChart = useCallback(() => {
+        // Filter data to see if the chart needs to be rendered
+        const xDomainStart = Date.now() - upToDateChartSettings.current.axisTimeScale * 60 * 60 * 1000;
+        const xDomainEnd = Date.now() + upToDateChartSettings.current.axisTimeScale * 60 * 60 * 1000;
+        // 'Clone' upToDateTodos.current to bypass read-only for filtering for scaleBand duplicate title handling
+        // (duplicate titles without this handling would appear in the same space rather than being different)
+        let filteredData = JSON.parse(JSON.stringify(upToDateTodos.current));
+        filteredData = filteredData.filter(
+            (d) =>
+                Date.parse(d.endDate) - Date.parse(d.startDate) !== 0 &&
+                xDomainStart <= Date.parse(d.endDate) && Date.parse(d.startDate) <= xDomainEnd
+        );
+
+        // Habit day of the week handling
+        let currDate = new Date(xDomainStart);
+        while (currDate <= xDomainEnd) { // Create habit entries for the days of the week they are on
+            upToDateHabits.current.forEach((habit) => {
+                if (!(habit.startTime === habit.endTime)) {
+                    if (habit.days[currDate.getDay()]) {
+                        const startDate = convertDateToSameDay(habit.startTime, currDate);
+                        const endDate = convertDateToSameDay(habit.endTime, currDate);
+                        if (xDomainStart <= endDate && startDate <= xDomainEnd && startDate < endDate) {
+                            filteredData.push({
+                                _id: habit["_id"],
+                                title: habit.name,
+                                startDate: startDate,
+                                endDate: endDate
+                            });
+                        }
+                    }
+                }
+            });
+            currDate.setDate(currDate.getDate() + 1);
+        }
 
     // Switch between chart and empty display
     const ganttChart = d3.select(".gantt-chart");
@@ -110,32 +102,32 @@ const GanttChart = (props) => {
       d3.select("#gantt-chart-svg").style("display", "block");
     }
 
-    // Chart dimension calculation
-    let containerWidth, containerHeight, margin, tooltipPadding;
-    if (props.containerWidth === undefined) {
-      containerWidth = 720;
-    }
-    if (props.margin === undefined) {
-      margin = {
-        top: 35,
-        right: 20,
-        bottom: 25,
-        left: 70,
-      };
-    }
-    // Increasing containerHeight affects inner chart height
-    if (props.containerHeight === undefined) {
-      // Variable px per item
-      containerHeight =
-        margin.top +
-        margin.bottom +
-        upToDateChartSettings.current.axisVerticalScale * filteredData.length;
-    }
-    if (props.tooltipPadding === undefined) {
-      tooltipPadding = 15;
-    }
-    const width = containerWidth - margin.left - margin.right;
-    const height = containerHeight - margin.top - margin.bottom;
+        // Chart dimension calculation
+        let containerWidth, containerHeight, margin, tooltipPadding;
+        if (props.containerWidth === undefined) {
+            containerWidth = 720;
+        }
+        if (props.margin === undefined) {
+            margin = {
+                top: 35,
+                right: 20,
+                bottom: 25,
+                left: 70
+            };
+        }
+        // Increasing containerHeight affects inner chart height
+        if (props.containerHeight === undefined) {
+            // Variable px per item; add 9 px for relative size
+            containerHeight =
+                margin.top +
+                margin.bottom +
+                (upToDateChartSettings.current.axisVerticalScale + 9) * filteredData.length;
+        }
+        if (props.tooltipPadding === undefined) {
+            tooltipPadding = 15;
+        }
+        const width = containerWidth - margin.left - margin.right;
+        const height = containerHeight - margin.top - margin.bottom;
 
     // Create scales
     const xScale = d3.scaleTime().range([0, width]);
@@ -256,45 +248,40 @@ const GanttChart = (props) => {
       .data(filteredData, (d) => d.id)
       .join("rect");
 
-    // Style bars
-    bars
-      .style("opacity", 0.5)
-      .style("opacity", 1)
-      .attr("class", "bar")
-      .attr("x", (d) => {
-        const x = xScale(xValue(d));
-        if (x < 0) {
-          return 0;
-        }
-        return x;
-      })
-      .attr("width", (d) => {
-        const scaledWidth = xScale(
-          parseDate(d.endDate) - parseDate(d.startDate) + xDomainStart
-        );
-        let x = xScale(xValue(d));
-        if (x < 0) {
-          x = 0;
-        }
-        if (x + scaledWidth > xScale(xDomainEnd)) {
-          return xScale(xDomainEnd) - x;
-        }
-        return scaledWidth;
-      })
-      .attr("height", yScale.bandwidth())
-      .attr("y", (d) => yScale(yValue(d)))
-      .attr("fill", (d) => {
-        const categoryColor = upToDateChartSettings.current.categoryColors.find(
-          (c) => c.categoryID === d.category
-        );
-        if (categoryColor !== undefined) {
-          return categoryColor.color;
-        }
-        return "#000000";
-      })
-      .attr("stroke-width", 1)
-      .attr("stroke", "black")
-      .attr("rx", 3);
+        // Style bars
+        bars.style("opacity", 0.5)
+            .style("opacity", 1)
+            .attr("class", "bar")
+            .attr("x", (d) => {
+                const x = xScale(xValue(d));
+                if (x < 0) {
+                    return 0;
+                }
+                return x;
+            })
+            .attr("width", d => {
+                const scaledWidth = xScale(parseDate(d.endDate) - parseDate(d.startDate) + xDomainStart);
+                let x = xScale(xValue(d));
+                if (x < 0) {
+                    x = 0;
+                }
+                if (x + scaledWidth > xScale(xDomainEnd)) {
+                    return xScale(xDomainEnd) - x;
+                }
+                return scaledWidth;
+            })
+            .attr("height", yScale.bandwidth())
+            .attr("y", d => yScale(yValue(d)))
+            .attr("fill", (d) => {
+                const categoryColor = upToDateCategories.current.find(c => c["_id"] === d.category);
+                if (categoryColor !== undefined) {
+                    return categoryColor.color;
+                }
+                return "#000000";
+            })
+            .attr("stroke-width", 1)
+            .attr("stroke", "black")
+            .attr("rx", 3);
 
     // Tooltip event listeners
     bars
@@ -306,34 +293,27 @@ const GanttChart = (props) => {
           .style("top", event.pageY + tooltipPadding + "px").html(`
               <div class="tooltip-title">${d.title}</div>
               <div><i>Start Time: ${new Date(
-                d.startDate
+                  d.startDate
               ).toLocaleTimeString()}</i></div>
               <div><i>End Time: ${new Date(
-                d.endDate
+                  d.endDate
               ).toLocaleTimeString()}</i></div>
               <div><i>${(function () {
-                if (d.category !== undefined) {
-                  const category =
-                    upToDateChartSettings.current.categoryColors.find(
-                      (c) => c.categoryID === d.category
-                    );
-                  if (category !== undefined) {
-                    return (
-                      "Category: " +
-                      upToDateChartSettings.current.categoryColors.find(
-                        (c) => c.categoryID === d.category
-                      ).category
-                    );
-                  }
-                }
-                return "";
-              })()}</i></div>
+                        if (d.category !== undefined) {
+                            const category = upToDateCategories.current
+                                .find(c => c["_id"] === d.category);
+                            if (category !== undefined) {
+                                return "Category: " + category.category;
+                            }
+                        }
+                        return "";
+                    })()}</i></div>
               <div>${(function () {
-                if (d.description !== undefined) {
-                  return d.description;
-                }
-                return "";
-              })()}</div>
+                  if (d.description !== undefined) {
+                      return d.description;
+                  }
+                  return "";
+                    })()}</div>
             `);
       })
       .on("mousemove", (event) => {
@@ -356,13 +336,12 @@ const GanttChart = (props) => {
     });
   }, [props]);
 
-  // Get chart settings on first render
-  useEffect(() => {
-    if (user.isLoggedIn) {
-      dispatch(getChartSettingsAsync(user.user.userID));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // Get chart settings on first render
+    useEffect(() => {
+        dispatch(thunk.getCategoryListAsync(user.user.userID));
+        dispatch(getChartSettingsAsync(user.user.userID));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
   // Update the chart on every minute change (to keep 'now' line accurate)
   // New instance of setTimeOut() every runClock() so no memory build-up due to garbage collector
@@ -380,22 +359,23 @@ const GanttChart = (props) => {
     }, timeToNextTick);
   }, [renderChart]);
 
-  // Sync ref variables and re-render chart whenever data or chartSettings changes
-  useEffect(() => {
-    if (todos !== null && habits !== null && chartSettings !== null) {
-      upToDateTodos.current = todos;
-      upToDateHabits.current = habits;
-      upToDateChartSettings.current = chartSettings;
-      renderChart();
-      currentTimeout.current = runClock();
-    }
+    // Sync ref variables and re-render chart whenever data, categories, or chartSettings changes
+    useEffect(() => {
+        if (todos !== null && habits !== null && chartSettings !== null && categories != null) {
+            upToDateTodos.current = todos;
+            upToDateHabits.current = habits;
+            upToDateChartSettings.current = chartSettings;
+            upToDateCategories.current = categories;
+            renderChart();
+            currentTimeout.current = runClock();
+        }
 
-    // Cleanup on unmount
-    return () => {
-      clearTimeout(prevTimeout.current);
-      clearTimeout(currentTimeout.current);
-    };
-  }, [todos, habits, chartSettings, renderChart, runClock]);
+        // Cleanup on unmount
+        return () => {
+            clearTimeout(prevTimeout.current);
+            clearTimeout(currentTimeout.current);
+        };
+    }, [todos, habits, chartSettings, categories, renderChart, runClock]);
 
   return (
     <div className="flex items-center justify-center min-w-[30rem]">
