@@ -21,7 +21,6 @@ const ChartSettingsModal = (props) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // Cloned again since
         setModalChartSettings(structuredClone(props.chartSettings));
         setCategories(structuredClone(props.categories));
     }, [props]);
