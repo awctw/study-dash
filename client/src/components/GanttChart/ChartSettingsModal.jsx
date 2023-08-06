@@ -1,11 +1,11 @@
 import {
-  Button,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-  Input,
-  Typography,
+    Button,
+    Dialog,
+    DialogHeader,
+    DialogBody,
+    DialogFooter,
+    Input,
+    Typography,
 } from "@material-tailwind/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,7 +47,7 @@ const ChartSettingsModal = (props) => {
                 className="!min-w-max"
             >
                 <DialogHeader>Settings</DialogHeader>
-                <DialogBody divider className="h-[40rem] overflow-y-auto">
+                <DialogBody divider className="max-h-[35rem] overflow-y-auto">
                     <Input
                         variant="outlined"
                         label="Visible Hour Range (1 to 84 Hours Before and After)"
@@ -74,7 +74,7 @@ const ChartSettingsModal = (props) => {
                             // Set axisTimeScale
                             setModalChartSettings((prevProps) => ({
                                 ...prevProps,
-                                axisTimeScale: e.target.value
+                                axisTimeScale: e.target.value,
                             }));
                             setIsChartSettingsChanged(true);
                         }}
@@ -151,17 +151,25 @@ const ChartSettingsModal = (props) => {
                                                 return c;
                                             })
                                         ));
-                                        const index = categoriesChanged.findIndex((category) => category["_id"] === item["_id"]);
+                                        const index = categoriesChanged.findIndex(
+                                            (category) =>
+                                                category["_id"] === item["_id"]
+                                        );
                                         if (index !== -1) {
-                                            setCategoriesChanged(list => list.map((category, i) => {
-                                                if (i === index) {
-                                                    category.color = e.target.value;
-                                                }
-                                                return category;
-                                            }))
+                                            setCategoriesChanged(
+                                                (list) =>
+                                                    list.map((category, i) => {
+                                                        if (i === index) {
+                                                            category.color = e.target.value;
+                                                        }
+                                                        return category;
+                                                    })
+                                            );
                                         } else {
-                                            setCategoriesChanged((prevArray) =>
-                                                [...prevArray, {"_id": item["_id"], "color": e.target.value}]);
+                                            setCategoriesChanged(
+                                                (prevArray) =>
+                                                    [...prevArray, {"_id": item["_id"], "color": e.target.value}]
+                                            );
                                         }
                                     }}
                                 />
