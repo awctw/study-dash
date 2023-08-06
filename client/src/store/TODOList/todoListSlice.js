@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   fetchCategoryList: false,
   fetchTODOList: false,
   getCategories: REQUEST_STATE.IDLE,
+  patchCategories: REQUEST_STATE.IDLE,
   deleteCategory: REQUEST_STATE.IDLE,
   getTODOList: REQUEST_STATE.IDLE,
   getTODOItem: REQUEST_STATE.IDLE,
@@ -37,6 +38,29 @@ const TODOListSlice = createSlice({
       })
       .addCase(thunk.getCategoryListAsync.rejected, (state, action) => {
         state.getCategories = REQUEST_STATE.REJECTED;
+        state.error = action.error.message;
+      })
+      .addCase(thunk.patchCategoriesAsync.pending, (state) => {
+        state.patchCategories = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(thunk.patchCategoriesAsync.fulfilled, (state, action) => {
+        state.patchCategories = REQUEST_STATE.FULFILLED;
+        console.log(action.payload);
+        action.payload.forEach((category) => {
+          const index = state.categories.findIndex(
+            (c) => c["_id"] === category["_id"]
+          );
+          if (category.category !== undefined) {
+            state.categories[index].category = category.category;
+          }
+          if (category.color !== undefined) {
+            state.categories[index].color = category.color;
+          }
+        });
+      })
+      .addCase(thunk.patchCategoriesAsync.rejected, (state, action) => {
+        state.patchCategories = REQUEST_STATE.REJECTED;
         state.error = action.error.message;
       })
       .addCase(thunk.deleteCategoryAsync.pending, (state) => {
