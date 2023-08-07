@@ -16,13 +16,6 @@ const getUserChatsAsync = createAsyncThunk(
   }
 );
 
-const postChatHistoryAsync = createAsyncThunk(
-  actionTypes.POST_CHATHISTORY,
-  async (history) => {
-    return await chatService.postChatHistory(history);
-  }
-);
-
 const putChatHistoryAsync = createAsyncThunk(
   actionTypes.PUT_CHATHISTORY,
   async (newChat) => {
@@ -69,7 +62,6 @@ export {
   getChatHistoryAsync,
   getUserChatsAsync,
   putChatHistoryAsync,
-  postChatHistoryAsync,
   renameChatAsync,
   groupChatAsync,
   inviteUserAsync,
