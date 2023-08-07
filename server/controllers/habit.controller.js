@@ -33,7 +33,7 @@ const toggleHabbitDate = async (req, res) => {
     if (habit.dates.length > 0 && today.diff(habit.dates.at(-1))) {
         habit.dates.push(today)
         await habit.save()
-    } else if (habit.dates.length == 0) {
+    } else if (habit.dates.length === 0) {
         habit.dates.push(today)
         await habit.save()
     } else {
@@ -42,7 +42,6 @@ const toggleHabbitDate = async (req, res) => {
     }
 
     const habits = await Module.find({userID: habit.userID})
-    console.log(habits)
     res.send(habits)
 }
 

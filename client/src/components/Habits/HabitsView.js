@@ -45,7 +45,7 @@ const HabitsView = () => {
   }, [dispatch, user]);
 
   const addNewHabit = () => {
-    if ((startTime == undefined && endTime == undefined) || (startTime.isValid() && endTime.isValid() && startTime.isBefore(endTime))) {
+    if ((startTime === dayjs(undefined) && endTime === dayjs(undefined)) || (startTime.isValid() && endTime.isValid() && startTime.isBefore(endTime))) {
       const habit = {
         userID: user.user.userID,
         name: name,
@@ -89,7 +89,7 @@ const HabitsView = () => {
     date = new Date(year, month, day)
     let today = dayjs(date)
 
-    if (habit.dates.length == 0 || (habit.dates.length > 0 && today.diff(habit.dates.at(-1)))) {
+    if (habit.dates.length == 0 || (habit.dates.length > 0 && today.diff(habit.dates[habit.dates.length - 1]))) {
       return false
     } else {
       return true
