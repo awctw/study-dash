@@ -13,12 +13,18 @@ import {
   DialogBody,
   DialogFooter,
   CardFooter,
+  IconButton,
 } from "@material-tailwind/react";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getHabitsAsync, addHabitAsync } from "../../store/habits/thunks";
+import {
+  getHabitsAsync,
+  addHabitAsync,
+  toggleHabitDateAsync,
+  deleteHabitAsync,
+} from "../../store/habits/thunks";
 import dayjs from "dayjs";
 
 const HabitsView = () => {
@@ -29,6 +35,8 @@ const HabitsView = () => {
   const [days, setDays] = useState(new Array(7).fill(true));
   const [startTime, setStartTime] = useState(dayjs());
   const [endTime, setEndTime] = useState(dayjs());
+
+  const [checkedHabits, setCheckedHabits] = useState(new Set());
 
   const { habits } = useSelector((state) => state.habitReducer);
   const dispatch = useDispatch();
@@ -42,14 +50,20 @@ const HabitsView = () => {
   }, [dispatch, user]);
 
   const addNewHabit = () => {
-    const habit = {
-      userID: user.user.userID,
-      name: name,
-      days: days,
-      startTime: startTime.toISOString(),
-      endTime: endTime.toISOString(),
-    };
-    dispatch(addHabitAsync(habit));
+    if (
+      (startTime === dayjs(undefined) && endTime === dayjs(undefined)) ||
+      (startTime.isValid() && endTime.isValid() && startTime.isBefore(endTime))
+    ) {
+      const habit = {
+        userID: user.user.userID,
+        name: name,
+        days: days,
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+        dates: [],
+      };
+      dispatch(addHabitAsync(habit));
+    }
     handleOpen();
   };
 
@@ -57,6 +71,37 @@ const HabitsView = () => {
     let newDays = [...days];
     newDays[i] = !newDays[i];
     setDays(newDays);
+  };
+
+  const toggleHabit = (habitID) => {
+    dispatch(toggleHabitDateAsync(habitID));
+
+    let prevSet = new Set([...checkedHabits]);
+    if (prevSet.has(habitID)) {
+      prevSet.delete(habitID);
+    } else {
+      prevSet.add(habitID);
+    }
+    setCheckedHabits(prevSet);
+  };
+
+  const deleteHabit = (habitID) => {
+    dispatch(deleteHabitAsync(habitID));
+  };
+
+  const isTicked = (habit) => {
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth();
+    let year = date.getFullYear();
+    date = new Date(year, month, day);
+    let today = dayjs(date);
+
+    return !(
+      habit.dates.length === 0 ||
+      (habit.dates.length > 0 &&
+        today.diff(habit.dates[habit.dates.length - 1]))
+    );
   };
 
   return (
@@ -74,7 +119,7 @@ const HabitsView = () => {
           <List className="w-full">
             {habits.map((habit) => {
               return (
-                <ListItem key={habit._id} className="p-0">
+                <ListItem key={habit._id} className="group p-0">
                   <label
                     htmlFor={habit._id}
                     className="px-3 py-2 flex items-center w-full cursor-pointer"
@@ -88,11 +133,22 @@ const HabitsView = () => {
                         containerProps={{
                           className: "p-0",
                         }}
+                        onClick={() => toggleHabit(habit._id)}
+                        defaultChecked={isTicked(habit)}
                       />
                     </ListItemPrefix>
                     <Typography color="blue-gray" className="font-medium">
                       {habit.name}
                     </Typography>
+                    <IconButton
+                      color="blue-gray"
+                      variant="text"
+                      size="sm"
+                      className="hidden group-hover:block rounded-full ml-auto"
+                      onClick={() => deleteHabit(habit._id)}
+                    >
+                      ✕
+                    </IconButton>
                   </label>
                 </ListItem>
               );
