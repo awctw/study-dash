@@ -1,7 +1,6 @@
 const ChartSettings= require('../models/chartSettings.model');
-const Category = require("../models/Category.model");
 
-const getChartSettings = async (req, res, next) => {
+const getChartSettings = async (req, res) => {
     try {
         const result = await ChartSettings.findOne({ userID: req.params.userID });
         if (!result) {
@@ -21,7 +20,7 @@ const getChartSettings = async (req, res, next) => {
     }
 }
 
-const putChartSettings = async (req, res, next) => {
+const putChartSettings = async (req, res) => {
     await ChartSettings.findOneAndUpdate({ userID: req.params.userID },
         req.body, { new: true, upsert: true })
         .then((result) => {

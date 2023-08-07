@@ -130,7 +130,7 @@ exports.edit = async (req, res) => {
   });
 };
 
-exports.getUser = async (req, res, next) => {
+exports.getUser = async (req, res) => {
   await User.findOne({ userID: req.params.userID })
     .then((result) => {
       res.status(200).send(result);
@@ -140,7 +140,7 @@ exports.getUser = async (req, res, next) => {
     });
 };
 
-exports.getUserInvites = async (req, res, next) => {
+exports.getUserInvites = async (req, res) => {
   await User.findOne({ userID: req.params.userID })
     .then((user) => {
       res.status(200).send(user.invites);

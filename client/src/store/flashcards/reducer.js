@@ -144,7 +144,7 @@ const flashcardSlice = createSlice({
         state.refreshFlashcard = REQUEST_STATE.PENDING;
         state.error = null;
       })
-      .addCase(refreshFlashCardAsync.fulfilled, (state, action) => {
+      .addCase(refreshFlashCardAsync.fulfilled, (state) => {
         state.refreshFlashcard = REQUEST_STATE.FULFILLED;
         // No state change required for this
       })

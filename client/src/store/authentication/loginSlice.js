@@ -53,7 +53,7 @@ const loginSlice = createSlice({
         state.logout = REQUEST_STATE.PENDING;
         state.error = null;
       })
-      .addCase(userLogoutAsync.fulfilled, (state, action) => {
+      .addCase(userLogoutAsync.fulfilled, (state) => {
         state.logout = REQUEST_STATE.FULFILLED;
         state.isLoggedIn = false;
         state.user = null;

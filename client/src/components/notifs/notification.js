@@ -23,6 +23,7 @@ const Notif = () => {
     if (notification.title) {
       notify();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notification]);
 
   onMessageListener()
@@ -40,8 +41,6 @@ const Notif = () => {
 };
 
 const DisplayToast = (props) => {
-  // console.log("window:", window.location.pathname.split("/"));
-  // const location = useLocation();
   const path = window.location.pathname.split("/");
   const showNotif =
     path[1] !== "chat" || props.title === "You have an invitation";

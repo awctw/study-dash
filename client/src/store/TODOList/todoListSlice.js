@@ -46,7 +46,6 @@ const TODOListSlice = createSlice({
       })
       .addCase(thunk.patchCategoriesAsync.fulfilled, (state, action) => {
         state.patchCategories = REQUEST_STATE.FULFILLED;
-        console.log(action.payload);
         action.payload.forEach((category) => {
           const index = state.categories.findIndex(
             (c) => c["_id"] === category["_id"]

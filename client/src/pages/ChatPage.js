@@ -8,9 +8,7 @@ import {
   Typography,
   CardBody,
   Button,
-  CardHeader,
   Input,
-  CardFooter,
   DialogHeader,
   DialogFooter,
   DialogBody,
@@ -23,10 +21,8 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   ArrowRightOnRectangleIcon,
   EllipsisVerticalIcon,
-  HomeIcon,
   PaperAirplaneIcon,
   PencilSquareIcon,
-  Square2StackIcon,
   UserPlusIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
@@ -83,6 +79,7 @@ const ChatPage = () => {
         newSocket.disconnect();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -95,6 +92,7 @@ const ChatPage = () => {
         socket.off("message");
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   const handleMessage = (message) => {
@@ -135,7 +133,7 @@ const ChatPage = () => {
     setOpenName((cur) => !cur);
   };
 
-  const onChangeName = (event) => {
+  const onChangeName = () => {
     if (name.length < 1) return;
 
     dispatch(

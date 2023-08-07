@@ -83,7 +83,7 @@ const chatSlice = createSlice({
         state.inviteUser = REQUEST_STATE.PENDING;
         state.error = null;
       })
-      .addCase(inviteUserAsync.fulfilled, (state, action) => {
+      .addCase(inviteUserAsync.fulfilled, (state) => {
         state.inviteUser = REQUEST_STATE.FULFILLED;
       })
       .addCase(inviteUserAsync.rejected, (state, action) => {

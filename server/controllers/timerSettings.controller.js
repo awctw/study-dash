@@ -1,6 +1,6 @@
 const TimerSettings = require("../models/timerSettings.model");
 
-const getTimerSettings = async (req, res, next) => {
+const getTimerSettings = async (req, res) => {
   await TimerSettings.findOne({ userID: req.params.userID })
     .then((result) => {
       if (!result) {
@@ -19,7 +19,7 @@ const getTimerSettings = async (req, res, next) => {
     });
 };
 
-const putTimerSettings = async (req, res, next) => {
+const putTimerSettings = async (req, res) => {
   await TimerSettings.findOneAndUpdate({ userID: req.body.userID }, req.body, {
     new: true,
     upsert: true,
