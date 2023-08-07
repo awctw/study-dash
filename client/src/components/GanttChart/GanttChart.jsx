@@ -341,8 +341,10 @@ const GanttChart = (props) => {
 
     // Get chart settings on first render
     useEffect(() => {
-        dispatch(thunk.getCategoryListAsync(user.user.userID));
-        dispatch(getChartSettingsAsync(user.user.userID));
+        if (user.isLoggedIn) {
+            dispatch(thunk.getCategoryListAsync(user.user.userID));
+            dispatch(getChartSettingsAsync(user.user.userID));
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
