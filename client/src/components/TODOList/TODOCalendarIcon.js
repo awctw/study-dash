@@ -23,11 +23,7 @@ const TODOCalendarIcon = ({ TODOList }) => {
       return todo.isFinished === false;
     });
 
-    if (notFinishedTODOs.length > 0) {
-      return false;
-    }
-
-    return true;
+    return notFinishedTODOs.length <= 0;
   };
 
   return (
