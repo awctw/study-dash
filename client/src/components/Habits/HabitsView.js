@@ -19,7 +19,12 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getHabitsAsync, addHabitAsync, toggleHabbitDateAsync, deleteHabitAsync } from "../../store/habits/thunks";
+import {
+  getHabitsAsync,
+  addHabitAsync,
+  toggleHabitDateAsync,
+  deleteHabitAsync,
+} from "../../store/habits/thunks";
 import dayjs from "dayjs";
 
 const HabitsView = () => {
@@ -45,7 +50,10 @@ const HabitsView = () => {
   }, [dispatch, user]);
 
   const addNewHabit = () => {
-    if ((startTime === dayjs(undefined) && endTime === dayjs(undefined)) || (startTime.isValid() && endTime.isValid() && startTime.isBefore(endTime))) {
+    if (
+      (startTime === dayjs(undefined) && endTime === dayjs(undefined)) ||
+      (startTime.isValid() && endTime.isValid() && startTime.isBefore(endTime))
+    ) {
       const habit = {
         userID: user.user.userID,
         name: name,
@@ -66,35 +74,35 @@ const HabitsView = () => {
   };
 
   const toggleHabit = (habitID) => {
-    dispatch(toggleHabbitDateAsync(habitID))
+    dispatch(toggleHabitDateAsync(habitID));
 
-    let prevSet = new Set([...checkedHabits])
+    let prevSet = new Set([...checkedHabits]);
     if (prevSet.has(habitID)) {
-      prevSet.delete(habitID)
+      prevSet.delete(habitID);
     } else {
-      prevSet.add(habitID)
+      prevSet.add(habitID);
     }
-    setCheckedHabits(prevSet)
-  }
+    setCheckedHabits(prevSet);
+  };
 
   const deleteHabit = (habitID) => {
-    dispatch(deleteHabitAsync(habitID))
-  }
+    dispatch(deleteHabitAsync(habitID));
+  };
 
   const isTicked = (habit) => {
-    let date = new Date()
-    let day = date.getDate()
-    let month = date.getMonth()
-    let year = date.getFullYear()
-    date = new Date(year, month, day)
-    let today = dayjs(date)
+    let date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth();
+    let year = date.getFullYear();
+    date = new Date(year, month, day);
+    let today = dayjs(date);
 
-    if (habit.dates.length == 0 || (habit.dates.length > 0 && today.diff(habit.dates[habit.dates.length - 1]))) {
-      return false
-    } else {
-      return true
-    }
-  }
+    return !(
+      habit.dates.length === 0 ||
+      (habit.dates.length > 0 &&
+        today.diff(habit.dates[habit.dates.length - 1]))
+    );
+  };
 
   return (
     <>
@@ -134,7 +142,8 @@ const HabitsView = () => {
                     </Typography>
                     <IconButton
                       color="blue-gray"
-                      variant="text" size="sm"
+                      variant="text"
+                      size="sm"
                       className="hidden group-hover:block rounded-full ml-auto"
                       onClick={() => deleteHabit(habit._id)}
                     >

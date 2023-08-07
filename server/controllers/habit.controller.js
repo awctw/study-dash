@@ -20,7 +20,7 @@ const addHabit = async (req, res) => {
     res.json(module)
 }
 
-const toggleHabbitDate = async (req, res) => {
+const toggleHabitDate = async (req, res) => {
     const habit = await Module.findOne({_id: req.params.habitID}).exec()
 
     let date = new Date()
@@ -30,7 +30,7 @@ const toggleHabbitDate = async (req, res) => {
     date = new Date(year, month, day)
     let today = dayjs(date)
 
-    if (habit.dates.length > 0 && today.diff(habit.dates.at(-1))) {
+    if (habit.dates.length > 0 && today.diff(habit.dates[habit.dates.length - 1])) {
         habit.dates.push(today)
         await habit.save()
     } else if (habit.dates.length === 0) {
@@ -55,6 +55,6 @@ const deleteHabit = async (req, res) => {
 module.exports = {
     getHabits,
     addHabit,
-    toggleHabbitDate,
+    toggleHabitDate,
     deleteHabit,
 }

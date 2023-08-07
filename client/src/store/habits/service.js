@@ -26,18 +26,18 @@ const addHabit = async (habit) => {
   return response;
 };
 
-const toggleHabbitDate = async (habitID) => {
-    const response = await axios
-        .patch(URL + `/habits/${habitID}`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-        .then((res) => res.data)
-        .catch((err) => {
-            throw new Error(err);
-        });
-    return response;
+const toggleHabitDate = async (habitID) => {
+  const response = await axios
+    .patch(URL + `/habits/${habitID}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+  return response;
 };
 
 const deleteHabit = async (habitID) => {
@@ -51,9 +51,9 @@ const deleteHabit = async (habitID) => {
     .catch((err) => {
       throw new Error(err);
     });
-    return response;
-}
+  return response;
+};
 
-const exports = { getHabits, addHabit, toggleHabbitDate, deleteHabit };
+const exports = { getHabits, addHabit, toggleHabitDate, deleteHabit };
 
 export default exports;
