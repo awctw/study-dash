@@ -40,8 +40,6 @@ const Notif = () => {
 };
 
 const DisplayToast = (props) => {
-  // console.log("window:", window.location.pathname.split("/"));
-  // const location = useLocation();
   const path = window.location.pathname.split("/");
   const showNotif =
     path[1] !== "chat" || props.title === "You have an invitation";

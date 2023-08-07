@@ -18,23 +18,18 @@ const messaging = getMessaging(app);
 export const fetchToken = async (setToken) => {
   await Notification.requestPermission().then((permission) => {
     if (permission === "granted") {
-      console.log("Notif permission granted");
-
       getToken(messaging, {
         vapidKey:
           "BEjfQkiaz4wqPa8N2sge89BfrKXH9egA7eHU2KwghM_tITIS-rrxOHOKQq2Bjez4-W-nMU2VTdGjW-agyfHdTf8",
       }).then((currToken) => {
         if (currToken) {
-          console.log(`Got token! currtoken: ${currToken}`);
           setToken(currToken);
           return true;
         } else {
-          console.log("Can't get token!");
           return false;
         }
       });
     } else {
-      console.log("Notif permission not granted!");
       return false;
     }
   });
@@ -43,7 +38,6 @@ export const fetchToken = async (setToken) => {
 export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
-      console.log("got notif!");
       resolve(payload);
     });
   });
