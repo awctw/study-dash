@@ -1,7 +1,7 @@
 const Module = require('../models/flashcard.model');
 const { spacedRep } = require('../utils/spacedRepetition');
 
-const addModule = async (req, res, next) => {
+const addModule = async (req, res) => {
 
     const { moduleName, userID } = req.body;
 
@@ -24,7 +24,7 @@ const addModule = async (req, res, next) => {
     }
 };
 
-const getAllModules = async (req, res, next) => {
+const getAllModules = async (req, res) => {
 
     if (!req.params.userID) {
         res.status(400).send("Bad request: No userId provided");
@@ -40,7 +40,7 @@ const getAllModules = async (req, res, next) => {
         });
 };
 
-const addFlashcard = async (req, res, next) => {
+const addFlashcard = async (req, res) => {
     const id = req.params.moduleId;
 
     const module = await Module.findById(id);
@@ -66,7 +66,7 @@ const addFlashcard = async (req, res, next) => {
         });
 }
 
-const editFlashcard = async (req, res, next) => {
+const editFlashcard = async (req, res) => {
 
     const id = req.params.moduleId, cardIndex = req.query.cardIndex;
     
@@ -89,7 +89,7 @@ const editFlashcard = async (req, res, next) => {
         });
 }
 
-const deleteFlashcard = async (req, res, next) => {
+const deleteFlashcard = async (req, res) => {
     const { moduleId, index } = req.params;
 
     const module = await Module.findById(moduleId);
@@ -105,7 +105,7 @@ const deleteFlashcard = async (req, res, next) => {
         });
 }
 
-const deleteModule = async (req, res, next) => {
+const deleteModule = async (req, res) => {
     await Module.deleteOne({_id: req.params.moduleId})
         .then(() => {
             res.status(204).send({});
@@ -115,7 +115,7 @@ const deleteModule = async (req, res, next) => {
         });
 }
 
-const refreshFlashcard = async (req, res, next) => {
+const refreshFlashcard = async (req, res) => {
     const cardId = req.params.cardId, quality = req.body.quality;
 
     if (quality > 5 || quality < 0) {
@@ -162,7 +162,7 @@ const refreshFlashcard = async (req, res, next) => {
         });
 }
 
-const getScheduledCards = async (req, res, next) => {
+const getScheduledCards = async (req, res) => {
 
     if (!req.params.userID) {
         res.status(400).send("Bad request: No userId provided");

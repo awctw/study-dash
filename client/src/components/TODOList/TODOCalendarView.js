@@ -13,9 +13,6 @@ const TODOCalendarView = ({ selectedCategoryID }) => {
 
   const dispatch = useDispatch();
 
-  // variable showing the date value of the currently selected "Date" tile
-  const [selectedDate, setSelectedDate] = useState(null);
-
   // Fetch TODOList from Redux store whenever list is updated
   useEffect(() => {
     if (user.isLoggedIn) {

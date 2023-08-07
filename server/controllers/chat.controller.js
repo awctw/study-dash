@@ -3,7 +3,7 @@ const db = require("../models");
 const { sendNotification } = require("../utils/notify");
 const User = db.user;
 
-const getChatHistory = async (req, res, next) => {
+const getChatHistory = async (req, res) => {
   await Chat.findOne({ groupID: req.params.groupID })
     .then((result) => {
       if (!result) {
@@ -20,7 +20,7 @@ const getChatHistory = async (req, res, next) => {
     });
 };
 
-const putChatHistory = async (req, res, next) => {
+const putChatHistory = async (req, res) => {
   const { groupID, newMessage, username } = req.body;
 
   const chat = await Chat.findOne({ groupID });
@@ -69,7 +69,7 @@ const putChatHistory = async (req, res, next) => {
     });
 };
 
-const renameChat = async (req, res, next) => {
+const renameChat = async (req, res) => {
   const groupID = req.params.groupID;
 
   const chat = await Chat.findOne({ groupID });
@@ -152,7 +152,7 @@ const sendUserInvite = async (req, res) => {
     });
 };
 
-const inviteResponse = async (req, res, next) => {
+const inviteResponse = async (req, res) => {
   const { username, groupID, decision } = req.body;
 
   // First delete the invite
@@ -193,7 +193,7 @@ const inviteResponse = async (req, res, next) => {
     });
 };
 
-const leaveChat = async (req, res, next) => {
+const leaveChat = async (req, res) => {
   const { username, groupID } = req.body;
 
   const foundChat = await Chat.findOne({ groupID });
@@ -215,7 +215,7 @@ const leaveChat = async (req, res, next) => {
     });
 };
 
-const getUserChats = async (req, res, next) => {
+const getUserChats = async (req, res) => {
   const username = req.params.username;
 
   await Chat.find({

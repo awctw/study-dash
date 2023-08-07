@@ -131,7 +131,7 @@ const ChatPage = () => {
     setOpenName((cur) => !cur);
   };
 
-  const onChangeName = (event) => {
+  const onChangeName = () => {
     if (name.length < 1) return;
 
     dispatch(
