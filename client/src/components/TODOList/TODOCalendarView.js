@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,6 +12,9 @@ const TODOCalendarView = ({ selectedCategoryID }) => {
   const user = useSelector((state) => state.loginReducer);
 
   const dispatch = useDispatch();
+
+  // variable showing the date value of the currently selected "Date" tile
+  const [selectedDate, setSelectedDate] = useState(null);
 
   // Fetch TODOList from Redux store whenever list is updated
   useEffect(() => {
@@ -60,6 +63,26 @@ const TODOCalendarView = ({ selectedCategoryID }) => {
         )}
       </>
     );
+  };
+
+  // Handle click events on each date tile
+  const handleDateClick = (date) => {
+    // Check if the clicked date is the same as the
+    // currently selected date tile of the Calendar
+    if (
+      selectedDate &&
+      selectedDate.getFullYear() === date.getFullYear() &&
+      selectedDate.getMonth() === date.getMonth() &&
+      selectedDate.getDate() === date.getDate()
+    ) {
+      // If it is, remove the Orange selection colour by setting the
+      // selectedDate to null
+      setSelectedDate(null);
+    } else {
+      // If it's a different date, update the selectedDate
+      // to the clicked date
+      setSelectedDate(date);
+    }
   };
 
   return (
