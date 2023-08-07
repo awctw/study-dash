@@ -37,6 +37,7 @@ const StudyGroupPage = () => {
       dispatch(getUserChatsAsync(user.username));
       dispatch(getUserInvitesAsync(user.userID));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const createChatHandler = () => {

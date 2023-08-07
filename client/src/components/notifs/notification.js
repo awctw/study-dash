@@ -23,6 +23,7 @@ const Notif = () => {
     if (notification.title) {
       notify();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notification]);
 
   onMessageListener()

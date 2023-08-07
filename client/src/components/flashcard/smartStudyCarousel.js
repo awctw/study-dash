@@ -27,6 +27,7 @@ const SmartCards = (props) => {
     if (numCards > 0 && answered.filter(Boolean).length === numCards) {
       setAllDoneVisible(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answered]);
 
   return (

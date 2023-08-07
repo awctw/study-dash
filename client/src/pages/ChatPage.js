@@ -79,6 +79,7 @@ const ChatPage = () => {
         newSocket.disconnect();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -91,6 +92,7 @@ const ChatPage = () => {
         socket.off("message");
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   const handleMessage = (message) => {
