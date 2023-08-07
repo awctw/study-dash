@@ -14,7 +14,6 @@ const config = {
 const app = firebase.initializeApp(config);
 const messaging = getMessaging(app);
 
-// next block of code goes here
 export const fetchToken = async (setToken) => {
   await Notification.requestPermission().then((permission) => {
     if (permission === "granted") {

@@ -261,12 +261,6 @@ const EditTODO = ({ todo }) => {
               value={formData.description}
               onChange={handleInputChange}
             />
-            {/* <Checkbox
-              className="pl-2"
-              label="Is TODO item finished?"
-              checked={formData.isFinished}
-              onChange={handleIsFinishedInput}
-            /> */}
             <div className="flex flex-row items-center">
               <Checkbox
                 checked={formData.isFinished}
