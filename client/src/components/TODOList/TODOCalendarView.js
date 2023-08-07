@@ -65,26 +65,6 @@ const TODOCalendarView = ({ selectedCategoryID }) => {
     );
   };
 
-  // Handle click events on each date tile
-  const handleDateClick = (date) => {
-    // Check if the clicked date is the same as the
-    // currently selected date tile of the Calendar
-    if (
-      selectedDate &&
-      selectedDate.getFullYear() === date.getFullYear() &&
-      selectedDate.getMonth() === date.getMonth() &&
-      selectedDate.getDate() === date.getDate()
-    ) {
-      // If it is, remove the Orange selection colour by setting the
-      // selectedDate to null
-      setSelectedDate(null);
-    } else {
-      // If it's a different date, update the selectedDate
-      // to the clicked date
-      setSelectedDate(date);
-    }
-  };
-
   return (
     <div className="flex flex-col items-center mx-4 overflow-y-auto scrollbar-none scrollbar-thin scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
       <Calendar

@@ -93,7 +93,7 @@ const FlashCardModal = (props) => {
               ) :
               <></>
             }
-            {modules && modules.map((module, i) => (
+            {modules && modules.map((module) => (
               <ListItem
                 ripple={false}
                 selected={module._id === id}

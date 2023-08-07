@@ -17,7 +17,7 @@ import {
 import { Player } from "@lottiefiles/react-lottie-player";
 import { loginActions } from "../../store/authentication/loginSlice";
 
-const InvitesDrawer = (props) => {
+const InvitesDrawer = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const invites = useSelector((state) => state.loginReducer.invites);

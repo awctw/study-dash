@@ -1,4 +1,3 @@
-const { response } = require('../app');
 const { messaging } = require('../config/firebaseInit');
 
 const sendNotification = (tokens, data) => {

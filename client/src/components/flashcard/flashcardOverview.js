@@ -14,7 +14,7 @@ import FlashCardModal from "./flashcardModal";
 import { Player } from "@lottiefiles/react-lottie-player";
 import AddModuleModal from "./addModuleModal";
 
-const Overview = (props) => {
+const Overview = () => {
   const modules = useSelector((state) => state.flashcards.modules);
   const [visible, setVisible] = useState(false);
   const [initVisible, setInitVisible] = useState(false);
@@ -35,7 +35,7 @@ const Overview = (props) => {
           </div>
           <CardBody className="pt-0 max-h-[15rem] overflow-y-auto scrollbar-none scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
             <List className="pl-0">
-              {modules.map((module, i) => (
+              {modules.map((module) => (
                 <ListItem
                   key={module._id}
                   onClick={() => {

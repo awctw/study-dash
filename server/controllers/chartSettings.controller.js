@@ -1,5 +1,4 @@
 const ChartSettings= require('../models/chartSettings.model');
-const Category = require("../models/Category.model");
 
 const getChartSettings = async (req, res, next) => {
     try {
