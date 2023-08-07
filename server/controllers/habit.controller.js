@@ -46,8 +46,16 @@ const toggleHabbitDate = async (req, res) => {
     res.send(habits)
 }
 
+const deleteHabit = async (req, res) => {
+    const habit = await Module.findOne({_id: req.params.habitID}).exec()
+    await Module.deleteOne({_id: req.params.habitID})
+    const habits = await Module.find({userID: habit.userID})
+    res.send(habits)
+}
+
 module.exports = {
     getHabits,
     addHabit,
     toggleHabbitDate,
+    deleteHabit,
 }

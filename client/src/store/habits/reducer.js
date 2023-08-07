@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { REQUEST_STATE } from "../utils";
-import { getHabitsAsync, addHabitAsync, toggleHabbitDateAsync } from "./thunks";
+import { getHabitsAsync, addHabitAsync, toggleHabbitDateAsync, deleteHabitAsync } from "./thunks";
 
 const INIT_STATE = {
   habits: [],
   getHabits: REQUEST_STATE.IDLE,
   addHabit: REQUEST_STATE.IDLE,
   toggleHabbitDate: REQUEST_STATE.IDLE,
+  deleteHabit: REQUEST_STATE.IDLE,
   error: null,
 };
 
@@ -51,7 +52,19 @@ const habitSlice = createSlice({
       .addCase(toggleHabbitDateAsync.rejected, (state, action) => {
         state.toggleHabbitDate = REQUEST_STATE.REJECTED;
         state.error = action.error;
-      });
+      })
+      .addCase(deleteHabitAsync.pending, (state) => {
+        state.deleteHabit = REQUEST_STATE.PENDING;
+        state.error = null;
+      })
+      .addCase(deleteHabitAsync.fulfilled, (state, action) => {
+        state.deleteHabit = REQUEST_STATE.FULFILLED;
+        state.habits = action.payload
+      })
+      .addCase(deleteHabitAsync.rejected, (state, action) => {
+        state.deleteHabit = REQUEST_STATE.REJECTED;
+        state.error = action.error
+      })
   },
 });
 

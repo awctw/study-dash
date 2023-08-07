@@ -40,6 +40,20 @@ const toggleHabbitDate = async (habitID) => {
     return response;
 };
 
-const exports = { getHabits, addHabit, toggleHabbitDate };
+const deleteHabit = async (habitID) => {
+  const response = await axios
+    .delete(URL + `/habits/${habitID}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+    return response;
+}
+
+const exports = { getHabits, addHabit, toggleHabbitDate, deleteHabit };
 
 export default exports;

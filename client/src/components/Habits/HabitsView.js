@@ -44,15 +44,17 @@ const HabitsView = () => {
   }, [dispatch, user]);
 
   const addNewHabit = () => {
-    const habit = {
-      userID: user.user.userID,
-      name: name,
-      days: days,
-      startTime: startTime.toISOString(),
-      endTime: endTime.toISOString(),
-      dates: [],
-    };
-    dispatch(addHabitAsync(habit));
+    if ((startTime == undefined && endTime == undefined) || (startTime.isValid() && endTime.isValid() && startTime.isBefore(endTime))) {
+      const habit = {
+        userID: user.user.userID,
+        name: name,
+        days: days,
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+        dates: [],
+      };
+      dispatch(addHabitAsync(habit));
+    }
     handleOpen();
   };
 
