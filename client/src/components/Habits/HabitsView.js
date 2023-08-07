@@ -12,9 +12,9 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
+  CardFooter,
 } from "@material-tailwind/react";
-import { TimePicker } from "@mui/x-date-pickers";
-import { ListBulletIcon } from "@heroicons/react/24/solid";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -93,15 +93,17 @@ const HabitsView = () => {
 
   return (
     <>
-      <Card className="w-80 shadow-xl shadow-pmd-blue-600">
-        <CardBody className="flex-1">
-          <div className="mb-2 flex items-center gap-4 p-4">
-            <ListBulletIcon className="blue-gray w-8 h-8" />
-            <Typography variant="h5" color="blue-gray">
-              Habits
-            </Typography>
-          </div>
-          <List>
+      <Card className="shadow-xl shadow-pmd-blue-600 min-h-[17rem] min-w-[20rem] pb-0">
+        <div className="p-3 pb-0">
+          <Typography variant="h5" color="black">
+            Habits
+          </Typography>
+          <Typography className="mb-3">
+            Here's an overview of all your Habits.
+          </Typography>
+        </div>
+        <CardBody className="flex-1 py-0 max-h-[10rem] overflow-y-auto scrollbar-none scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
+          <List className="w-full">
             {habits.map((habit) => {
               return (
                 <ListItem key={habit._id} className="p-0">
@@ -113,7 +115,8 @@ const HabitsView = () => {
                       <Checkbox
                         id={habit._id}
                         ripple={false}
-                        className="hover:before:opacity-0"
+                        color="indigo"
+                        className="border-indigo-300/50 bg-indigo-50 transition-all hover:scale-105 hover:before:opacity-0"
                         containerProps={{
                           className: "p-0",
                         }}
@@ -129,43 +132,46 @@ const HabitsView = () => {
               );
             })}
           </List>
-          <div className="flex flex-col items-center mt-8">
-            <Button
-              onClick={handleOpen}
-              className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100"
-            >
-              Add Habit
-            </Button>
-          </div>
         </CardBody>
+        <CardFooter className="p-3 flex items-center border-t border-gray-400/50">
+          <Button
+            onClick={handleOpen}
+            className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100"
+          >
+            Add Habit
+          </Button>
+        </CardFooter>
       </Card>
-      <Dialog open={open} handler={handleOpen}>
-        <DialogHeader>Add New Habit</DialogHeader>
-        <DialogBody>
+      <Dialog size="sm" open={open} handler={handleOpen}>
+        <DialogHeader>Add a New Habit</DialogHeader>
+        <DialogBody divider>
           <Input
             size="lg"
             label="Name"
             value={name}
+            color="blue-gray"
             onChange={(e) => setName(e.target.value)}
           />
-          <TimePicker
-            label="start-time"
-            disableOpenPicker
-            onChange={(newStart) => setStartTime(newStart)}
-          />
-          <TimePicker
-            label="end-time"
-            disableOpenPicker
-            onChange={(newEnd) => setEndTime(newEnd)}
-          />
-          <br></br>
+          <div className="flex flex-row my-5 justify-between">
+            <TimePicker
+              label="start-time"
+              disableOpenPicker
+              onChange={(newStart) => setStartTime(newStart)}
+            />
+            <TimePicker
+              label="end-time"
+              disableOpenPicker
+              onChange={(newEnd) => setEndTime(newEnd)}
+            />
+          </div>
           <label htmlFor="sunday">
             <Checkbox
               id="sunday"
               defaultChecked
               icon={"S"}
               ripple={false}
-              className="w-8 h-8"
+              color="indigo"
+              className="h-8 w-8 border-indigo-300/50 bg-indigo-50 transition-all hover:scale-105 hover:before:opacity-0"
               onChange={() => handleDays(0)}
             />
           </label>
@@ -175,7 +181,8 @@ const HabitsView = () => {
               defaultChecked
               icon={"M"}
               ripple={false}
-              className="w-8 h-8"
+              color="indigo"
+              className="h-8 w-8 border-indigo-300/50 bg-indigo-50 transition-all hover:scale-105 hover:before:opacity-0"
               onChange={() => handleDays(1)}
             />
           </label>
@@ -185,7 +192,8 @@ const HabitsView = () => {
               defaultChecked
               icon={"T"}
               ripple={false}
-              className="w-8 h-8"
+              color="indigo"
+              className="h-8 w-8 border-indigo-300/50 bg-indigo-50 transition-all hover:scale-105 hover:before:opacity-0"
               onChange={() => handleDays(2)}
             />
           </label>
@@ -195,7 +203,8 @@ const HabitsView = () => {
               defaultChecked
               icon={"W"}
               ripple={false}
-              className="w-8 h-8"
+              color="indigo"
+              className="h-8 w-8 border-indigo-300/50 bg-indigo-50 transition-all hover:scale-105 hover:before:opacity-0"
               onChange={() => handleDays(3)}
             />
           </label>
@@ -205,7 +214,8 @@ const HabitsView = () => {
               defaultChecked
               icon={"T"}
               ripple={false}
-              className="w-8 h-8"
+              color="indigo"
+              className="h-8 w-8 border-indigo-300/50 bg-indigo-50 transition-all hover:scale-105 hover:before:opacity-0"
               onChange={() => handleDays(4)}
             />
           </label>
@@ -215,7 +225,8 @@ const HabitsView = () => {
               defaultChecked
               icon={"F"}
               ripple={false}
-              className="w-8 h-8"
+              color="indigo"
+              className="h-8 w-8 border-indigo-300/50 bg-indigo-50 transition-all hover:scale-105 hover:before:opacity-0"
               onChange={() => handleDays(5)}
             />
           </label>
@@ -225,7 +236,8 @@ const HabitsView = () => {
               defaultChecked
               icon={"S"}
               ripple={false}
-              className="w-8 h-8"
+              color="indigo"
+              className="h-8 w-8 border-indigo-300/50 bg-indigo-50 transition-all hover:scale-105 hover:before:opacity-0"
               onChange={() => handleDays(6)}
             />
           </label>

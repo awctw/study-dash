@@ -3,6 +3,8 @@ import AddTODOItem from "./AddNewTODO";
 import CategoryToggle from "./CategoryToggle";
 import { useSelector } from "react-redux";
 import { REQUEST_STATE } from "../../store/utils";
+import { Alert } from "@material-tailwind/react";
+import { ExclamationCircleIcon } from "@heroicons/react/20/solid";
 
 // ControlPanel component provides functionalities for clearing all TODOItems,
 // adding new TODOItems, and filtering TODOs by category.
@@ -19,11 +21,16 @@ const ControlPanel = ({ setSelectedCategoryID }) => {
   return (
     <>
       {errMessage && (
-        <p className="error-msg flex flex-row justify-center mt-4">
+        <Alert
+          variant="ghost"
+          color="red"
+          icon={<ExclamationCircleIcon className="w-6 h-6" />}
+          className="items-center my-2"
+        >
           {errMessage}
-        </p>
+        </Alert>
       )}
-      <div className="flex flex-row justify-center flex-wrap p-3">
+      <div className="items-center flex flex-row justify-center">
         <AddTODOItem />
         <CategoryToggle
           setSelectedCategoryID={setSelectedCategoryID}

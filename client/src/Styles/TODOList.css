@@ -1,35 +1,35 @@
 .TODOForm {
-    margin: 1rem;
+  margin: 1rem;
 }
 
 .inputField {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .error-msg {
-    color: red;
-    margin-bottom: 1rem;
+  color: red;
+  margin-bottom: 1rem;
 }
 
 #clearAllButton,
 #AddNewTODOButton {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 /*
   Styles for Calendar TODOItem view
 */
 .react-calendar__tile--active {
-    background: rgba(255, 255, 255, 0);
+  background: rgba(255, 255, 255, 0);
 
-    /* Controls the colour of text within each date tile */
-    color: #000000;
+  /* Controls the colour of text within each date tile */
+  color: #000000;
 }
 
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-    /* Controls the colour of date tile when clicked */
-    background-color: rgb(255, 211, 176);
+  /* Controls the colour of date tile when clicked */
+  background-color: rgb(255, 211, 176);
 }
 
 /* Styles for the TODOCalendarIcon component */
@@ -41,7 +41,7 @@
   will be positioned relative to the date tile.
 */
 .react-calendar .react-calendar__tile {
-    position: relative;
+  position: relative;
 }
 
 /*
@@ -55,7 +55,7 @@
   the date tile.
 */
 .react-calendar .react-calendar__tile .relative {
-    position: absolute;
-    top: 0;
-    right: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
 }

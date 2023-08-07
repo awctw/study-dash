@@ -3,16 +3,20 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   Button,
-  Card,
   Checkbox,
+  Chip,
   Dialog,
+  DialogBody,
+  DialogHeader,
+  IconButton,
   Input,
-  Spinner,
   Textarea,
+  Typography,
 } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import thunk from "../../store/TODOList/thunk";
 import { REQUEST_STATE } from "../../store/utils";
+import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/20/solid";
 
 // The EditTODO component allows users to edit the properties of a TODOItem
 // through a dialog popup.
@@ -28,7 +32,6 @@ const EditTODO = ({ todo }) => {
 
   // openEdit state controls the visibility of the edit dialog popup.
   const [openEdit, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   // formData state variable is used to store the values entered in the form.
   const [formData, setFormData] = useState({
@@ -46,11 +49,9 @@ const EditTODO = ({ todo }) => {
   // of the edit dialog popup. It also sets the initial values of the input fields
   // and clears the error message.
   const handleOpen = async () => {
-    setLoading(true);
     const success = await dispatch(thunk.getTODOItemAsync(todo._id));
-    setLoading(false);
     if (success) {
-      setOpen(true);
+      setOpen(!openEdit);
     }
   };
 
@@ -129,14 +130,12 @@ const EditTODO = ({ todo }) => {
       userID: user.user.userID,
     };
 
-    setLoading(true);
     const success = await dispatch(
       thunk.editTODOItemAsync({
         itemID: currentTODOItem._id,
         item: updatedTodo,
       })
     );
-    setLoading(false);
 
     if (success) {
       setOpen(false);
@@ -179,17 +178,37 @@ const EditTODO = ({ todo }) => {
 
   return (
     <>
-      <Button onClick={handleOpen} className="bg-indigo-300 mb-4">
+      <Button
+        onClick={handleOpen}
+        variant="text"
+        size="sm"
+        color="blue-gray"
+        className="flex text-sm font-sans font-normal normal-case items-center gap-3"
+      >
+        <MagnifyingGlassIcon className="text-blue-gray-300 w-4 h-4" />
         Details
       </Button>
       <Dialog
-        size="lg"
         open={openEdit}
+        size="sm"
         handler={handleOpen}
         className="shadow-none"
       >
-        <Card className="m-4">
-          <h2 className="flex flex-row justify-center">Edit TODO</h2>
+        <DialogHeader className="flex flex-row items-center justify-between">
+          <Typography className="text-2xl font-semibold text-blue-gray-900">
+            Edit TODO
+          </Typography>
+          <IconButton
+            size="sm"
+            type="button"
+            color="blue-gray"
+            variant="text"
+            onClick={handleClose}
+          >
+            <XMarkIcon className="w-5 h-5" />
+          </IconButton>
+        </DialogHeader>
+        <DialogBody divider className="border-b-0">
           <form
             className="flex flex-col justify-evenly h-[30rem] overflow-y-auto"
             onSubmit={handleFormSubmit}
@@ -199,15 +218,16 @@ const EditTODO = ({ todo }) => {
                 value={formData.title}
                 label="Title"
                 name="title"
+                color="indigo"
                 onChange={handleInputChange}
               />
             </div>
             <div className="flex flex-row justify-between flex-wrap">
               <div className="inputField">
-                <label htmlFor="edit-startDate">Start Date:</label>
+                <label htmlFor="edit-startDate">Start:</label>
                 <DatePicker
                   id="edit-startDate"
-                  className="bg-orange-200 w-[12rem]"
+                  className="bg-indigo-50 rounded p-1 ml-1"
                   dateFormat="MMM-dd-yyyy, h:mm aa"
                   showTimeInput
                   timeInputLabel="Time:"
@@ -219,10 +239,10 @@ const EditTODO = ({ todo }) => {
                 />
               </div>
               <div className="inputField">
-                <label htmlFor="edit-endDate">End Date:</label>
+                <label htmlFor="edit-endDate">Due:</label>
                 <DatePicker
                   id="edit-endDate"
-                  className="bg-orange-200 w-[12rem]"
+                  className="bg-indigo-50 rounded p-1 ml-1"
                   dateFormat="MMM-dd-yyyy, h:mm aa"
                   showTimeInput
                   timeInputLabel="Time:"
@@ -234,26 +254,34 @@ const EditTODO = ({ todo }) => {
                 />
               </div>
             </div>
-            <div className="inputField">
-              <Textarea
-                label="Description"
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="inputField">
+            <Textarea
+              color="indigo"
+              label="Description"
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+            />
+            {/* <Checkbox
+              className="pl-2"
+              label="Is TODO item finished?"
+              checked={formData.isFinished}
+              onChange={handleIsFinishedInput}
+            /> */}
+            <div className="flex flex-row items-center">
               <Checkbox
-                label="Is TODO item finished?"
                 checked={formData.isFinished}
                 onChange={handleIsFinishedInput}
+                ripple={false}
+                className="h-6 w-6 pl-0 rounded-full border-blue-500/50 bg-blue-500/25 transition-all hover:scale-105 hover:before:opacity-0"
               />
+              <Typography>Mark as done</Typography>
             </div>
             <div className="inputField">
               <Input
                 label="Category"
                 name="category"
                 autoComplete="off"
+                color="indigo"
                 value={formData.category}
                 list="categoryOptions"
                 onChange={handleInputChange}
@@ -265,41 +293,33 @@ const EditTODO = ({ todo }) => {
               </datalist>
             </div>
 
-            {loading && <Spinner className="h-10 w-10" />}
             {errMessage && (
               <p className="error-msg flex flex-row justify-center">
                 {errMessage}
               </p>
             )}
 
-            <div className="flex flex-row justify-evenly flex-wrap">
+            <div className="flex flex-row gap-2 items-center flex-wrap">
               <Button
-                className="mb-4"
-                color="light-blue"
+                className="flex items-center text-white bg-indigo-300 hover:shadow-none"
                 size="sm"
                 type="submit"
               >
                 Confirm
               </Button>
               <Button
-                className="mb-4"
-                color="gray"
                 size="sm"
+                variant="text"
+                color="blue-gray"
+                className="flex items-center mr-2 border text-indigo-300 border-indigo-300"
+                type="reset"
                 onClick={resetFormHandler}
               >
                 Clear
               </Button>
-              <Button
-                className="mb-4"
-                color="red"
-                size="sm"
-                onClick={handleClose}
-              >
-                Close
-              </Button>
             </div>
           </form>
-        </Card>
+        </DialogBody>
       </Dialog>
     </>
   );

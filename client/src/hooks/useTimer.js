@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import ring from "../assets/bell-ring.mp3";
 
 // Credits for code snippets: https://github.com/birkaany/pomodoro-app/tree/master
 const controllers = [
@@ -21,6 +22,10 @@ const useTimer = () => {
   const [selectedControl, setSelectedControl] = useState(0);
   const [pomodoro, setPomodoro] = useState(stages);
   const periodId = useRef(stages.period);
+  const Sound = () => {
+    const audio = new Audio(ring);
+    return audio.play();
+  };
 
   const resetTimerValues = () => {
     setPomodoro((prevPomodoro) => {
@@ -57,6 +62,7 @@ const useTimer = () => {
 
             resetTimerValues();
             clearInterval(timer);
+            Sound();
             periodId.current += 1;
 
             return prevPomodoro;

@@ -14,13 +14,21 @@ import {
   DialogHeader,
   DialogFooter,
   DialogBody,
+  SpeedDial,
+  SpeedDialHandler,
+  SpeedDialContent,
+  SpeedDialAction,
 } from "@material-tailwind/react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   ArrowRightOnRectangleIcon,
+  EllipsisVerticalIcon,
+  HomeIcon,
   PaperAirplaneIcon,
   PencilSquareIcon,
+  Square2StackIcon,
   UserPlusIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/solid";
 import {
   getChatHistoryAsync,
@@ -175,47 +183,57 @@ const ChatPage = () => {
         <SideBar />
       </div>
       <div className="p-5 !pl-[300px]">
-        <div className="flex justify-center">
-          <div className="w-4/5 text-ellipsis overflow-hidden">
+        <div className="relative flex justify-center">
+          <div className="mx-7 flex-grow text-ellipsis overflow-hidden">
             <Typography className="font-sans text-black/80 font-semibold text-4xl">
-              {currChat && currChat.name}
+              Study Group: {currChat && currChat.name}
             </Typography>
             <Typography className="text-blue-gray-400 font-sans text-md ml-1">
               {currChat.users && currChat.users.length} members
             </Typography>
-            <hr className="mt-3 border-blue-gray-300/40 w-[95%]" />
+            <hr className="mt-3 border-blue-gray-300/40 mr-7" />
+          </div>
+
+          <div className="absolute top-0 right-0 mr-[5%]">
+            <SpeedDial placement="right">
+              <SpeedDialHandler>
+                <IconButton
+                  size="md"
+                  className="rounded-full border border-gray-400"
+                  variant="text"
+                  color="blue-gray"
+                >
+                  <EllipsisVerticalIcon className="block h-5 w-5 group-hover:hidden" />
+                  <XMarkIcon className="hidden h-5 w-5 group-hover:block" />
+                </IconButton>
+              </SpeedDialHandler>
+              <SpeedDialContent className="flex-row">
+                <SpeedDialAction className="bg-indigo-50 border border-indigo-100">
+                  <PencilSquareIcon
+                    onClick={changeNameHandler}
+                    className="h-5 w-5 text-indigo-300"
+                  />
+                </SpeedDialAction>
+                <SpeedDialAction className="bg-indigo-50 border border-indigo-100">
+                  <UserPlusIcon
+                    onClick={addUserHandler}
+                    className="h-5 w-5 text-indigo-300"
+                  />
+                </SpeedDialAction>
+                <SpeedDialAction className="bg-indigo-50 border border-indigo-100">
+                  <ArrowRightOnRectangleIcon
+                    onClick={exitUserHandler}
+                    className="h-5 w-5 text-indigo-300"
+                  />
+                </SpeedDialAction>
+              </SpeedDialContent>
+            </SpeedDial>
           </div>
         </div>
 
-        <div className="absolute top-0 right-0 m-5">
-          <IconButton
-            type="submit"
-            onClick={changeNameHandler}
-            className="flex bg-indigo-300 ml-5 mb-2"
-          >
-            <PencilSquareIcon className="h-5 w-5 " />
-          </IconButton>
-
-          <IconButton
-            type="submit"
-            onClick={addUserHandler}
-            className="flex bg-indigo-300 ml-5 mb-2"
-          >
-            <UserPlusIcon className="h-5 w-5" />
-          </IconButton>
-
-          <IconButton
-            type="submit"
-            onClick={exitUserHandler}
-            className="flex bg-indigo-300 ml-5 mb-2"
-          >
-            <ArrowRightOnRectangleIcon className="h-5 w-5" />
-          </IconButton>
-        </div>
-
         <div className="flex justify-center">
-          <div className="mb-5 absolute bottom-0 w-3/5">
-            <Card className="flex mb-5 px-5 py-0 max-h-[30rem] overflow-y-auto scrollbar scrollbar-none shadow-none">
+          <div className="flex flex-col justify-end ml-5 mr-12 flex-grow">
+            <Card className="flex px-5 py-0 h-[70vh] overflow-y-auto scrollbar scrollbar-none shadow-none">
               {currChat.history &&
                 currChat.history.map((message, index) => (
                   <div
@@ -266,63 +284,64 @@ const ChatPage = () => {
       </div>
 
       <Dialog
-        size="sm"
         open={openUser}
         handler={addUserHandler}
-        className="bg-transparent shadow-none"
+        size="sm"
+        className="flex flex-row bg-transparent shadow-none items-center justify-center"
       >
-        <Card className="mx-auto w-full max-w-[24rem]">
-          <CardHeader
-            variant="gradient"
-            className="mb-4 grid h-28 place-items-center bg-indigo-300"
-          >
-            <Typography variant="h3" color="white">
-              Invite Friend
+        <Card className="relative flex w-3/4 rounded-lg overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100">
+          <CardBody className="mb-2">
+            <Typography variant="h5" color="blue-gray" className="mb-2">
+              Invite a Friend!
             </Typography>
-          </CardHeader>
-          <CardBody className="flex flex-col gap-4">
-            <Input label="Username" size="lg" onChange={onInviteUser} />
-          </CardBody>
-          <CardFooter className="pt-0">
+            <Typography className="mb-3">
+              Please enter the username of the person you'd like to invite.
+            </Typography>
+            <Input
+              variant="outlined"
+              label="Username"
+              color="blue-gray"
+              onChange={onInviteUser}
+            />
             <Button
-              className="bg-indigo-300"
+              size="sm"
+              className="flex items-center text-white bg-indigo-300 hover:shadow-none mt-4"
               onClick={inviteDispatch}
-              fullWidth
             >
-              Invite
+              Send Invite
             </Button>
-          </CardFooter>
+          </CardBody>
         </Card>
       </Dialog>
 
       <Dialog
-        size="sm"
         open={openName}
         handler={changeNameHandler}
-        className="bg-transparent shadow-none"
+        size="sm"
+        className="flex flex-row bg-transparent shadow-none items-center justify-center"
       >
-        <Card className="mx-auto w-full max-w-[24rem]">
-          <CardHeader
-            variant="gradient"
-            className="mb-4 grid h-28 place-items-center bg-indigo-300"
-          >
-            <Typography variant="h3" color="white">
+        <Card className="relative flex w-3/4 rounded-lg overflow-y-scroll scrollbar-thin scrollbar-thumb-rounded-xl scrollbar-thumb-blue-gray-100">
+          <CardBody className="mb-2">
+            <Typography variant="h5" color="blue-gray" className="mb-2">
               Change Group Name
             </Typography>
-          </CardHeader>
-          <CardBody className="flex flex-col gap-4">
+            <Typography className="mb-3">
+              Rename your group by entering a name below.
+            </Typography>
             <Input
+              variant="outlined"
               label="Name"
-              size="lg"
-              placeholder={currChat.name ? currChat.name : ""}
+              color="blue-gray"
               onChange={(e) => setName(e.target.value)}
             />
-          </CardBody>
-          <CardFooter className="pt-0">
-            <Button className="bg-indigo-300" onClick={onChangeName} fullWidth>
-              Change
+            <Button
+              size="sm"
+              className="flex items-center text-white bg-indigo-300 hover:shadow-none mt-4"
+              onClick={onChangeName}
+            >
+              Rename
             </Button>
-          </CardFooter>
+          </CardBody>
         </Card>
       </Dialog>
 
@@ -337,19 +356,17 @@ const ChatPage = () => {
             size="sm"
             variant="text"
             color="blue-gray"
-            className="flex items-center mr-2 border border-gray-400/70"
+            className="flex items-center mr-2 border text-indigo-300 border-indigo-300"
             onClick={exitUserHandler}
           >
             Cancel
           </Button>
           <Button
             size="sm"
-            variant="text"
-            color="blue-gray"
-            className="flex items-center border border-gray-400/70"
+            className="flex items-center text-white bg-indigo-300 hover:shadow-none"
             onClick={onExitUser}
           >
-            Yes
+            Confirm
           </Button>
         </DialogFooter>
       </Dialog>

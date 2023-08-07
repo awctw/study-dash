@@ -1,16 +1,18 @@
-import React, {useEffect, useCallback, useRef} from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import * as d3 from "d3";
 import "../../Styles/GanttChart.css"
-import {useDispatch, useSelector} from "react-redux";
-import {getChartSettingsAsync} from "../../store/chartSettings/thunks";
-import {Typography} from "@material-tailwind/react";
-import {Player} from "@lottiefiles/react-lottie-player";
+import { useDispatch, useSelector } from "react-redux";
+import { getChartSettingsAsync } from "../../store/chartSettings/thunks";
+import { Typography } from "@material-tailwind/react";
+import { Player } from "@lottiefiles/react-lottie-player";
 import thunk from "../../store/TODOList/thunk";
 
 const GanttChart = (props) => {
     // Redux selectors and dispatch
     const user = useSelector((state) => state.loginReducer);
-    const chartSettings = useSelector((state) => state.chartSettingsReducer.chartSettings);
+    const chartSettings = useSelector(
+        (state) => state.chartSettingsReducer.chartSettings
+    );
     const todos = useSelector((state) => state.todoReducer.TODOList);
     const habits = useSelector((state) => state.habitReducer.habits);
     const categories = useSelector((state) => state.todoReducer.categories);
@@ -25,8 +27,8 @@ const GanttChart = (props) => {
     let currentTimeout = useRef(-1);
 
     // Function for string to Date handling
-    const parseDate = function(date) {
-        if (typeof date === 'string') {
+    const parseDate = function (date) {
+        if (typeof date === "string") {
             return Date.parse(date);
         }
         return date;
@@ -35,18 +37,20 @@ const GanttChart = (props) => {
     // Function for converting a Date 'startTime' to occur on the day, month, and year of 'currDate'
     const convertDateToSameDay = function(startTime, currDate) {
         // Date constructor usage is required since the variable is treated as a number
-        let retDate = new Date(startTime).setMonth(currDate.getMonth());
+        let retDate = new Date(startTime).setMonth(
+            currDate.getMonth()
+        );
         retDate = new Date(retDate).setDate(currDate.getDate());
         retDate = new Date(retDate).setFullYear(currDate.getFullYear());
         return retDate;
     }
 
     // Chart consts
-    const SVG_ID = 'gantt-chart-svg';
-    const X_AXIS_SVG_ID = 'gantt-chart-x-axis-svg';
-    const CHART_ID = 'gantt-chart-g';
-    const X_AXIS_G_ID = 'gantt-x-axis-g'
-    const Y_AXIS_G_ID = 'gantt-y-axis-g'
+    const SVG_ID = "gantt-chart-svg";
+    const X_AXIS_SVG_ID = "gantt-chart-x-axis-svg";
+    const CHART_ID = "gantt-chart-g";
+    const X_AXIS_G_ID = "gantt-x-axis-g";
+    const Y_AXIS_G_ID = "gantt-y-axis-g";
     const CIRCLE_RADIUS = 5;
     const renderChart = useCallback(() => {
         // Filter data to see if the chart needs to be rendered
@@ -55,8 +59,12 @@ const GanttChart = (props) => {
         // 'Clone' upToDateTodos.current to bypass read-only for filtering for scaleBand duplicate title handling
         // (duplicate titles without this handling would appear in the same space rather than being different)
         let filteredData = JSON.parse(JSON.stringify(upToDateTodos.current));
-        filteredData = filteredData.filter(d => Date.parse(d.endDate) - Date.parse(d.startDate) !== 0 &&
-            xDomainStart <= Date.parse(d.endDate) && Date.parse(d.startDate) <= xDomainEnd);
+        filteredData = filteredData.filter(
+            (d) =>
+                Date.parse(d.endDate) - Date.parse(d.startDate) !== 0 &&
+                xDomainStart <= Date.parse(d.endDate) &&
+                Date.parse(d.startDate) <= xDomainEnd
+        );
 
         // Habit day of the week handling
         let currDate = new Date(xDomainStart);
@@ -81,20 +89,20 @@ const GanttChart = (props) => {
         }
 
         // Switch between chart and empty display
-        const ganttChart = d3.select('.gantt-chart');
+        const ganttChart = d3.select(".gantt-chart");
         if (filteredData.length === 0) {
-            d3.select('#empty-chart-div').style('display', 'inline-block');
-            ganttChart.style('overflow-y', 'visible');
-            ganttChart.style('overflow-x', 'visible');
-            d3.select('#gantt-chart-x-axis-svg').style('display', 'none');
-            d3.select('#gantt-chart-svg').style('display', 'none');
+            d3.select("#empty-chart-div").style("display", "inline-block");
+            ganttChart.style("overflow-y", "visible");
+            ganttChart.style("overflow-x", "visible");
+            d3.select("#gantt-chart-x-axis-svg").style("display", "none");
+            d3.select("#gantt-chart-svg").style("display", "none");
             return;
         } else {
-            d3.select('#empty-chart-div').style('display', 'none');
-            ganttChart.style('overflow-y', 'auto');
-            ganttChart.style('overflow-x', 'hidden');
-            d3.select('#gantt-chart-x-axis-svg').style('display', 'block');
-            d3.select('#gantt-chart-svg').style('display', 'block');
+            d3.select("#empty-chart-div").style("display", "none");
+            ganttChart.style("overflow-y", "auto");
+            ganttChart.style("overflow-x", "hidden");
+            d3.select("#gantt-chart-x-axis-svg").style("display", "block");
+            d3.select("#gantt-chart-svg").style("display", "block");
         }
 
         // Chart dimension calculation
@@ -107,13 +115,16 @@ const GanttChart = (props) => {
                 top: 35,
                 right: 20,
                 bottom: 25,
-                left: 70
+                left: 70,
             };
         }
         // Increasing containerHeight affects inner chart height
         if (props.containerHeight === undefined) {
             // Variable px per item; add 9 px for relative size
-            containerHeight = margin.top + margin.bottom + (upToDateChartSettings.current.axisVerticalScale + 9) * filteredData.length;
+            containerHeight =
+                margin.top +
+                margin.bottom +
+                (upToDateChartSettings.current.axisVerticalScale + 9) * filteredData.length;
         }
         if (props.tooltipPadding === undefined) {
             tooltipPadding = 15;
@@ -122,81 +133,89 @@ const GanttChart = (props) => {
         const height = containerHeight - margin.top - margin.bottom;
 
         // Create scales
-        const xScale = d3.scaleTime()
-            .range([0, width]);
-        const yScale = d3.scaleBand()
+        const xScale = d3.scaleTime().range([0, width]);
+        const yScale = d3
+            .scaleBand()
             .range([0, height])
             .paddingInner(0.4)
             .paddingOuter(0.25);
 
         // Create axes
-        const xAxis = d3.axisTop(xScale)
-            .tickSizeOuter(0);
-        const yAxis = d3.axisLeft(yScale)
-            .tickFormat(function(d) {
+        const xAxis = d3.axisTop(xScale).tickSizeOuter(0);
+        const yAxis = d3
+            .axisLeft(yScale)
+            .tickFormat(function (d) {
                 let retString = d.substring(0, d.lastIndexOf("-"));
                 if (retString.length > 8) {
-                    return retString.slice(0, 8) + '...';
+                    return retString.slice(0, 8) + "...";
                 }
                 return retString;
             })
             .tickSize(0);
 
         // Chart group appending
-        let svg = d3.select('#' + SVG_ID);
+        let svg = d3.select("#" + SVG_ID);
         let chart, xAxisSVG, xAxisG, yAxisG;
         if (svg.empty()) {
-            const container = d3.select('.gantt-chart');
+            const container = d3.select(".gantt-chart");
 
             // Create a separate SVG for the x-axis and add background rect
-            xAxisSVG = container.append('svg')
-                .attr('id', X_AXIS_SVG_ID)
-                .attr('width', containerWidth)
-                .attr('height', margin.top + CIRCLE_RADIUS)
-                .style('position', 'absolute');
-            xAxisSVG.append('rect')
-                .attr('width', containerWidth)
-                .attr('height', margin.top)
-                .style('fill', 'white');
-            xAxisG = xAxisSVG.append('g')
-                .attr('id', X_AXIS_G_ID)
-                .attr('class', 'axis x-axis')
-                .attr('transform', `translate(${margin.left}, ${margin.top})`)
-                .style('font-size', 12);
+            xAxisSVG = container
+                .append("svg")
+                .attr("id", X_AXIS_SVG_ID)
+                .attr("width", containerWidth)
+                .attr("height", margin.top + CIRCLE_RADIUS)
+                .style("position", "absolute");
+            xAxisSVG
+                .append("rect")
+                .attr("width", containerWidth)
+                .attr("height", margin.top)
+                .style("fill", "white");
+            xAxisG = xAxisSVG
+                .append("g")
+                .attr("id", X_AXIS_G_ID)
+                .attr("class", "axis x-axis")
+                .attr("transform", `translate(${margin.left}, ${margin.top})`)
+                .style("font-size", 12);
 
-            svg = container.append('svg')
-                .attr('id', SVG_ID)
-                .attr('width', containerWidth)
-                .attr('height', containerHeight);
+            svg = container
+                .append("svg")
+                .attr("id", SVG_ID)
+                .attr("width", containerWidth)
+                .attr("height", containerHeight);
 
             // Add overflow-y for scrolling
-            chart = svg.append('g')
-                .attr('id', CHART_ID)
-                .attr('transform', `translate(${margin.left}, ${margin.top})`)
+            chart = svg
+                .append("g")
+                .attr("id", CHART_ID)
+                .attr("transform", `translate(${margin.left}, ${margin.top})`)
                 .style("overflow-y", "scroll");
 
-            yAxisG = chart.append('g')
-                .attr('id', Y_AXIS_G_ID)
-                .attr('class', 'axis y-axis')
-                .style('font-size', 12);
+            yAxisG = chart
+                .append("g")
+                .attr("id", Y_AXIS_G_ID)
+                .attr("class", "axis y-axis")
+                .style("font-size", 12);
         } else {
-            chart = d3.select('#' + CHART_ID);
-            xAxisSVG = d3.select('#' + X_AXIS_SVG_ID);
-            xAxisG = d3.select('#' + X_AXIS_G_ID);
-            yAxisG = d3.select('#' + Y_AXIS_G_ID);
-            svg.attr('height', containerHeight);
+            chart = d3.select("#" + CHART_ID);
+            xAxisSVG = d3.select("#" + X_AXIS_SVG_ID);
+            xAxisG = d3.select("#" + X_AXIS_G_ID);
+            yAxisG = d3.select("#" + Y_AXIS_G_ID);
+            svg.attr("height", containerHeight);
         }
 
         // UpdateVis()
-        const xValue = d => parseDate(d.startDate);
-        const yValue = d => d.title;
+        const xValue = (d) => parseDate(d.startDate);
+        const yValue = (d) => d.title;
 
         // Set domains and format data
-        const formattedData = filteredData.map((d, i) => {
-            d.title = d.title +  '-' + i; // This allows for duplicate habit/to do names
-            return d;
-        }).sort((a, b) => parseDate(a.startDate) - parseDate(b.startDate));
-        xScale.domain([xDomainStart, xDomainEnd])
+        const formattedData = filteredData
+            .map((d, i) => {
+                d.title = d.title + "-" + i; // This allows for duplicate habit/to do names
+                return d;
+            })
+            .sort((a, b) => parseDate(a.startDate) - parseDate(b.startDate));
+        xScale.domain([xDomainStart, xDomainEnd]);
         yScale.domain(formattedData.map(yValue));
 
         // RenderVis()
@@ -204,16 +223,18 @@ const GanttChart = (props) => {
         const xCoordNow = xScale(Date.now()) + margin.left;
         const CIRCLE_ID = "now-circle";
         const LINE_ID = "now-line";
-        d3.select('#' + CIRCLE_ID).remove();
-        d3.select('#' + LINE_ID).remove();
-        xAxisSVG.append("circle")
+        d3.select("#" + CIRCLE_ID).remove();
+        d3.select("#" + LINE_ID).remove();
+        xAxisSVG
+            .append("circle")
             .attr("id", CIRCLE_ID)
             .attr("class", "circle")
             .attr("cx", xCoordNow)
             .attr("cy", margin.top)
             .attr("r", CIRCLE_RADIUS)
             .style("position", "absolute");
-        svg.append("line")
+        svg
+            .append("line")
             .attr("id", LINE_ID)
             .attr("class", "line")
             .attr("x1", xCoordNow)
@@ -225,80 +246,86 @@ const GanttChart = (props) => {
             .style("fill", "none");
 
         // Add bars
-        let bars = chart.selectAll('.bar')
-            .data(filteredData, d => d.id)
-            .join('rect');
+        let bars = chart
+            .selectAll(".bar")
+            .data(filteredData, (d) => d.id)
+            .join("rect");
 
         // Style bars
-        bars.style('opacity', 0.5)
-            .style('opacity', 1)
-            .attr('class', 'bar')
-            .attr('x', d => {
+        bars.style("opacity", 0.5)
+            .style("opacity", 1)
+            .attr("class", "bar")
+            .attr("x", (d) => {
                 const x = xScale(xValue(d));
                 if (x < 0) {
-                    return 0
+                    return 0;
                 }
                 return x;
             })
-            .attr('width', d => {
+            .attr("width", d => {
                 const scaledWidth = xScale(parseDate(d.endDate) - parseDate(d.startDate) + xDomainStart);
                 let x = xScale(xValue(d));
                 if (x < 0) {
-                    x = 0
+                    x = 0;
                 }
                 if (x + scaledWidth > xScale(xDomainEnd)) {
                     return xScale(xDomainEnd) - x;
                 }
                 return scaledWidth;
             })
-            .attr('height', yScale.bandwidth())
-            .attr('y', d => yScale(yValue(d)))
-            .attr('fill', (d) => {
+            .attr("height", yScale.bandwidth())
+            .attr("y", d => yScale(yValue(d)))
+            .attr("fill", (d) => {
                 const categoryColor = upToDateCategories.current.find(c => c["_id"] === d.category);
                 if (categoryColor !== undefined) {
                     return categoryColor.color;
                 }
                 return "#000000";
             })
-            .attr('stroke-width', 1)
-            .attr('stroke', 'black')
-            .attr('rx', 3);
+            .attr("stroke-width", 1)
+            .attr("stroke", "black")
+            .attr("rx", 3);
 
         // Tooltip event listeners
-        bars.on('mouseover', (event,d) => {
-            d3.select('#gantt-chart-tooltip')
-                    .style('display', 'block')
-                    .style('left', (event.pageX + tooltipPadding) + 'px')
-                    .style('top', (event.pageY + tooltipPadding) + 'px')
-                    .html(`
-              <div class="tooltip-title">${d.title}</div>
-              <div><i>Start Time: ${new Date(d.startDate).toLocaleTimeString()}</i></div>
-              <div><i>End Time: ${new Date(d.endDate).toLocaleTimeString()}</i></div>
-              <div><i>${function() {
-                        if (d.category !== undefined) {
-                            const category = upToDateCategories.current
-                                .find(c => c["_id"] === d.category);
-                            if (category !== undefined) {
-                                return "Category: " + category.category;
+        bars
+            .on("mouseover", (event, d) => {
+                d3
+                    .select("#gantt-chart-tooltip")
+                    .style("display", "block")
+                    .style("left", event.pageX + tooltipPadding + "px")
+                    .style("top", event.pageY + tooltipPadding + "px").html(`
+                        <div class="tooltip-title">${d.title}</div>
+                        <div><i>Start Time: ${new Date(
+                            d.startDate
+                        ).toLocaleTimeString()}</i></div>
+                        <div><i>End Time: ${new Date(
+                            d.endDate
+                        ).toLocaleTimeString()}</i></div>
+                        <div><i>${(function () {
+                            if (d.category !== undefined) {
+                                const category = upToDateCategories.current
+                                    .find(c => c["_id"] === d.category);
+                                if (category !== undefined) {
+                                    return "Category: " + category.category;
+                                }
                             }
-                        }
-                        return "";
-                    }()}</i></div>
-              <div>${function() {
-                  if (d.description !== undefined) {
-                      return d.description;
-                  }
-                  return "";
-                    }()}</div>
-            `);
+                            return "";
+                        })()}</i></div>
+                        <div>${(function () {
+                            if (d.description !== undefined) {
+                                return d.description;
+                            }
+                            return "";
+                        })()}</div>
+                    `);
             })
-            .on('mousemove', (event) => {
-                d3.select('#gantt-chart-tooltip')
-                    .style('left', (event.pageX + tooltipPadding) + 'px')
-                    .style('top', (event.pageY + tooltipPadding) + 'px')
+            .on("mousemove", (event) => {
+                d3.select("#gantt-chart-tooltip")
+                    .style("left", event.pageX + tooltipPadding + "px")
+                    .style("top", event.pageY + tooltipPadding + "px");
             })
-            .on('mouseleave', () => {
-                d3.select('#gantt-chart-tooltip').style('display', 'none');
+            .on("mouseleave", () => {
+                d3.select("#gantt-chart-tooltip").style("display", "none");
             });
 
         // Call axes
@@ -306,10 +333,10 @@ const GanttChart = (props) => {
         yAxisG.call(yAxis);
 
         // Reset data formatting
-        formattedData.map(d => {
+        formattedData.map((d) => {
             d.title = d.title.substring(0, d.title.lastIndexOf("-"));
             return d;
-        })
+        });
     }, [props]);
 
     // Get chart settings on first render
@@ -325,7 +352,8 @@ const GanttChart = (props) => {
         // Update the chart on every minute change (to keep 'now' line accurate)
         // New instance of setTimeOut() every runClock() so no memory build-up due to garbage collector
         const now = new Date();
-        const timeToNextTick = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+        const timeToNextTick =
+            (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
         return setTimeout(() => {
             prevTimeout.current = currentTimeout.current;
             renderChart();
@@ -350,13 +378,12 @@ const GanttChart = (props) => {
             clearTimeout(prevTimeout.current);
             clearTimeout(currentTimeout.current);
         };
-
     }, [todos, habits, chartSettings, categories, renderChart, runClock]);
 
-    return(
-        <div>
+    return (
+        <div className="flex items-center justify-center min-w-[30rem]">
             <div id="empty-chart-div">
-                <Typography className="pt-2 px-5">
+                <Typography color="gray" className="pt-2 px-5">
                     Nothing to display for the current time range.
                 </Typography>
                 <div className="flex items-center justify-center">
@@ -373,6 +400,6 @@ const GanttChart = (props) => {
             <div id="gantt-chart-tooltip"></div>
         </div>
     );
-}
+};
 
 export default GanttChart;

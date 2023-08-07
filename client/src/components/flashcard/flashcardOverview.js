@@ -23,9 +23,9 @@ const Overview = (props) => {
   return (
     <>
       {modules.length > 0 ? (
-        <Card className="w-110 max-h-[21.5rem] flex shadow-xl shadow-pmd-blue-600">
-          <div className="p-3">
-            <Typography variant="h5" color="blue-gray" className="mb-2">
+        <Card className="min-w-[40rem] max-h-[30rem] flex shadow-xl shadow-pmd-blue-600">
+          <div className="p-3 pb-0">
+            <Typography variant="h5" color="blue-gray">
               Flashcards
             </Typography>
             <Typography className="mb-3">
@@ -33,7 +33,7 @@ const Overview = (props) => {
               reviewing!
             </Typography>
           </div>
-          <CardBody className="pt-0 overflow-y-auto scrollbar-hide">
+          <CardBody className="pt-0 max-h-[15rem] overflow-y-auto scrollbar-none scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
             <List className="pl-0">
               {modules.map((module, i) => (
                 <ListItem
@@ -59,7 +59,7 @@ const Overview = (props) => {
               ))}
             </List>
           </CardBody>
-          <CardFooter className="py-3 h-[4rem] border-t border-gray-400/50">
+          <CardFooter className="flex items-center py-3 border-t border-gray-400/50">
             <Button
               onClick={() => {
                 setModId(modules[0]._id);
@@ -72,7 +72,7 @@ const Overview = (props) => {
           </CardFooter>
         </Card>
       ) : (
-        <Card className="w-[18rem] h-max-[21.5rem] flex shadow-xl shadow-pmd-blue-600">
+        <Card className="min-w-[40rem] max-h-[25rem] flex shadow-xl shadow-pmd-blue-600">
           <div className="p-3">
             <Typography variant="h5" color="blue-gray" className="mb-2">
               Flashcards
@@ -91,7 +91,7 @@ const Overview = (props) => {
               loop
             />
           </div>
-          <CardFooter className="py-3 border-t border-gray-400/50">
+          <CardFooter className="flex items-center py-3 border-t border-gray-400/50">
             <AddModuleModal
               visible={initVisible}
               setVisible={setInitVisible}
@@ -101,7 +101,7 @@ const Overview = (props) => {
                 onClick={() => {
                   setInitVisible(true);
                 }}
-                className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100"
+                className="bg-indigo-300 hover:shadow-indigo-100 shadow-indigo-100 m-0"
               >
                 Get Started
               </Button>
