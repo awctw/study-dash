@@ -16,7 +16,7 @@ import {
 
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getHabitsAsync, addHabitAsync, toggleHabbitDateAsync } from "../../store/habits/thunks";
+import { getHabitsAsync } from "../../store/habits/thunks";
 import dayjs from "dayjs";
 import HeatMap from '@uiw/react-heat-map';
 

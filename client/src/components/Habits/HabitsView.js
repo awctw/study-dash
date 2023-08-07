@@ -13,12 +13,13 @@ import {
   DialogBody,
   DialogFooter,
   CardFooter,
+  IconButton,
 } from "@material-tailwind/react";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getHabitsAsync, addHabitAsync, toggleHabbitDateAsync } from "../../store/habits/thunks";
+import { getHabitsAsync, addHabitAsync, toggleHabbitDateAsync, deleteHabitAsync } from "../../store/habits/thunks";
 import dayjs from "dayjs";
 
 const HabitsView = () => {
@@ -76,6 +77,10 @@ const HabitsView = () => {
     setCheckedHabits(prevSet)
   }
 
+  const deleteHabit = (habitID) => {
+    dispatch(deleteHabitAsync(habitID))
+  }
+
   const isTicked = (habit) => {
     let date = new Date()
     let day = date.getDate()
@@ -106,7 +111,7 @@ const HabitsView = () => {
           <List className="w-full">
             {habits.map((habit) => {
               return (
-                <ListItem key={habit._id} className="p-0">
+                <ListItem key={habit._id} className="group p-0">
                   <label
                     htmlFor={habit._id}
                     className="px-3 py-2 flex items-center w-full cursor-pointer"
@@ -127,6 +132,14 @@ const HabitsView = () => {
                     <Typography color="blue-gray" className="font-medium">
                       {habit.name}
                     </Typography>
+                    <IconButton
+                      color="blue-gray"
+                      variant="text" size="sm"
+                      className="hidden group-hover:block rounded-full ml-auto"
+                      onClick={() => deleteHabit(habit._id)}
+                    >
+                      ✕
+                    </IconButton>
                   </label>
                 </ListItem>
               );
