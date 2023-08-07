@@ -26,6 +26,34 @@ const addHabit = async (habit) => {
   return response;
 };
 
-const exports = { getHabits, addHabit };
+const toggleHabitDate = async (habitID) => {
+  const response = await axios
+    .patch(URL + `/habits/${habitID}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+  return response;
+};
+
+const deleteHabit = async (habitID) => {
+  const response = await axios
+    .delete(URL + `/habits/${habitID}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((res) => res.data)
+    .catch((err) => {
+      throw new Error(err);
+    });
+  return response;
+};
+
+const exports = { getHabits, addHabit, toggleHabitDate, deleteHabit };
 
 export default exports;
