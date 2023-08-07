@@ -1,6 +1,6 @@
 import React from "react";
-import { Chip, Typography } from "@material-tailwind/react";
-import { CheckCircleIcon, CheckIcon } from "@heroicons/react/20/solid";
+import { Chip } from "@material-tailwind/react";
+import { CheckIcon } from "@heroicons/react/20/solid";
 
 const TodoDoneNotice = (props) => {
   return (

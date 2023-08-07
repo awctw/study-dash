@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, IconButton } from "@material-tailwind/react";
+import { IconButton } from "@material-tailwind/react";
 import { useDispatch } from "react-redux";
 import thunk from "../../store/TODOList/thunk";
 import { TrashIcon } from "@heroicons/react/20/solid";
