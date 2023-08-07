@@ -5,8 +5,6 @@ import {
   Card,
   IconButton,
   List,
-  ListItem,
-  ListItemPrefix,
   Popover,
   PopoverContent,
   PopoverHandler,
@@ -14,13 +12,8 @@ import {
 } from "@material-tailwind/react";
 import EditTODO from "./EditTODO";
 import thunk from "../../store/TODOList/thunk";
-import TODODoneNotice from "./TODODoneNotice";
 import TodoDoneNotice from "./TODODoneNotice";
-import {
-  EllipsisVerticalIcon,
-  MagnifyingGlassIcon,
-  TrashIcon,
-} from "@heroicons/react/20/solid";
+import { EllipsisVerticalIcon, TrashIcon } from "@heroicons/react/20/solid";
 
 // The TODOItem component represents an individual TODOItem in the list.
 const TODOItem = ({ todo, shorten }) => {

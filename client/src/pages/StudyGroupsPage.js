@@ -15,7 +15,6 @@ import {
   ChatBubbleLeftRightIcon,
   PlusIcon,
 } from "@heroicons/react/24/solid";
-import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";

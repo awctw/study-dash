@@ -8,9 +8,7 @@ import {
   Typography,
   CardBody,
   Button,
-  CardHeader,
   Input,
-  CardFooter,
   DialogHeader,
   DialogFooter,
   DialogBody,
@@ -23,10 +21,8 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   ArrowRightOnRectangleIcon,
   EllipsisVerticalIcon,
-  HomeIcon,
   PaperAirplaneIcon,
   PencilSquareIcon,
-  Square2StackIcon,
   UserPlusIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
