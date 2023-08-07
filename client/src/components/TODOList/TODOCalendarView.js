@@ -67,6 +67,8 @@ const TODOCalendarView = ({ selectedCategoryID }) => {
       <Calendar
         className="rounded-lg borders custom-no-underline"
         tileContent={populateDateTileWithTODOs}
+        onClickDay={handleDateClick}
+        value={selectedDate}
       />
       <style>
         {`
