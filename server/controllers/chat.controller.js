@@ -29,11 +29,8 @@ const putChatHistory = async (req, res) => {
 
   if (!msgFound) {
     chat.history.push(newMessage);
-  } else {
-    return res.status(200).send(chat);
   }
 
-  console.log("sender username: ", username);
   // retrieve all target user tokens for this notif (a join b/w chat & users)
   await User.find({
     username: { $in: chat.users },
@@ -47,8 +44,6 @@ const putChatHistory = async (req, res) => {
 
         return list;
       }, []);
-
-      console.log("token list: ", tokenList);
 
       if (tokenList.length > 0) {
         sendNotification(tokenList, {
