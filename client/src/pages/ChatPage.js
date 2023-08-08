@@ -99,7 +99,6 @@ const ChatPage = () => {
   const handleMessage = (message) => {
     if (message.username === username) return;
 
-    console.log("Chat Action called");
     dispatch(chatActions.pushMessage(message));
   };
 
