@@ -47,7 +47,7 @@ const register = (
     })
     .then((response) => {
       if (response.data.accessToken) {
-        sessionStorage.setItem("user", response.data);
+        sessionStorage.setItem("user", JSON.stringify(response.data));
       }
 
       return response.data;
