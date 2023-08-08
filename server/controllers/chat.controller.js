@@ -29,6 +29,8 @@ const putChatHistory = async (req, res) => {
 
   if (!msgFound) {
     chat.history.push(newMessage);
+  } else {
+    return res.status(200).send(chat);
   }
 
   console.log("sender username: ", username);
