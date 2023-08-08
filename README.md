@@ -196,10 +196,11 @@ in-app).
 > **_NOTE:_**
 > Since StudyDash makes use of Firebase for notifications, it is not
 > compatible with any browser other than Chrome or Edge.
-> We are aware of this issue and have tried our best to fix it using
-> Firebase's browser support check. However, there are browsers that just
-> don't support some API's used by Firebase and also some other browsers such as Safari
-> that firebase does not support.
+> We are aware of this issue and have taken several measures to fix this
+> — using Firebase's browser support check, and upgrading to Firebase's latest
+> version to name a few. However, there are browsers that
+> just don't support some API's used by Firebase and also some other browsers
+> such as Safari that Firebase does not support.
 
 ## Initial Project Proposal
 
