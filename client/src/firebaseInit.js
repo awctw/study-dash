@@ -23,7 +23,6 @@ export const fetchToken = async (setToken) => {
       }).then((currToken) => {
         if (currToken) {
           setToken(currToken);
-          console.log("currToken: ", currToken);
           return true;
         } else {
           return false;
