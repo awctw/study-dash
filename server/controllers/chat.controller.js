@@ -40,12 +40,14 @@ const putChatHistory = async (req, res) => {
         // can't send notif to the sender of this message
         if (user.firebaseToken && user.username !== username) {
           list.push(user.firebaseToken);
+        } else {
+          return null;
         }
 
         return list;
       }, []);
 
-      if (tokenList.length > 0) {
+      if (tokenList && tokenList.length > 0) {
         sendNotification(tokenList, {
           title: `${newMessage.username} from ${chat.name}`,
           body: newMessage.message,
