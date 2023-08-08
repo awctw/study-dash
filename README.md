@@ -193,6 +193,14 @@ The site will also require notification browser permissions
 for chat notifications to work (though you will be prompted to enable them
 in-app).
 
+> **_NOTE:_**
+> Since StudyDash makes use of Firebase for notifications, it is not
+> compatible with any browser other than Chrome or Edge.
+> We are aware of this issue and have tried our best to fix it using
+> Firebase's browser support check. However, there are browsers that just
+> don't support some API's used by Firebase and also some other browsers such as Safari
+> that firebase does not support.
+
 ## Initial Project Proposal
 
 ### Project Description
