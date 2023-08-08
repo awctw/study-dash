@@ -28,7 +28,11 @@ const INIT_STATE = {
 const chatSlice = createSlice({
   name: "chat",
   initialState: INIT_STATE,
-  reducers: {},
+  reducers: {
+    pushMessage: (state, action) => {
+      state.currentChat.history.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getChatHistoryAsync.pending, (state) => {
@@ -133,4 +137,5 @@ const chatSlice = createSlice({
   },
 });
 
+export const chatActions = chatSlice.actions;
 export default chatSlice.reducer;

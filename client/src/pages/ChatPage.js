@@ -35,6 +35,7 @@ import {
 } from "../store/chat/thunks";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import { chatActions } from "../store/chat/reducer";
 
 // Credits: Setting up socket io for chat
 // https://dev.to/bhavik786/building-a-real-time-chat-application-using-mern-stack-and-socketio-1obn
@@ -96,13 +97,10 @@ const ChatPage = () => {
   }, [socket]);
 
   const handleMessage = (message) => {
-    dispatch(
-      putChatHistoryAsync({
-        groupID,
-        newMessage: message,
-        username: username,
-      })
-    );
+    if (message.username === username) return;
+
+    console.log("Chat Action called");
+    dispatch(chatActions.pushMessage(message));
   };
 
   const handleSubmit = async (event) => {
@@ -117,6 +115,19 @@ const ChatPage = () => {
         },
         groupID,
       });
+
+      dispatch(
+        putChatHistoryAsync({
+          groupID,
+          newMessage: {
+            id: uuidv4(),
+            username,
+            message,
+          },
+          username: username,
+        })
+      );
+
       setMessage("");
     }
   };
