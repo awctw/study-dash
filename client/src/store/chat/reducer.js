@@ -81,6 +81,7 @@ const chatSlice = createSlice({
       })
       .addCase(groupChatAsync.fulfilled, (state, action) => {
         state.groupChat = REQUEST_STATE.FULFILLED;
+        state.currentChat = action.payload;
         state.chats.push(action.payload);
       })
       .addCase(groupChatAsync.rejected, (state, action) => {
