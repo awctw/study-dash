@@ -1,5 +1,7 @@
 const Module = require('../models/habit.model')
 const dayjs = require('dayjs')
+let utc = require('dayjs/plugin/utc')
+dayjs.extend(utc)
 
 const getHabits = async (req, res) => {
     const habits = await Module.find({userID: req.params.userID})
@@ -23,14 +25,10 @@ const addHabit = async (req, res) => {
 const toggleHabitDate = async (req, res) => {
     const habit = await Module.findOne({_id: req.params.habitID}).exec()
 
-    let date = new Date()
-    let day = date.getDate()
-    let month = date.getMonth()
-    let year = date.getFullYear()
-    date = new Date(year, month, day)
-    let today = dayjs(date)
+    let today = dayjs().utc()
+    console.log(today)
 
-    if (habit.dates.length > 0 && today.diff(habit.dates[habit.dates.length - 1])) {
+    if (habit.dates.length > 0 && today.diff(habit.dates[habit.dates.length - 1], 'day')) {
         habit.dates.push(today)
         await habit.save()
     } else if (habit.dates.length === 0) {

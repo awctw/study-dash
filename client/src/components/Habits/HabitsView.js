@@ -26,6 +26,8 @@ import {
   deleteHabitAsync,
 } from "../../store/habits/thunks";
 import dayjs from "dayjs";
+let utc = require('dayjs/plugin/utc')
+dayjs.extend(utc)
 
 const HabitsView = () => {
   /* Adapted From Material UI Docs */
@@ -41,7 +43,10 @@ const HabitsView = () => {
   const { habits } = useSelector((state) => state.habitReducer);
   const dispatch = useDispatch();
 
-  const handleOpen = () => setOpen(!open);
+  const handleOpen = () => {
+    setDays(new Array(7).fill(true));
+    setOpen(!open);
+  }
 
   useEffect(() => {
     if (user.isLoggedIn) {
@@ -90,17 +95,12 @@ const HabitsView = () => {
   };
 
   const isTicked = (habit) => {
-    let date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth();
-    let year = date.getFullYear();
-    date = new Date(year, month, day);
-    let today = dayjs(date);
+    let today = dayjs().utc();
 
     return !(
       habit.dates.length === 0 ||
       (habit.dates.length > 0 &&
-        today.diff(habit.dates[habit.dates.length - 1]))
+        today.diff(habit.dates[habit.dates.length - 1], 'day'))
     );
   };
 
@@ -112,46 +112,48 @@ const HabitsView = () => {
             Habits
           </Typography>
           <Typography className="mb-3">
-            Here's an overview of all your Habits.
+            Here's your habits for today.
           </Typography>
         </div>
         <CardBody className="flex-1 py-0 max-h-[10rem] overflow-y-auto scrollbar-none scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">
           <List className="w-full">
             {habits.map((habit) => {
-              return (
-                <ListItem key={habit._id} className="group p-0">
-                  <label
-                    htmlFor={habit._id}
-                    className="px-3 py-2 flex items-center w-full cursor-pointer"
-                  >
-                    <ListItemPrefix className="mr-3">
-                      <Checkbox
-                        id={habit._id}
-                        ripple={false}
-                        color="indigo"
-                        className="border-indigo-300/50 bg-indigo-50 transition-all hover:scale-105 hover:before:opacity-0"
-                        containerProps={{
-                          className: "p-0",
-                        }}
-                        onClick={() => toggleHabit(habit._id)}
-                        defaultChecked={isTicked(habit)}
-                      />
-                    </ListItemPrefix>
-                    <Typography color="blue-gray" className="font-medium">
-                      {habit.name}
-                    </Typography>
-                    <IconButton
-                      color="blue-gray"
-                      variant="text"
-                      size="sm"
-                      className="hidden group-hover:block rounded-full ml-auto"
-                      onClick={() => deleteHabit(habit._id)}
+              if (habit.days[dayjs().day()]) {
+                return (
+                  <ListItem key={habit._id} className="group p-0">
+                    <label
+                      htmlFor={habit._id}
+                      className="px-3 py-2 flex items-center w-full cursor-pointer"
                     >
-                      ✕
-                    </IconButton>
-                  </label>
-                </ListItem>
-              );
+                      <ListItemPrefix className="mr-3">
+                        <Checkbox
+                          id={habit._id}
+                          ripple={false}
+                          color="indigo"
+                          className="border-indigo-300/50 bg-indigo-50 transition-all hover:scale-105 hover:before:opacity-0"
+                          containerProps={{
+                            className: "p-0",
+                          }}
+                          onClick={() => toggleHabit(habit._id)}
+                          defaultChecked={isTicked(habit)}
+                        />
+                      </ListItemPrefix>
+                      <Typography color="blue-gray" className="font-medium">
+                        {habit.name}
+                      </Typography>
+                      <IconButton
+                        color="blue-gray"
+                        variant="text"
+                        size="sm"
+                        className="hidden group-hover:block rounded-full ml-auto"
+                        onClick={() => deleteHabit(habit._id)}
+                      >
+                        ✕
+                      </IconButton>
+                    </label>
+                  </ListItem>
+                );
+              }
             })}
           </List>
         </CardBody>
