@@ -1,5 +1,7 @@
 const Module = require('../models/habit.model')
 const dayjs = require('dayjs')
+let utc = require('dayjs/plugin/utc')
+dayjs.extend(utc)
 
 const getHabits = async (req, res) => {
     const habits = await Module.find({userID: req.params.userID})
@@ -27,8 +29,8 @@ const toggleHabitDate = async (req, res) => {
     let day = date.getDate()
     let month = date.getMonth()
     let year = date.getFullYear()
-    date = new Date(year, month, day)
-    let today = dayjs(date)
+    date = Date.UTC(year, month, day)
+    let today = dayjs(date).utc()
 
     if (habit.dates.length > 0 && today.diff(habit.dates[habit.dates.length - 1])) {
         habit.dates.push(today)

@@ -26,6 +26,8 @@ import {
   deleteHabitAsync,
 } from "../../store/habits/thunks";
 import dayjs from "dayjs";
+let utc = require('dayjs/plugin/utc')
+dayjs.extend(utc)
 
 const HabitsView = () => {
   /* Adapted From Material UI Docs */
@@ -97,8 +99,8 @@ const HabitsView = () => {
     let day = date.getDate();
     let month = date.getMonth();
     let year = date.getFullYear();
-    date = new Date(year, month, day);
-    let today = dayjs(date);
+    date = Date.UTC(year, month, day);
+    let today = dayjs(date).utc();
 
     return !(
       habit.dates.length === 0 ||
