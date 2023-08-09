@@ -26,7 +26,6 @@ const toggleHabitDate = async (req, res) => {
     const habit = await Module.findOne({_id: req.params.habitID}).exec()
 
     let today = dayjs().utc()
-    console.log(today)
 
     if (habit.dates.length > 0 && today.diff(habit.dates[habit.dates.length - 1], 'day')) {
         habit.dates.push(today)
