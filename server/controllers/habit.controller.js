@@ -29,14 +29,16 @@ const toggleHabitDate = async (req, res) => {
     // let day = date.getDate()
     // let month = date.getMonth()
     // let year = date.getFullYear()
-    let date = dayjs().utc()
-    let day = date.get("date")
-    let month = date.get("month")
-    let year = date.get("year")
-    date = Date.UTC(year, month, day)
-    let today = dayjs(date).utc()
+    // let date = dayjs().utc()
+    // let day = date.get("date")
+    // let month = date.get("month")
+    // let year = date.get("year")
+    // date = Date.UTC(year, month, day)
+    // let today = dayjs(date).utc()
+    let today = dayjs().utc()
+    console.log(today)
 
-    if (habit.dates.length > 0 && today.diff(habit.dates[habit.dates.length - 1])) {
+    if (habit.dates.length > 0 && today.diff(habit.dates[habit.dates.length - 1], 'day')) {
         habit.dates.push(today)
         await habit.save()
     } else if (habit.dates.length === 0) {
