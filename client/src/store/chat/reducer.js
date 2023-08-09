@@ -30,6 +30,10 @@ const chatSlice = createSlice({
   initialState: INIT_STATE,
   reducers: {
     pushMessage: (state, action) => {
+      if (!state.currentChat) {
+        state.currentChat = { history: [] };
+      }
+
       state.currentChat.history.push(action.payload);
     },
   },
@@ -77,6 +81,7 @@ const chatSlice = createSlice({
       })
       .addCase(groupChatAsync.fulfilled, (state, action) => {
         state.groupChat = REQUEST_STATE.FULFILLED;
+        state.currentChat = action.payload;
         state.chats.push(action.payload);
       })
       .addCase(groupChatAsync.rejected, (state, action) => {
