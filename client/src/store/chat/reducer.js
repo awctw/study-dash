@@ -30,6 +30,10 @@ const chatSlice = createSlice({
   initialState: INIT_STATE,
   reducers: {
     pushMessage: (state, action) => {
+      if (!state.currentChat) {
+        state.currentChat = { history: [] };
+      }
+
       state.currentChat.history.push(action.payload);
     },
   },
