@@ -95,10 +95,14 @@ const HabitsView = () => {
   };
 
   const isTicked = (habit) => {
-    let date = new Date();
-    let day = date.getDate();
-    let month = date.getMonth();
-    let year = date.getFullYear();
+    // let date = new Date();
+    let date = dayjs().utc();
+    // let day = date.getDate();
+    // let month = date.getMonth();
+    // let year = date.getFullYear();
+    let day = date.get("date")
+    let month = date.get("month")
+    let year = date.get("year")
     date = Date.UTC(year, month, day);
     let today = dayjs(date).utc();
 
