@@ -95,16 +95,6 @@ const HabitsView = () => {
   };
 
   const isTicked = (habit) => {
-    // let date = new Date();
-    // let date = dayjs().utc();
-    // let day = date.getDate();
-    // let month = date.getMonth();
-    // let year = date.getFullYear();
-    // let day = date.get("date")
-    // let month = date.get("month")
-    // let year = date.get("year")
-    // date = Date.UTC(year, month, day);
-    // let today = dayjs(date).utc();
     let today = dayjs().utc();
 
     return !(
@@ -122,7 +112,7 @@ const HabitsView = () => {
             Habits
           </Typography>
           <Typography className="mb-3">
-            Here's an overview of all your Habits.
+            Here's your habits for today.
           </Typography>
         </div>
         <CardBody className="flex-1 py-0 max-h-[10rem] overflow-y-auto scrollbar-none scrollbar-thumb-rounded-full scrollbar-thumb-blue-gray-100/50">

@@ -25,16 +25,6 @@ const addHabit = async (req, res) => {
 const toggleHabitDate = async (req, res) => {
     const habit = await Module.findOne({_id: req.params.habitID}).exec()
 
-    // let date = new Date()
-    // let day = date.getDate()
-    // let month = date.getMonth()
-    // let year = date.getFullYear()
-    // let date = dayjs().utc()
-    // let day = date.get("date")
-    // let month = date.get("month")
-    // let year = date.get("year")
-    // date = Date.UTC(year, month, day)
-    // let today = dayjs(date).utc()
     let today = dayjs().utc()
     console.log(today)
 
